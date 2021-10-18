@@ -11,6 +11,11 @@
                 <i class="bi bi-search" @click="getTweets"></i></button
         ></span>
     </div>
+    <div class="d-flex justify-content-center" v-if="is_loading">
+        <div class="spinner-border" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
     <tweet :data="tweet" v-for="tweet in tweets" v-bind:key="tweet" />
 </template>
 
@@ -25,13 +30,15 @@ export default {
         return {
             tweets: [],
             content_query: null,
+            is_loading: false,
         };
     },
     components: {
         Tweet,
     },
     methods: {
-        getTweets() {
+        async getTweets() {
+            this.is_loading = true;
             var query = {
                 query: {
                     bool: {
@@ -48,13 +55,15 @@ export default {
                     match: { content: this.content_query },
                 });
             }
-            axios
+
+            await axios
                 .post(this.url + "/" + this.index + "/_search", query)
                 .then((response) => {
                     console.log(response.data);
                     response.data.hits.hits.forEach((t) => {
                         this.tweets.push(t._source);
                     });
+                    this.is_loading = false;
                 })
                 .catch((error) => console.error(error));
         },
