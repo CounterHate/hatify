@@ -55,10 +55,11 @@ export default {
                     match: { content: this.content_query },
                 });
             }
-
+            console.log(query);
             await axios
                 .post(this.url + "/" + this.index + "/_search", query)
                 .then((response) => {
+                    this.tweets = [];
                     console.log(response.data);
                     response.data.hits.hits.forEach((t) => {
                         this.tweets.push(t._source);

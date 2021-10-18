@@ -21171,8 +21171,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   });
                 }
 
-                _context.next = 5;
+                console.log(query);
+                _context.next = 6;
                 return axios.post(_this.url + "/" + _this.index + "/_search", query).then(function (response) {
+                  _this.tweets = [];
                   console.log(response.data);
                   response.data.hits.hits.forEach(function (t) {
                     _this.tweets.push(t._source);
@@ -21182,7 +21184,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   return console.error(error);
                 });
 
-              case 5:
+              case 6:
               case "end":
                 return _context.stop();
             }
