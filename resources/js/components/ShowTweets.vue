@@ -7,8 +7,8 @@
             v-model="content_query"
         />
         <span class="input-group-text" id="basic-addon2"
-            ><button class="btn btn-clear">
-                <i class="bi bi-search" @click="getTweets"></i></button
+            ><button class="btn btn-clear" @click="getTweets">
+                <i class="bi bi-search"></i></button
         ></span>
     </div>
     <div class="d-flex justify-content-center" v-if="is_loading">
