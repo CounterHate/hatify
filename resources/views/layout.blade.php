@@ -21,7 +21,8 @@
 
     <div id="app" class="container">
         <br>
-        <show-tweets url={{ ENV('ES') }} index={{ ENV('INDEX') }} />
+        @yield('content')
+        {{-- <show-tweets url={{ ENV('ES') }} index={{ ENV('INDEX') }} /> --}}
     </div>
     <script src="{{ mix('js/app.js') }}"></script>
 </body>

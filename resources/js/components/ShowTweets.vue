@@ -1,5 +1,5 @@
 <template>
-    <div class="input-group mb-3">
+    <div class="input-group mb-3" v-if="search">
         <input
             type="text"
             class="form-control"
@@ -25,6 +25,7 @@ export default {
     props: {
         url: String,
         index: String,
+        search: Boolean,
     },
     data() {
         return {
@@ -70,7 +71,7 @@ export default {
         },
     },
     mounted() {
-        // this.getTweets();
+        if (!this.search) this.getTweets();
     },
 };
 </script>
