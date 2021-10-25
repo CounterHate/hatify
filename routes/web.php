@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('/search', function() {
     return view('search');
-})->middleware(['auth'])->name('/');
+})->middleware(['auth'])->name('/search');
 
 
 // Route::get('/', function() {});
