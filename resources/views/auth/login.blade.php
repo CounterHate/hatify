@@ -49,7 +49,11 @@
                     </a>
                 @endif
 
-                <a href="/register" style="padding: 8px">Zarejestruj się</a>
+                {{-- not for prod --}}
+                @if (ENV('APP_DEBUG'))
+                    <a href="/register" style="padding: 8px">Zarejestruj się</a>
+                @endif
+                {{--  --}}
                 <x-button class="ml-3">
                     {{ __('Zaloguj') }}
                 </x-button>

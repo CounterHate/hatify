@@ -21124,7 +21124,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   props: {
     url: String,
     index: String,
-    search: Boolean
+    search: Boolean,
+    es_user: String,
+    es_pass: String
   },
   data: function data() {
     return {
@@ -21172,8 +21174,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   });
                 }
 
-                console.log(query);
-                _context.next = 6;
+                _context.next = 5;
                 return axios.post(_this.url + "/" + _this.index + "/_search", query).then(function (response) {
                   _this.tweets = [];
                   console.log(response.data);
@@ -21185,7 +21186,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   return console.error(error);
                 });
 
-              case 6:
+              case 5:
               case "end":
                 return _context.stop();
             }

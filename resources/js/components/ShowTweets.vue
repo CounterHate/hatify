@@ -26,6 +26,8 @@ export default {
         url: String,
         index: String,
         search: Boolean,
+        es_user: String,
+        es_pass: String,
     },
     data() {
         return {
@@ -56,7 +58,6 @@ export default {
                     match: { content: this.content_query },
                 });
             }
-            console.log(query);
             await axios
                 .post(this.url + "/" + this.index + "/_search", query)
                 .then((response) => {
