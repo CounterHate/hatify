@@ -59,7 +59,9 @@ export default {
         username: this.es_user,
         password: this.es_pass,
       };
+        console.log("url: ",this.url, "index: ",this.index)
       await axios
+
         .post(this.url + "/" + this.index + "/_search", query, {
           auth: auth,
         })
