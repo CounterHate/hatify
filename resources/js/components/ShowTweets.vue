@@ -77,35 +77,6 @@ export default {
                 })
                 .catch((error) => console.error(error));
         },
-<<<<<<< HEAD
-=======
-        size: 20,
-      };
-      if (this.content_query) {
-        query.query.bool.must.push({
-          match: { content: this.content_query },
-        });
-      }
-      var auth = {
-        username: this.es_user,
-        password: this.es_pass,
-      };
-        console.log("url: ",this.url, "index: ",this.index)
-      await axios
-
-        .post(this.url + "/" + this.index + "/_search", query, {
-          auth: auth,
-        })
-        .then((response) => {
-          this.tweets = [];
-          console.log(response.data);
-          response.data.hits.hits.forEach((t) => {
-            this.tweets.push(t._source);
-          });
-          this.is_loading = false;
-        })
-        .catch((error) => console.error(error));
->>>>>>> 557f448fb02017323a56ab8637af2b647367d91f
     },
     mounted() {
         if (!this.search) this.getTweets();
