@@ -16,7 +16,12 @@
             <span class="sr-only"></span>
         </div>
     </div>
-    <tweet :data="tweet" v-for="tweet in tweets" v-bind:key="tweet" />
+    <tweet
+        :data="tweet"
+        v-for="tweet in tweets"
+        v-bind:key="tweet"
+        @process-tweet="processTweet(tweet)"
+    />
 </template>
 
 <script>
@@ -62,7 +67,6 @@ export default {
                 username: this.es_user,
                 password: this.es_pass,
             };
-            console.log("url: ", this.url, " index: ", this.index);
             await axios
                 .post(this.url + "/" + this.index + "/_search", query, {
                     auth: auth,
@@ -76,6 +80,38 @@ export default {
                     this.is_loading = false;
                 })
                 .catch((error) => console.error(error));
+        },
+        async processTweet(tweet, is_hate_speech) {
+            // if is hate speech add to database
+            if (is_hate_speech) {
+                var data = {
+                    tweet_id: tweet.tweet_id,
+                    is_hate_speech: is_hate_speech,
+                    author: tweet.author_username,
+                    content: tweet.content,
+                    date: (tweet.posted_utime * 1000).toString(),
+                };
+                axios
+                    .post("api/tweets", data)
+                    .then((response) => console.log(response.data))
+                    .catch((error) => console.error(error));
+            }
+            // // update doc in index
+            tweet.is_hate_speech = is_hate_speech;
+            var auth = {
+                username: this.es_user,
+                password: this.es_pass,
+            };
+            axios
+                .put(
+                    this.url + "/" + this.index + "/_doc/" + tweet.tweet_id,
+                    tweet,
+                    {
+                        auth: auth,
+                    }
+                )
+                .then((response) => console.log(response))
+                .catch((error) => console.log(error));
         },
     },
     mounted() {

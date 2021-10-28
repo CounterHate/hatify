@@ -21,6 +21,9 @@ Route::get('/search', function() {
     return view('search');
 })->middleware(['auth'])->name('/search');
 
+Route::get('/random', function() {
+    return view('random');
+})->middleware(['auth'])->name('/random');
 
 // Route::get('/', function() {});
 

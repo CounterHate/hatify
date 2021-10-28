@@ -25,7 +25,7 @@
                 <button
                     class="btn btn-success"
                     type="button"
-                    @click="saveTweet(true)"
+                    @click="processTweet(true)"
                 >
                     Mowa nienawiści
                 </button>
@@ -34,7 +34,7 @@
                 <button
                     class="btn btn-danger"
                     type="button"
-                    @click="saveTweet(false)"
+                    @click="processTweet(false)"
                 >
                     Nie jest to mowa nienawiści
                 </button>
@@ -55,20 +55,11 @@ export default {
             is_hate_speech: null,
         };
     },
+    emits: ["process-tweet"],
     methods: {
-        saveTweet(is_hate_speech) {
+        processTweet(is_hate_speech) {
             this.is_hate_speech = is_hate_speech;
-            var data = {
-                tweet_id: this.data.tweet_id,
-                is_hate_speech: this.is_hate_speech,
-                author: this.data.author_username,
-                content: this.data.content,
-                date: (this.data.posted_utime * 1000).toString(),
-            };
-            axios
-                .post("api/tweets", data)
-                .then((response) => console.log(response.data))
-                .catch((error) => console.error(error));
+            this.$emit("process-tweet", is_hate_speech);
         },
     },
 };
