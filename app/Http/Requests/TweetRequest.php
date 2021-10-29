@@ -25,7 +25,6 @@ class TweetRequest extends FormRequest
     {
         return [
             'tweet_id' => ['required'],
-            'is_hate_speech' => ['required'],
             'author' => ['required'],
             'content' => ['required'],
             'date' => ['required']

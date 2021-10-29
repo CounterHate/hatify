@@ -9,5 +9,5 @@ class Tweet extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tweet_id', 'is_hate_speech', 'author', 'content', 'date'];
+    protected $fillable = ['tweet_id', 'author', 'content', 'date'];
 }

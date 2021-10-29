@@ -21113,11 +21113,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Tweet_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tweet.vue */ "./resources/js/components/Tweet.vue");
+/* harmony import */ var _es_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../es.js */ "./resources/js/es.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -21126,7 +21128,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   props: {
     url: String,
-    index: String,
     es_user: String,
     es_pass: String
   },
@@ -21137,19 +21138,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   mounted: function mounted() {
-    this.getRandomTweet();
+    var _this = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this.url, {
+                username: _this.es_user,
+                password: _this.es_pass
+              }).then(function (result) {
+                return _this.tweet = result[0];
+              });
+
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
   },
   methods: {
+    getRandomTweets: _es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets,
     getRandomTweet: function getRandomTweet() {
-      var _this = this;
+      var _this2 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var query, auth;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                _this.is_loading = true;
+                _this2.is_loading = true;
                 query = {
                   size: 1,
                   query: {
@@ -21181,70 +21204,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
                 };
                 auth = {
-                  username: _this.es_user,
-                  password: _this.es_pass
+                  username: _this2.es_user,
+                  password: _this2.es_pass
                 };
-                _context.next = 5;
-                return axios.post(_this.url + "/" + _this.index + "/_search", query, {
+                console.log(auth);
+                _context2.next = 6;
+                return axios.post(_this2.url + "/_search", query, {
                   auth: auth
                 }).then(function (response) {
-                  _this.tweets = [];
-                  _this.tweet = response.data.hits.hits[0]._source;
-                  _this.is_loading = false;
+                  _this2.tweets = [];
+                  console.log(response.data);
+                  _this2.tweet = response.data.hits.hits[0]._source;
+                  _this2.is_loading = false;
                 })["catch"](function (error) {
                   return console.error(error);
                 });
 
-              case 5:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
-    processTweet: function processTweet(is_hate_speech) {
-      var _this2 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var data, auth;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                // if is hate speech add to database
-                console.log(_this2.tweet.tweet_id);
-
-                if (is_hate_speech) {
-                  data = {
-                    tweet_id: _this2.tweet.tweet_id,
-                    is_hate_speech: _this2.is_hate_speech,
-                    author: _this2.tweet.author_username,
-                    content: _this2.tweet.content,
-                    date: (_this2.tweet.posted_utime * 1000).toString()
-                  };
-                  axios.post("api/tweets", data).then(function (response) {
-                    return console.log(response.data);
-                  })["catch"](function (error) {
-                    return console.error(error);
-                  });
-                } // // update doc in index
-
-
-                _this2.tweet.is_hate_speech = is_hate_speech;
-                auth = {
-                  username: _this2.es_user,
-                  password: _this2.es_pass
-                };
-                axios.put(_this2.url + "/" + _this2.index + "/_doc/" + _this2.tweet.tweet_id, _this2.tweet, {
-                  auth: auth
-                }).then(function (response) {
-                  return console.log(response);
-                })["catch"](function (error) {
-                  return console.log(error);
-                });
-
-              case 5:
+              case 6:
               case "end":
                 return _context2.stop();
             }
@@ -21271,6 +21247,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Tweet_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tweet.vue */ "./resources/js/components/Tweet.vue");
+/* harmony import */ var _es_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../es.js */ "./resources/js/es.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -21278,10 +21255,10 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     url: String,
-    index: String,
     search: Boolean,
     es_user: String,
     es_pass: String
@@ -21290,23 +21267,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       tweets: [],
       content_query: null,
-      is_loading: false
+      is_loading: false,
+      auth: null
     };
   },
   components: {
     Tweet: _Tweet_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  methods: {
-    getTweets: function getTweets() {
-      var _this = this;
+  mounted: function mounted() {
+    var _this = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var query, auth;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _this.auth = {
+                username: _this.es_user,
+                password: _this.es_pass
+              };
+
+              if (_this.search) {
+                _context.next = 4;
+                break;
+              }
+
+              _context.next = 4;
+              return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(20, _this.url, _this.auth).then(function (result) {
+                return _this.tweets = result;
+              });
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  methods: {
+    getRandomTweets: _es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets,
+    getQueryTweets: function getQueryTweets() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var query;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                _this.is_loading = true;
+                _this2.is_loading = true;
                 query = {
                   query: {
                     bool: {
@@ -21324,80 +21334,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   size: 20
                 };
 
-                if (_this.content_query) {
+                if (_this2.content_query) {
                   query.query.bool.must.push({
                     match: {
-                      content: _this.content_query
+                      content: _this2.content_query
                     }
                   });
                 }
 
-                auth = {
-                  username: _this.es_user,
-                  password: _this.es_pass
-                };
-                _context.next = 6;
-                return axios.post(_this.url + "/" + _this.index + "/_search", query, {
-                  auth: auth
+                _context2.next = 5;
+                return axios.post(_this2.url + "/_search", query, {
+                  auth: _this2.auth
                 }).then(function (response) {
-                  _this.tweets = [];
-                  console.log(response.data);
+                  _this2.tweets = [];
                   response.data.hits.hits.forEach(function (t) {
-                    _this.tweets.push(t._source);
+                    _this2.tweets.push(t._source);
                   });
-                  _this.is_loading = false;
                 })["catch"](function (error) {
                   return console.error(error);
                 });
 
+              case 5:
+                _this2.is_loading = false;
+
               case 6:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
-    processTweet: function processTweet(tweet, is_hate_speech) {
-      var _this2 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var data, auth;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                // if is hate speech add to database
-                if (is_hate_speech) {
-                  data = {
-                    tweet_id: tweet.tweet_id,
-                    is_hate_speech: is_hate_speech,
-                    author: tweet.author_username,
-                    content: tweet.content,
-                    date: (tweet.posted_utime * 1000).toString()
-                  };
-                  axios.post("api/tweets", data).then(function (response) {
-                    return console.log(response.data);
-                  })["catch"](function (error) {
-                    return console.error(error);
-                  });
-                } // // update doc in index
-
-
-                tweet.is_hate_speech = is_hate_speech;
-                auth = {
-                  username: _this2.es_user,
-                  password: _this2.es_pass
-                };
-                axios.put(_this2.url + "/" + _this2.index + "/_doc/" + tweet.tweet_id, tweet, {
-                  auth: auth
-                }).then(function (response) {
-                  return console.log(response);
-                })["catch"](function (error) {
-                  return console.log(error);
-                });
-
-              case 4:
               case "end":
                 return _context2.stop();
             }
@@ -21405,9 +21365,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     }
-  },
-  mounted: function mounted() {
-    if (!this.search) this.getTweets();
   }
 });
 
@@ -21424,20 +21381,68 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    data: Object
+    data: Object,
+    url: String,
+    auth: Object
   },
   data: function data() {
     return {
       is_hate_speech: null
     };
   },
-  emits: ["process-tweet"],
   methods: {
     processTweet: function processTweet(is_hate_speech) {
-      this.is_hate_speech = is_hate_speech;
-      this.$emit("process-tweet", is_hate_speech);
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var data;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.is_hate_speech = is_hate_speech; // if is hate speech add to database
+
+                if (is_hate_speech) {
+                  data = {
+                    tweet_id: _this.data.tweet_id,
+                    author: _this.data.author_username,
+                    content: _this.data.content,
+                    date: (_this.data.posted_utime * 1000).toString()
+                  };
+                  axios.post("api/tweets", data).then(function (response) {
+                    return console.log(response.data);
+                  })["catch"](function (error) {
+                    return console.error(error);
+                  });
+                } // // update doc in index
+
+
+                _this.data.is_hate_speech = is_hate_speech;
+                axios.put(_this.url, _this.data, {
+                  auth: _this.auth
+                }).then(function (response) {
+                  return console.log(response);
+                })["catch"](function (error) {
+                  return console.log(error);
+                });
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     }
   }
 });
@@ -21463,10 +21468,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return this.tweet != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
     key: 0,
     data: this.tweet,
-    onProcessTweet: $options.processTweet
+    auth: {
+      username: this.es_user,
+      password: this.es_pass
+    },
+    url: this.url + '/_doc/' + this.tweet.tweet_id
   }, null, 8
   /* PROPS */
-  , ["data", "onProcessTweet"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
+  , ["data", "auth", "url"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
 
 /***/ }),
@@ -21516,6 +21525,8 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 
 var _hoisted_7 = [_hoisted_6];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _this = this;
+
   var _component_tweet = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$props.search ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -21524,24 +21535,29 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     placeholder: "Fraza do wyszukiwania",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.content_query = $event;
-    })
-  }, null, 512
-  /* NEED_PATCH */
+    }),
+    onKeyup: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
+      return $options.getQueryTweets && $options.getQueryTweets.apply($options, arguments);
+    }, ["enter"]))
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.content_query]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-clear",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.getTweets && $options.getTweets.apply($options, arguments);
+    onClick: _cache[2] || (_cache[2] = function () {
+      return $options.getQueryTweets && $options.getQueryTweets.apply($options, arguments);
     })
   }, _hoisted_4)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.is_loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, _hoisted_7)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.tweets, function (tweet) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
       data: tweet,
-      key: tweet,
-      onProcessTweet: function onProcessTweet($event) {
-        return $options.processTweet(tweet);
-      }
+      auth: {
+        username: _this.es_user,
+        password: _this.es_pass
+      },
+      url: _this.url + '/_doc/' + tweet.tweet_id,
+      key: tweet
     }, null, 8
     /* PROPS */
-    , ["data", "onProcessTweet"]);
+    , ["data", "auth", "url"]);
   }), 128
   /* KEYED_FRAGMENT */
   ))], 64
@@ -21708,6 +21724,95 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/es.js":
+/*!****************************!*\
+  !*** ./resources/js/es.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getRandomTweets": () => (/* binding */ getRandomTweets)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function getRandomTweets(_x, _x2, _x3) {
+  return _getRandomTweets.apply(this, arguments);
+}
+
+function _getRandomTweets() {
+  _getRandomTweets = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(size, url, auth) {
+    var query, data;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            query = {
+              size: size,
+              query: {
+                function_score: {
+                  random_score: {},
+                  query: {
+                    bool: {
+                      must: [{
+                        match: {
+                          lang: "pl"
+                        }
+                      }, {
+                        match: {
+                          is_retweet: false
+                        }
+                      }],
+                      must_not: [{
+                        match: {
+                          is_hate_speech: true
+                        }
+                      }, {
+                        match: {
+                          is_hate_speech: false
+                        }
+                      }]
+                    }
+                  }
+                }
+              }
+            };
+            _context.next = 3;
+            return axios.post(url + "/_search", query, {
+              auth: auth
+            }).then(function (response) {
+              var tweets = [];
+              response.data.hits.hits.forEach(function (t) {
+                tweets.push(t._source);
+              });
+              data = tweets;
+            })["catch"](function (error) {
+              console.error(error);
+              data = [];
+            });
+
+          case 3:
+            return _context.abrupt("return", data);
+
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _getRandomTweets.apply(this, arguments);
+}
 
 /***/ }),
 
@@ -26169,7 +26274,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-clear {\n    background-color: transparent;\n    border-color: transparent;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-clear {\n  background-color: transparent;\n  border-color: transparent;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -58301,13 +58406,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _RandomTweet_vue_vue_type_template_id_15538753__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RandomTweet.vue?vue&type=template&id=15538753 */ "./resources/js/components/RandomTweet.vue?vue&type=template&id=15538753");
 /* harmony import */ var _RandomTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RandomTweet.vue?vue&type=script&lang=js */ "./resources/js/components/RandomTweet.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_RandomTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_RandomTweet_vue_vue_type_template_id_15538753__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/RandomTweet.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_RandomTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_RandomTweet_vue_vue_type_template_id_15538753__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/RandomTweet.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -58330,7 +58435,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ShowTweets.vue?vue&type=template&id=2ed732aa */ "./resources/js/components/ShowTweets.vue?vue&type=template&id=2ed732aa");
 /* harmony import */ var _ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ShowTweets.vue?vue&type=script&lang=js */ "./resources/js/components/ShowTweets.vue?vue&type=script&lang=js");
 /* harmony import */ var _ShowTweets_vue_vue_type_style_index_0_id_2ed732aa_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ShowTweets.vue?vue&type=style&index=0&id=2ed732aa&lang=css */ "./resources/js/components/ShowTweets.vue?vue&type=style&index=0&id=2ed732aa&lang=css");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -58338,7 +58443,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/ShowTweets.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/ShowTweets.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -58360,13 +58465,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tweet.vue?vue&type=template&id=4683c2d4 */ "./resources/js/components/Tweet.vue?vue&type=template&id=4683c2d4");
 /* harmony import */ var _Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tweet.vue?vue&type=script&lang=js */ "./resources/js/components/Tweet.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/Tweet.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/Tweet.vue"]])
 /* hot reload */
 if (false) {}
 

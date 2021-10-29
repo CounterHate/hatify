@@ -17,7 +17,6 @@ class CreateTweetsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('tweet_id');
-            $table->boolean('is_hate_speech');
             $table->string('author');
             $table->text('content');
             $table->string('date');
