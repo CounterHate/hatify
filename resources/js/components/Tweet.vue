@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.is_hate_speech == null">
+  <div v-if="this.is_hate_speech == null || random">
     <br />
     <div class="card">
       <div class="card-body">
@@ -20,6 +20,21 @@
         >
       </div>
     </div>
+    <div class="row">
+      <div style="padding-top: 8px">
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          v-model="selected_topic"
+        >
+          <option :value="topic.name" v-for="topic in topics" :key="topic">
+            {{ topic.name }}
+          </option>
+          <option value="inny">Inny</option>
+        </select>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-auto" style="padding-top: 8px; padding-right: 4px">
         <button
@@ -51,31 +66,40 @@ export default {
     data: Object,
     url: String,
     auth: Object,
+    random: Boolean,
   },
   data() {
     return {
       is_hate_speech: null,
+      selected_topic: "inny",
+      topics: [],
     };
   },
+  emits: ["process_tweet"],
+  async mounted() {
+    await this.getTopics();
+  },
   methods: {
+    renderNewTweet() {
+      this.is_hate_speech = false;
+    },
+    async getTopics() {
+      await axios
+        .get("/api/topics")
+        .then((response) => (this.topics = response.data.data))
+        .catch((error) => console.log(error));
+    },
     async processTweet(is_hate_speech) {
       this.is_hate_speech = is_hate_speech;
-      // if is hate speech add to database
-      if (is_hate_speech) {
-        var data = {
-          tweet_id: this.data.tweet_id,
-          author: this.data.author_username,
-          content: this.data.content,
-          date: (this.data.posted_utime * 1000).toString(),
-        };
-        axios
-          .post("api/tweets", data)
-          .then((response) => console.log(response.data))
-          .catch((error) => console.error(error));
-      }
-      // // update doc in index
-      this.data.is_hate_speech = is_hate_speech;
 
+      // if is hate speech add to database
+      this.$emit("process_tweet", {
+        topic: this.selected_topic,
+        tweet: this.data,
+        is_hate_speech: this.is_hate_speech,
+      });
+      this.selected_topic = "inny";
+      this.data.is_hate_speech = is_hate_speech;
       axios
         .put(this.url, this.data, {
           auth: this.auth,

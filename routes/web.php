@@ -1,7 +1,8 @@
 <?php
 
+use App\Models\Topic;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,21 +15,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('index', ['user' => Auth::user()]);
 })->middleware(['auth'])->name('/');
 
-Route::get('/search', function() {
-    return view('search');
+Route::get('/search', function () {
+    return view('search', ['user' => Auth::user()]);
 })->middleware(['auth'])->name('/search');
 
-Route::get('/random', function() {
-    return view('random');
+Route::get('/random', function () {
+    return view('random', ['user' => Auth::user()]);
 })->middleware(['auth'])->name('/random');
-
-// Route::get('/', function() {});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

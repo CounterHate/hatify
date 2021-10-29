@@ -18,9 +18,11 @@
     </div>
   </div>
   <tweet
+    :random="false"
     :data="tweet"
     :auth="{ username: this.es_user, password: this.es_pass }"
     :url="this.url + '/_doc/' + tweet.tweet_id"
+    @process_tweet="handleProcessTweet"
     v-for="tweet in tweets"
     v-bind:key="tweet"
   />
@@ -35,6 +37,7 @@ export default {
     search: Boolean,
     es_user: String,
     es_pass: String,
+    user: Object,
   },
   data() {
     return {
@@ -42,6 +45,7 @@ export default {
       content_query: null,
       is_loading: false,
       auth: null,
+      topics: [],
     };
   },
   components: {
@@ -59,6 +63,21 @@ export default {
   },
   methods: {
     getRandomTweets,
+    handleProcessTweet(data) {
+      if (data.is_hate_speech) {
+        var tweet = {
+          tweet_id: data.tweet.tweet_id,
+          author: data.tweet.author_username,
+          content: data.tweet.content,
+          date: (data.tweet.posted_utime * 1000).toString(),
+          topics: JSON.stringify({ user: this.user.id, topic: data.topic }),
+        };
+        axios
+          .post("api/tweets", tweet)
+          .then((response) => console.log(response.data))
+          .catch((error) => console.error(error));
+      }
+    },
     async getQueryTweets() {
       this.is_loading = true;
       var query = {
