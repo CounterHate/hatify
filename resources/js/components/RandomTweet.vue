@@ -41,7 +41,7 @@ export default {
           author: data.tweet.author_username,
           content: data.tweet.content,
           date: (data.tweet.posted_utime * 1000).toString(),
-          topics: JSON.stringify({ user: this.user.id, topic: data.topic }),
+          topics: JSON.stringify({ user: this.user, topic: data.topic }),
         };
         axios
           .post("api/tweets", tweet)

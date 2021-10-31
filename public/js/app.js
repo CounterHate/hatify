@@ -21180,7 +21180,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     content: data.tweet.content,
                     date: (data.tweet.posted_utime * 1000).toString(),
                     topics: JSON.stringify({
-                      user: _this2.user.id,
+                      user: _this2.user,
                       topic: data.topic
                     })
                   };
