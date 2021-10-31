@@ -21114,7 +21114,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Tweet_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tweet.vue */ "./resources/js/components/Tweet.vue");
 /* harmony import */ var _es_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../es.js */ "./resources/js/es.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -21123,22 +21122,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     Tweet: _Tweet_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
-    url: String,
-    es_user: String,
-    es_pass: String,
-    user: Object
+    user: Number
   },
   data: function data() {
     return {
       is_loading: false,
       tweet: null,
-      auth: {}
+      url: "https://es.dc9.dev:9200",
+      index: "tweets",
+      auth: {
+        username: "dc9",
+        password: "hohC2wix"
+      }
     };
   },
   mounted: function mounted() {
@@ -21149,16 +21149,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.auth = {
-                username: _this.es_user,
-                password: _this.es_pass
-              };
-              _context.next = 3;
-              return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this.url, _this.auth).then(function (result) {
+              _context.next = 2;
+              return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this.url + "/" + _this.index, _this.auth).then(function (result) {
                 return _this.tweet = result[0];
               });
 
-            case 3:
+            case 2:
             case "end":
               return _context.stop();
           }
@@ -21238,18 +21234,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    url: String,
     search: Boolean,
-    es_user: String,
-    es_pass: String,
-    user: Object
+    user: Number
   },
   data: function data() {
     return {
+      url: "https://es.dc9.dev:9200",
+      index: "tweets",
+      auth: {
+        username: "dc9",
+        password: "hohC2wix"
+      },
       tweets: [],
       content_query: null,
       is_loading: false,
-      auth: null,
       topics: []
     };
   },
@@ -21264,22 +21262,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.auth = {
-                username: _this.es_user,
-                password: _this.es_pass
-              };
-
               if (_this.search) {
-                _context.next = 4;
+                _context.next = 3;
                 break;
               }
 
-              _context.next = 4;
-              return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(20, _this.url, _this.auth).then(function (result) {
+              _context.next = 3;
+              return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(20, _this.url + "/" + _this.index, _this.auth).then(function (result) {
                 return _this.tweets = result;
               });
 
-            case 4:
+            case 3:
             case "end":
               return _context.stop();
           }
@@ -21297,7 +21290,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           content: data.tweet.content,
           date: (data.tweet.posted_utime * 1000).toString(),
           topics: JSON.stringify({
-            user: this.user.id,
+            user: this.user,
             topic: data.topic
           })
         };
@@ -21393,12 +21386,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     data: Object,
-    url: String,
-    auth: Object,
     random: Boolean
   },
   data: function data() {
     return {
+      url: "https://es.dc9.dev:9200",
+      index: "tweets",
+      auth: {
+        username: "dc9",
+        password: "hohC2wix"
+      },
       is_hate_speech: null,
       selected_topic: "inny",
       topics: []
@@ -21469,7 +21466,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this3.selected_topic = "inny";
                 _this3.data.is_hate_speech = is_hate_speech;
-                axios.put(_this3.url, _this3.data, {
+                axios.put(_this3.url + "/" + _this3.index + "/_doc/" + _this3.data.tweet_id, _this3.data, {
                   auth: _this3.auth
                 }).then(function (response) {
                   return console.log(response);
@@ -21508,18 +21505,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return this.tweet != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
     key: 0,
-    ref: "tweetComponent",
     random: true,
     data: this.tweet,
-    auth: {
-      username: this.es_user,
-      password: this.es_pass
-    },
-    url: this.url + '/_doc/' + this.tweet.tweet_id,
     onProcess_tweet: $options.handleProcessTweet
   }, null, 8
   /* PROPS */
-  , ["data", "auth", "url", "onProcess_tweet"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
+  , ["data", "onProcess_tweet"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
 
 /***/ }),
@@ -21569,8 +21560,6 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 
 var _hoisted_7 = [_hoisted_6];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _this = this;
-
   var _component_tweet = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$props.search ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -21594,16 +21583,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
       random: false,
       data: tweet,
-      auth: {
-        username: _this.es_user,
-        password: _this.es_pass
-      },
-      url: _this.url + '/_doc/' + tweet.tweet_id,
       onProcess_tweet: $options.handleProcessTweet,
       key: tweet
     }, null, 8
     /* PROPS */
-    , ["data", "auth", "url", "onProcess_tweet"]);
+    , ["data", "onProcess_tweet"]);
   }), 128
   /* KEYED_FRAGMENT */
   ))], 64

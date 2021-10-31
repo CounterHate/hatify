@@ -20,8 +20,6 @@
   <tweet
     :random="false"
     :data="tweet"
-    :auth="{ username: this.es_user, password: this.es_pass }"
-    :url="this.url + '/_doc/' + tweet.tweet_id"
     @process_tweet="handleProcessTweet"
     v-for="tweet in tweets"
     v-bind:key="tweet"
@@ -33,18 +31,21 @@ import Tweet from "./Tweet.vue";
 import { getRandomTweets } from "../es.js";
 export default {
   props: {
-    url: String,
     search: Boolean,
-    es_user: String,
-    es_pass: String,
-    user: Object,
+    user: Number,
   },
   data() {
     return {
+      url: process.env.MIX_ES,
+      index: process.env.MIX_INDEX,
+      auth: {
+        username: process.env.MIX_ES_USER,
+        password: process.env.MIX_ES_PASS,
+      },
       tweets: [],
       content_query: null,
       is_loading: false,
-      auth: null,
+
       topics: [],
     };
   },
@@ -52,12 +53,8 @@ export default {
     Tweet,
   },
   async mounted() {
-    this.auth = {
-      username: this.es_user,
-      password: this.es_pass,
-    };
     if (!this.search)
-      await getRandomTweets(20, this.url, this.auth).then(
+      await getRandomTweets(20, this.url + "/" + this.index, this.auth).then(
         (result) => (this.tweets = result)
       );
   },
@@ -70,7 +67,7 @@ export default {
           author: data.tweet.author_username,
           content: data.tweet.content,
           date: (data.tweet.posted_utime * 1000).toString(),
-          topics: JSON.stringify({ user: this.user.id, topic: data.topic }),
+          topics: JSON.stringify({ user: this.user, topic: data.topic }),
         };
         axios
           .post("api/tweets", tweet)

@@ -64,12 +64,16 @@
 export default {
   props: {
     data: Object,
-    url: String,
-    auth: Object,
     random: Boolean,
   },
   data() {
     return {
+      url: process.env.MIX_ES,
+      index: process.env.MIX_INDEX,
+      auth: {
+        username: process.env.MIX_ES_USER,
+        password: process.env.MIX_ES_PASS,
+      },
       is_hate_speech: null,
       selected_topic: "inny",
       topics: [],
@@ -101,9 +105,13 @@ export default {
       this.selected_topic = "inny";
       this.data.is_hate_speech = is_hate_speech;
       axios
-        .put(this.url, this.data, {
-          auth: this.auth,
-        })
+        .put(
+          this.url + "/" + this.index + "/_doc/" + this.data.tweet_id,
+          this.data,
+          {
+            auth: this.auth,
+          }
+        )
         .then((response) => console.log(response))
         .catch((error) => console.log(error));
     },

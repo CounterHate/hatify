@@ -1,11 +1,8 @@
 <template>
   <tweet
     v-if="this.tweet != null"
-    ref="tweetComponent"
     :random="true"
     :data="this.tweet"
-    :auth="{ username: this.es_user, password: this.es_pass }"
-    :url="this.url + '/_doc/' + this.tweet.tweet_id"
     @process_tweet="handleProcessTweet"
   ></tweet>
 </template>
@@ -13,24 +10,25 @@
 <script>
 import Tweet from "./Tweet.vue";
 import { getRandomTweets } from "../es.js";
-import { ref } from "vue";
 export default {
   components: { Tweet },
   props: {
-    url: String,
-    es_user: String,
-    es_pass: String,
-    user: Object,
+    user: Number,
   },
   data() {
-    return { is_loading: false, tweet: null, auth: {} };
+    return {
+      is_loading: false,
+      tweet: null,
+      url: process.env.MIX_ES,
+      index: process.env.MIX_INDEX,
+      auth: {
+        username: process.env.MIX_ES_USER,
+        password: process.env.MIX_ES_PASS,
+      },
+    };
   },
   async mounted() {
-    this.auth = {
-      username: this.es_user,
-      password: this.es_pass,
-    };
-    await getRandomTweets(1, this.url, this.auth).then(
+    await getRandomTweets(1, this.url + "/" + this.index, this.auth).then(
       (result) => (this.tweet = result[0])
     );
   },
