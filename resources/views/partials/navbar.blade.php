@@ -9,7 +9,7 @@
                     <a class="nav-link" aria-current="page" href="/search">Szukaj</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/random">Losowy tweet</a>
+                    <a class="nav-link" aria-current="page" href="/random">Anotacja</a>
                 </li>
             </ul>
             {{-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
