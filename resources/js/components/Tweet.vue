@@ -15,6 +15,7 @@
                         '/status/' +
                         data.tweet_id
                     "
+                    target="_blank"
                     class="btn btn-primary"
                     >Zobacz tweet</a
                 >
