@@ -15,7 +15,7 @@
                         '/status/' +
                         data.tweet_id
                     "
-                    class="btn btn-primary"
+                    class="btn btn-primary" target="_blank"
                     >Zobacz tweet</a
                 >
             </div>
