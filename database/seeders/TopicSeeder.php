@@ -15,7 +15,7 @@ class TopicSeeder extends Seeder
      */
     public function run()
     {
-        $topics = ['Żydzi', 'Ukraińcy', 'LGBT'];
+        $topics = ['odnosi się do grupy/osoby w związku jakąś jej cechą', 'zawiera obraźliwe określenia grup/osób', 'nawołuje do agresji, podżega do nienawiści','zawiera groźby','zawiera wyrazy nienawiści','zawiera wyrazy obrzydzenia, pogardy, dehumanizacji, znieważenia','zawiera negatywne stereotypy, tezy oczerniające lub szkalujące','usprawiedliwia agresję, dyskryminację, gorsze traktowanie jakieś osoby/grupy','wyraża agresywny nacjonalizm'];
         foreach ($topics as $topic) {
             DB::table('topics')->insert([
                 'name' => $topic
