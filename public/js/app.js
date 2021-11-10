@@ -21164,14 +21164,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     getRandomTweets: _es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets,
-    handleProcessTweet: function handleProcessTweet(data) {
+    handleSkipTweet: function handleSkipTweet() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var tweet;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this2.url, _this2.auth).then(function (result) {
+                  return _this2.tweet = result[0];
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    handleProcessTweet: function handleProcessTweet(data) {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var tweet;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 if (data.is_hate_speech) {
                   tweet = {
@@ -21180,8 +21201,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     content: data.tweet.content,
                     date: (data.tweet.posted_utime * 1000).toString(),
                     topics: JSON.stringify({
-                      user: _this2.user,
-                      topic: data.topic
+                      user: _this3.user,
+                      topics: data.topics
                     })
                   };
                   axios.post("api/tweets", tweet).then(function (response) {
@@ -21191,17 +21212,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   });
                 }
 
-                _context2.next = 3;
-                return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this2.url, _this2.auth).then(function (result) {
-                  return _this2.tweet = result[0];
+                _context3.next = 3;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this3.url, _this3.auth).then(function (result) {
+                  return _this3.tweet = result[0];
                 });
 
               case 3:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2);
+        }, _callee3);
       }))();
     }
   }
@@ -21364,6 +21385,49 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TopicSelect.vue?vue&type=script&lang=js":
+/*!*****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TopicSelect.vue?vue&type=script&lang=js ***!
+  \*****************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    topics: Array
+  },
+  emits: ["process_tweet_hate_speech"],
+  data: function data() {
+    return {
+      selected_topic: "inny",
+      selected_topics: []
+    };
+  },
+  methods: {
+    processTweet: function processTweet() {
+      this.$emit("process_tweet_hate_speech", {
+        is_hate_speech: true,
+        selected_topics: this.selected_topics
+      });
+      this.selected_topics = [];
+      this.selected_topic = "inny";
+    },
+    addTopic: function addTopic() {
+      this.selected_topics.push(this.selected_topic);
+    },
+    remoteTopic: function remoteTopic(topic) {
+      var index = this.selected_topics.indexOf(topic);
+      this.selected_topics.splice(index, 1);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Tweet.vue?vue&type=script&lang=js":
 /*!***********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Tweet.vue?vue&type=script&lang=js ***!
@@ -21377,16 +21441,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _TweetAnotationButtons_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TweetAnotationButtons.vue */ "./resources/js/components/TweetAnotationButtons.vue");
+/* harmony import */ var _TopicSelect_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TopicSelect.vue */ "./resources/js/components/TopicSelect.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     data: Object,
     random: Boolean
+  },
+  components: {
+    TweetAnotationButtons: _TweetAnotationButtons_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    TopicSelect: _TopicSelect_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -21397,11 +21469,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         password: "hohC2wix"
       },
       is_hate_speech: null,
-      selected_topic: "inny",
       topics: []
     };
   },
-  emits: ["process_tweet"],
+  emits: ["process_tweet", "skip_tweet"],
   mounted: function mounted() {
     var _this = this;
 
@@ -21424,6 +21495,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   methods: {
     renderNewTweet: function renderNewTweet() {
       this.is_hate_speech = false;
+    },
+    skipTweet: function skipTweet() {
+      this.$emit("skip_tweet", {});
     },
     getTopics: function getTopics() {
       var _this2 = this;
@@ -21448,7 +21522,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    processTweet: function processTweet(is_hate_speech) {
+    processTweet: function processTweet(data) {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
@@ -21456,16 +21530,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _this3.is_hate_speech = is_hate_speech; // if is hate speech add to database
+                _this3.is_hate_speech = data.is_hate_speech; // if is hate speech add to database
 
                 _this3.$emit("process_tweet", {
-                  topic: _this3.selected_topic,
+                  topics: data.selected_topics,
                   tweet: _this3.data,
                   is_hate_speech: _this3.is_hate_speech
                 });
 
                 _this3.selected_topic = "inny";
-                _this3.data.is_hate_speech = is_hate_speech;
+                _this3.data.is_hate_speech = _this3.is_hate_speech;
                 axios.put(_this3.url + "/" + _this3.index + "/_doc/" + _this3.data.tweet_id, _this3.data, {
                   auth: _this3.auth
                 }).then(function (response) {
@@ -21481,6 +21555,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee3);
       }))();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=script&lang=js":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=script&lang=js ***!
+  \***************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  emits: ["is_hate_speech_pressed", "skip_tweet_pressed"],
+  methods: {
+    processTweet: function processTweet(is_hate_speech) {
+      this.$emit("is_hate_speech_pressed", {
+        is_hate_speech: is_hate_speech,
+        selected_topics: null
+      });
+    },
+    skipTweet: function skipTweet() {
+      this.$emit("skip_tweet_pressed");
     }
   }
 });
@@ -21507,10 +21609,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 0,
     random: true,
     data: this.tweet,
-    onProcess_tweet: $options.handleProcessTweet
+    onProcess_tweet: $options.handleProcessTweet,
+    onSkip_tweet: $options.handleSkipTweet
   }, null, 8
   /* PROPS */
-  , ["data", "onProcess_tweet"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
+  , ["data", "onProcess_tweet", "onSkip_tweet"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
 
 /***/ }),
@@ -21597,6 +21700,154 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TopicSelect.vue?vue&type=template&id=8a1ee720":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TopicSelect.vue?vue&type=template&id=8a1ee720 ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+var _hoisted_1 = {
+  "class": "modal fade",
+  id: "topicModal",
+  tabindex: "-1",
+  "aria-labelledby": "topicModalLabel",
+  "aria-hidden": "true"
+};
+var _hoisted_2 = {
+  "class": "modal-dialog modal-dialog-centered modal-lg"
+};
+var _hoisted_3 = {
+  "class": "modal-content"
+};
+
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "modal-header"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+  "class": "modal-title",
+  id: "topicModalLabel"
+}, " Wybierz temat "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  type: "button",
+  "class": "btn-close",
+  "data-bs-dismiss": "modal",
+  "aria-label": "Close"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_5 = {
+  "class": "modal-body"
+};
+var _hoisted_6 = {
+  "class": "row"
+};
+var _hoisted_7 = {
+  "class": "col"
+};
+var _hoisted_8 = {
+  style: {
+    "padding-bottom": "8px"
+  }
+};
+var _hoisted_9 = ["value"];
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+  value: "inny"
+}, "Inny", -1
+/* HOISTED */
+);
+
+var _hoisted_11 = {
+  "class": "col-auto"
+};
+var _hoisted_12 = {
+  key: 0,
+  "class": "table table-striped"
+};
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  scope: "col",
+  style: {
+    "width": "90%"
+  }
+}, " Wybrane tematy "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  scope: "col"
+})])], -1
+/* HOISTED */
+);
+
+var _hoisted_14 = {
+  scope: "row"
+};
+var _hoisted_15 = ["onClick"];
+var _hoisted_16 = {
+  "class": "modal-footer"
+};
+
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  type: "button",
+  "class": "btn btn-secondary",
+  "data-bs-dismiss": "modal"
+}, " Cofnij ", -1
+/* HOISTED */
+);
+
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "class": "form-select",
+    "aria-label": "Default select example",
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $data.selected_topic = $event;
+    })
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.topics, function (topic) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      value: topic.name,
+      key: topic
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(topic.name), 9
+    /* TEXT, PROPS */
+    , _hoisted_9);
+  }), 128
+  /* KEYED_FRAGMENT */
+  )), _hoisted_10], 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.selected_topic]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary",
+    onClick: _cache[1] || (_cache[1] = function () {
+      return $options.addTopic && $options.addTopic.apply($options, arguments);
+    })
+  }, " Dodaj ")])]), this.selected_topics.length != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.selected_topics, function (st) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+      key: st
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(st), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      "class": "btn btn-danger",
+      onClick: function onClick($event) {
+        return $options.remoteTopic(st);
+      }
+    }, " Usuń ", 8
+    /* PROPS */
+    , _hoisted_15)])]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "button",
+    "class": "btn btn-primary",
+    onClick: _cache[2] || (_cache[2] = function () {
+      return $options.processTweet && $options.processTweet.apply($options, arguments);
+    }),
+    "data-bs-dismiss": "modal"
+  }, " Zapisz ")])])])]);
+}
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Tweet.vue?vue&type=template&id=4683c2d4":
 /*!***************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Tweet.vue?vue&type=template&id=4683c2d4 ***!
@@ -21631,70 +21882,64 @@ var _hoisted_6 = {
   "class": "card-subtitle mb-2 text-muted"
 };
 var _hoisted_7 = ["href"];
-var _hoisted_8 = {
-  "class": "modal fade",
-  id: "topicModal",
-  tabindex: "-1",
-  "aria-labelledby": "topicModalLabel",
-  "aria-hidden": "true"
-};
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
 var _hoisted_9 = {
-  "class": "modal-dialog modal-dialog-centered"
+  key: 1
 };
-var _hoisted_10 = {
-  "class": "modal-content"
-};
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_topic_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("topic-select");
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "modal-header"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
-  "class": "modal-title",
-  id: "topicModalLabel"
-}, " Wybierz temat "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  type: "button",
-  "class": "btn-close",
-  "data-bs-dismiss": "modal",
-  "aria-label": "Close"
-})], -1
-/* HOISTED */
-);
+  var _component_tweet_anotation_buttons = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet-anotation-buttons");
 
-var _hoisted_12 = {
-  "class": "modal-body"
-};
-var _hoisted_13 = {
-  "class": "row"
-};
-var _hoisted_14 = {
-  style: {
-    "padding-top": "8px"
-  }
-};
-var _hoisted_15 = ["value"];
+  return this.is_hate_speech == null || $props.random ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.author_username), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(new Date($props.data.posted_utime * 1000)), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.content), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    href: 'https://twitter.com/' + $props.data.author_username + '/status/' + $props.data.tweet_id,
+    "class": "btn btn-primary",
+    target: "_blank"
+  }, "Zobacz tweet", 8
+  /* PROPS */
+  , _hoisted_7)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_topic_select, {
+    topics: this.topics,
+    onProcess_tweet_hate_speech: $options.processTweet
+  }, null, 8
+  /* PROPS */
+  , ["topics", "onProcess_tweet_hate_speech"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tweet_anotation_buttons, {
+    onIs_hate_speech_pressed: $options.processTweet,
+    onSkip_tweet_pressed: $options.skipTweet
+  }, null, 8
+  /* PROPS */
+  , ["onIs_hate_speech_pressed", "onSkip_tweet_pressed"]), _hoisted_8])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, "Tweet przeprocesowany"));
+}
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
-  value: "inny"
-}, "Inny", -1
-/* HOISTED */
-);
+/***/ }),
 
-var _hoisted_17 = {
-  "class": "modal-footer"
-};
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=template&id=36d5fe54":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=template&id=36d5fe54 ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  type: "button",
-  "class": "btn btn-secondary",
-  "data-bs-dismiss": "modal"
-}, " Cofnij ", -1
-/* HOISTED */
-);
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_19 = {
+var _hoisted_1 = {
   "class": "row"
 };
 
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-auto",
   style: {
     "padding-top": "8px",
@@ -21709,65 +21954,35 @@ var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_21 = {
+var _hoisted_3 = {
+  "class": "col-auto",
+  style: {
+    "padding-top": "8px",
+    "padding-left": "4px",
+    "padding-right": "4px"
+  }
+};
+var _hoisted_4 = {
   "class": "col-auto",
   style: {
     "padding-top": "8px",
     "padding-left": "4px"
   }
 };
-
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
-/* HOISTED */
-);
-
-var _hoisted_23 = {
-  key: 1
-};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return this.is_hate_speech == null || $props.random ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.author_username), 1
-  /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(new Date($props.data.posted_utime * 1000)), 1
-  /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.content), 1
-  /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    href: 'https://twitter.com/' + $props.data.author_username + '/status/' + $props.data.tweet_id,
-    "class": "btn btn-primary",
-    target: "_blank"
-  }, "Zobacz tweet", 8
-  /* PROPS */
-  , _hoisted_7)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
-    "class": "form-select",
-    "aria-label": "Default select example",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.selected_topic = $event;
-    })
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.topics, function (topic) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
-      value: topic.name,
-      key: topic
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(topic.name), 9
-    /* TEXT, PROPS */
-    , _hoisted_15);
-  }), 128
-  /* KEYED_FRAGMENT */
-  )), _hoisted_16], 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.selected_topic]])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    type: "button",
-    "class": "btn btn-primary",
-    onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $options.processTweet(true);
-    }),
-    "data-bs-dismiss": "modal"
-  }, " Zapisz ")])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-danger",
     type: "button",
-    onClick: _cache[2] || (_cache[2] = function ($event) {
+    onClick: _cache[0] || (_cache[0] = function ($event) {
       return $options.processTweet(false);
     })
-  }, " Nie jest to mowa nienawiści ")])]), _hoisted_22])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_23, "Tweet przeprocesowany"));
+  }, " Nie jest to mowa nienawiści ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary",
+    type: "button",
+    onClick: _cache[1] || (_cache[1] = function () {
+      return $options.skipTweet && $options.skipTweet.apply($options, arguments);
+    })
+  }, " Pomiń ")])]);
 }
 
 /***/ }),
@@ -58569,6 +58784,34 @@ if (false) {}
 
 /***/ }),
 
+/***/ "./resources/js/components/TopicSelect.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/TopicSelect.vue ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _TopicSelect_vue_vue_type_template_id_8a1ee720__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TopicSelect.vue?vue&type=template&id=8a1ee720 */ "./resources/js/components/TopicSelect.vue?vue&type=template&id=8a1ee720");
+/* harmony import */ var _TopicSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TopicSelect.vue?vue&type=script&lang=js */ "./resources/js/components/TopicSelect.vue?vue&type=script&lang=js");
+/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_TopicSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TopicSelect_vue_vue_type_template_id_8a1ee720__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TopicSelect.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
 /***/ "./resources/js/components/Tweet.vue":
 /*!*******************************************!*\
   !*** ./resources/js/components/Tweet.vue ***!
@@ -58589,6 +58832,34 @@ __webpack_require__.r(__webpack_exports__);
 
 ;
 const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/Tweet.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
+/***/ "./resources/js/components/TweetAnotationButtons.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/TweetAnotationButtons.vue ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweetAnotationButtons.vue?vue&type=template&id=36d5fe54 */ "./resources/js/components/TweetAnotationButtons.vue?vue&type=template&id=36d5fe54");
+/* harmony import */ var _TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TweetAnotationButtons.vue?vue&type=script&lang=js */ "./resources/js/components/TweetAnotationButtons.vue?vue&type=script&lang=js");
+/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TweetAnotationButtons.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -58629,6 +58900,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/TopicSelect.vue?vue&type=script&lang=js":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/TopicSelect.vue?vue&type=script&lang=js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TopicSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TopicSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TopicSelect.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TopicSelect.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/components/Tweet.vue?vue&type=script&lang=js":
 /*!*******************************************************************!*\
   !*** ./resources/js/components/Tweet.vue?vue&type=script&lang=js ***!
@@ -58641,6 +58928,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Tweet.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Tweet.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
+/***/ "./resources/js/components/TweetAnotationButtons.vue?vue&type=script&lang=js":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/TweetAnotationButtons.vue?vue&type=script&lang=js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TweetAnotationButtons.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=script&lang=js");
  
 
 /***/ }),
@@ -58677,6 +58980,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/TopicSelect.vue?vue&type=template&id=8a1ee720":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/TopicSelect.vue?vue&type=template&id=8a1ee720 ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TopicSelect_vue_vue_type_template_id_8a1ee720__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TopicSelect_vue_vue_type_template_id_8a1ee720__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TopicSelect.vue?vue&type=template&id=8a1ee720 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TopicSelect.vue?vue&type=template&id=8a1ee720");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Tweet.vue?vue&type=template&id=4683c2d4":
 /*!*************************************************************************!*\
   !*** ./resources/js/components/Tweet.vue?vue&type=template&id=4683c2d4 ***!
@@ -58689,6 +59008,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Tweet.vue?vue&type=template&id=4683c2d4 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Tweet.vue?vue&type=template&id=4683c2d4");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/TweetAnotationButtons.vue?vue&type=template&id=36d5fe54":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/TweetAnotationButtons.vue?vue&type=template&id=36d5fe54 ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TweetAnotationButtons.vue?vue&type=template&id=36d5fe54 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=template&id=36d5fe54");
 
 
 /***/ }),
