@@ -69,4 +69,9 @@ class TweetController extends Controller
 
         return response()->noContent();
     }
+
+    public function tweetCount()
+    {
+        return Tweet::all()->count();
+    }
 }

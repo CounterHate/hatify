@@ -22,3 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('tweets', TweetController::class);
 Route::apiResource('topics', TopicController::class);
+
+Route::get('/tweetCount', [TweetController::class, 'tweetCount']);
