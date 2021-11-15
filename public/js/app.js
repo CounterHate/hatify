@@ -21139,7 +21139,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         username: "dc9",
         password: "hohC2wix"
       },
-      anotationCount: 0
+      totalAnotationCount: 0,
+      userAnotationCount: 0
     };
   },
   mounted: function mounted() {
@@ -21177,8 +21178,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get("/api/tweetCount").then(function (result) {
-                  return _this2.anotationCount = result.data;
+                return axios.get("/api/tweets").then(function (response) {
+                  var data = response.data.data;
+                  _this2.totalAnotationCount = data.length;
+                  var tmpUserAnotationCount = 0;
+                  data.forEach(function (el) {
+                    if (JSON.parse(el.topics).user == _this2.user) tmpUserAnotationCount++;
+                  });
+                  _this2.userAnotationCount = tmpUserAnotationCount;
                 })["catch"](function (error) {
                   return console.log(error);
                 });
@@ -21649,10 +21656,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
+
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_tweet = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Liczba anotowanych tweetów " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.anotationCount) + " ", 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Liczba wszystkich anotowanych tweetów: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.totalAnotationCount) + " ", 1
+  /* TEXT */
+  ), _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Liczba anotowanych tweetów uzytkownika: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.userAnotationCount) + " ", 1
   /* TEXT */
   ), this.tweet != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
     key: 0,

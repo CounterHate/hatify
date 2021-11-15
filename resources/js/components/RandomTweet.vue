@@ -1,5 +1,6 @@
 <template>
-  Liczba anotowanych tweetów {{ this.anotationCount }}
+  Liczba wszystkich anotowanych tweetów: {{ this.totalAnotationCount }}
+  <br />Liczba anotowanych tweetów uzytkownika: {{ this.userAnotationCount }}
   <tweet
     v-if="this.tweet != null"
     :random="true"
@@ -27,7 +28,8 @@ export default {
         username: process.env.MIX_ES_USER,
         password: process.env.MIX_ES_PASS,
       },
-      anotationCount: 0,
+      totalAnotationCount: 0,
+      userAnotationCount: 0,
     };
   },
   async mounted() {
@@ -39,8 +41,17 @@ export default {
   methods: {
     async getAnotationCount() {
       await axios
-        .get("/api/tweetCount")
-        .then((result) => (this.anotationCount = result.data))
+        .get("/api/tweets")
+        .then((response) => {
+          var data = response.data.data;
+          this.totalAnotationCount = data.length;
+          var tmpUserAnotationCount = 0;
+          data.forEach((el) => {
+            if (JSON.parse(el.topics).user == this.user)
+              tmpUserAnotationCount++;
+          });
+          this.userAnotationCount = tmpUserAnotationCount;
+        })
         .catch((error) => console.log(error));
     },
     getRandomTweets,
