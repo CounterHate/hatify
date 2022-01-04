@@ -21661,12 +21661,44 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_tweet = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Liczba wszystkich anotowanych tweetów: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.totalAnotationCount) + " ", 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, _hoisted_2, _hoisted_3, _hoisted_4, _hoisted_5, _hoisted_6, _hoisted_7, _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Liczba wszystkich anotowanych tweetów: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.totalAnotationCount) + " ", 1
   /* TEXT */
-  ), _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Liczba anotowanych tweetów uzytkownika: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.userAnotationCount) + " ", 1
+  ), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Liczba anotowanych tweetów uzytkownika: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.userAnotationCount) + " ", 1
   /* TEXT */
   ), this.tweet != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
     key: 0,
@@ -21786,7 +21818,7 @@ var _hoisted_1 = {
   "aria-hidden": "true"
 };
 var _hoisted_2 = {
-  "class": "modal-dialog modal-dialog-centered modal-lg"
+  "class": "modal-dialog modal-lg"
 };
 var _hoisted_3 = {
   "class": "modal-content"
@@ -21909,9 +21941,9 @@ var _hoisted_9 = {
   key: 1
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_topic_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("topic-select");
-
   var _component_tweet_anotation_buttons = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet-anotation-buttons");
+
+  var _component_topic_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("topic-select");
 
   return this.is_hate_speech == null || $props.random ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.author_username), 1
   /* TEXT */
@@ -21925,17 +21957,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     target: "_blank"
   }, "Zobacz tweet", 8
   /* PROPS */
-  , _hoisted_7)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_topic_select, {
-    topics: this.topics,
-    onProcess_tweet_hate_speech: $options.processTweet
-  }, null, 8
-  /* PROPS */
-  , ["topics", "onProcess_tweet_hate_speech"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tweet_anotation_buttons, {
+  , _hoisted_7)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tweet_anotation_buttons, {
     onIs_hate_speech_pressed: $options.processTweet,
     onSkip_tweet_pressed: $options.skipTweet
   }, null, 8
   /* PROPS */
-  , ["onIs_hate_speech_pressed", "onSkip_tweet_pressed"]), _hoisted_8])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, "Tweet przeprocesowany"));
+  , ["onIs_hate_speech_pressed", "onSkip_tweet_pressed"]), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_topic_select, {
+    topics: this.topics,
+    onProcess_tweet_hate_speech: $options.processTweet
+  }, null, 8
+  /* PROPS */
+  , ["topics", "onProcess_tweet_hate_speech"])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, "Tweet przeprocesowany"));
 }
 
 /***/ }),

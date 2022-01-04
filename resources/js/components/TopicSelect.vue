@@ -6,7 +6,7 @@
     aria-labelledby="topicModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="topicModalLabel">
@@ -105,4 +105,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

@@ -14,17 +14,17 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
+Route::get('/index', function () {
     return view('index', ['user' => Auth::user()]);
-})->middleware(['auth'])->name('/');
+})->middleware(['auth'])->name('/index');
 
 Route::get('/search', function () {
     return view('search', ['user' => Auth::user()]);
 })->middleware(['auth'])->name('/search');
 
-Route::get('/random', function () {
+Route::get('/', function () {
     return view('random', ['user' => Auth::user()]);
-})->middleware(['auth'])->name('/random');
+})->middleware(['auth'])->name('/');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

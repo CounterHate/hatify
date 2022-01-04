@@ -1,4 +1,12 @@
 <template>
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
   Liczba wszystkich anotowanych tweetów: {{ this.totalAnotationCount }}
   <br />Liczba anotowanych tweetów uzytkownika: {{ this.userAnotationCount }}
   <tweet

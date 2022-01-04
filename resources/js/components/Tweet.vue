@@ -21,16 +21,16 @@
         >
       </div>
     </div>
-    <topic-select
-      :topics="this.topics"
-      @process_tweet_hate_speech="processTweet"
-    ></topic-select>
 
     <tweet-anotation-buttons
       @is_hate_speech_pressed="processTweet"
       @skip_tweet_pressed="skipTweet"
     ></tweet-anotation-buttons>
     <br />
+    <topic-select
+      :topics="this.topics"
+      @process_tweet_hate_speech="processTweet"
+    ></topic-select>
   </div>
   <div v-else>Tweet przeprocesowany</div>
 </template>
