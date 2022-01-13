@@ -7,6 +7,7 @@ use App\Http\Requests\TweetRequest;
 use App\Http\Resources\TweetResource;
 use App\Models\Tweet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TweetController extends Controller
 {
@@ -73,5 +74,10 @@ class TweetController extends Controller
     public function tweetCount()
     {
         return Tweet::all()->count();
+    }
+
+    public function getTweetToVerify()
+    {
+        return Tweet::inRandomOrder()->where('verified', false)->first();
     }
 }

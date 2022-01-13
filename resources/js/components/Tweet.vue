@@ -3,9 +3,17 @@
         <br />
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{ data.author_username }}</h5>
+                <h5 class="card-title" v-if="data.author_username">
+                    {{ data.author_username }}
+                </h5>
+                <h5 class="card-title" v-else>
+                    {{ data.author }}
+                </h5>
                 <h6 class="card-subtitle mb-2 text-muted">
-                    {{ new Date(data.posted_utime * 1000) }}
+                    <div v-if="data.posted_utime">
+                        {{ new Date(data.posted_utime * 1000) }}
+                    </div>
+                    <div v-else>{{ new Date(parseInt(data.date)) }}</div>
                 </h6>
                 <p>{{ data.content }}</p>
                 <a
@@ -78,6 +86,13 @@ export default {
         },
         showTopics (data) {
             if (data.is_hate_speech) this.show_topics = true
+            else
+                this.$emit('process_tweet', {
+                    topics: null,
+                    input_topic: null,
+                    tweet: this.data,
+                    is_hate_speech: this.is_hate_speech
+                })
         },
         async processTweet (data) {
             this.is_hate_speech = data.is_hate_speech

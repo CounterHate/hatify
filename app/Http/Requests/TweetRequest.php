@@ -28,7 +28,8 @@ class TweetRequest extends FormRequest
             'author' => ['required'],
             'content' => ['required'],
             'date' => ['required'],
-            'topics' => ['required']
+            'topics' => ['required'],
+            'verified' => []
         ];
     }
 }

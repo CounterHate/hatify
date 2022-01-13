@@ -24,3 +24,4 @@ Route::apiResource('tweets', TweetController::class);
 Route::apiResource('topics', TopicController::class);
 
 Route::get('/tweetCount', [TweetController::class, 'tweetCount']);
+Route::get('/tweetToVerify', [TweetController::class, 'getTweetToVerify']);

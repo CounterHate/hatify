@@ -26,6 +26,10 @@ Route::get('/', function () {
     return view('random', ['user' => Auth::user()]);
 })->middleware(['auth'])->name('/');
 
+Route::get('/verify', function () {
+    return view('verify', ['user' => Auth::user()]);
+})->middleware(['auth'])->name('/');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
