@@ -1,9 +1,9 @@
 <template>
     <div class="row">
-        <div class="col">
+        <div class="col-4">
             <hate-speech-definition></hate-speech-definition>
         </div>
-        <div class="col">
+        <div class="col-auto">
             <tweet
                 v-if="this.tweet != null"
                 :random="true"
