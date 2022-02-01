@@ -22031,10 +22031,10 @@ var _hoisted_1 = {
   "class": "row"
 };
 var _hoisted_2 = {
-  "class": "col"
+  "class": "col-4"
 };
 var _hoisted_3 = {
-  "class": "col"
+  "class": "col-auto"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_hate_speech_definition = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("hate-speech-definition");
@@ -22393,10 +22393,10 @@ var _hoisted_1 = {
   "class": "row"
 };
 var _hoisted_2 = {
-  "class": "col"
+  "class": "col-4"
 };
 var _hoisted_3 = {
-  "class": "col"
+  "class": "col-auto"
 };
 var _hoisted_4 = {
   key: 1
