@@ -21132,13 +21132,13 @@ __webpack_require__.r(__webpack_exports__);
   emits: ['process_not_sure'],
   data: function data() {
     return {
+      options: ['Brak kontekstu (np. post jest komentarzem do posta głównego, który został już usunięty)', 'Niejasny kontekst', 'Niejasne znaczenie, w jakim autor/autorka posta używa danego słowa', 'Niejasne, czy dane określenie jest dostatecznie obraźliwe, by stanowić samoistny przypadek mowy nienawiści', 'Inny powód: …'],
       selected_reason: 'Brak kontekstu (np. post jest komentarzem do posta głównego, który został już usunięty)',
-      reasons: ['Brak kontekstu (np. post jest komentarzem do posta głównego, który został już usunięty)', 'Niejasny kontekst', 'Niejasne znaczenie, w jakim autor/autorka posta używa danego słowa', 'Niejasne, czy dane określenie jest dostatecznie obraźliwe, by stanowić samoistny przypadek mowy nienawiści', 'Inny powód: …'],
-      other_reason: null
+      other_reason: ''
     };
   },
   methods: {
-    notSure: function notSure() {
+    processNotSure: function processNotSure() {
       this.$emit('process_not_sure', {
         selected_reason: this.selected_reason,
         other_reason: this.other_reason
@@ -21238,7 +21238,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    handleProcessTweet: function handleProcessTweet(data) {
+    handleNotSure: function handleNotSure(data) {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
@@ -21247,6 +21247,46 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                tweet = {
+                  tweet_id: _this3.tweet.tweet_id,
+                  author: _this3.tweet.author_username,
+                  content: _this3.tweet.content,
+                  date: (_this3.tweet.posted_utime * 1000).toString(),
+                  topics: JSON.stringify({
+                    user: null,
+                    topics: null
+                  }),
+                  not_sure_reason: data.not_sure_reason,
+                  other_reason: data.other_reason
+                };
+                console.log(tweet);
+                axios.post('api/tweets', tweet).then(function (response) {
+                  return console.log(response.data);
+                })["catch"](function (error) {
+                  return console.error(error);
+                });
+                _context3.next = 5;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this3.url, _this3.auth).then(function (result) {
+                  return _this3.tweet = result[0];
+                });
+
+              case 5:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    handleProcessTweet: function handleProcessTweet(data) {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        var tweet;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
                 if (data.is_hate_speech) {
                   tweet = {
                     tweet_id: data.tweet.tweet_id,
@@ -21254,10 +21294,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     content: data.tweet.content,
                     date: (data.tweet.posted_utime * 1000).toString(),
                     topics: JSON.stringify({
-                      user: _this3.user,
+                      user: _this4.user,
                       topics: data.topics
                     })
                   };
+                  console.log(tweet);
                   axios.post('api/tweets', tweet).then(function (response) {
                     return console.log(response.data);
                   })["catch"](function (error) {
@@ -21265,17 +21306,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   });
                 }
 
-                _context3.next = 3;
-                return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this3.url, _this3.auth).then(function (result) {
-                  return _this3.tweet = result[0];
+                _context4.next = 3;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this4.url, _this4.auth).then(function (result) {
+                  return _this4.tweet = result[0];
                 });
 
               case 3:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3);
+        }, _callee4);
       }))();
     }
   }
@@ -21769,15 +21810,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                console.log(data);
                 tweet = {
                   tweet_id: _this2.tweet.tweet_id,
                   author: _this2.tweet.author,
                   content: _this2.tweet.content,
                   date: _this2.tweet.date,
                   topics: JSON.stringify({
-                    user: _this2.user,
-                    topics: "hello"
+                    user: null,
+                    topics: null
                   }),
                   not_sure_reason: data.not_sure_reason,
                   other_reason: data.other_reason
@@ -21791,7 +21831,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this2.getTweetToVerify();
 
-              case 5:
+              case 4:
               case "end":
                 return _context2.stop();
             }
@@ -21928,7 +21968,9 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Dlaczego klasyfikacja jest dla Ciebie niejasna ");
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, " Dlaczego klasyfikacja jest dla Ciebie niejasna?", -1
+/* HOISTED */
+);
 
 var _hoisted_4 = {
   style: {
@@ -21937,15 +21979,14 @@ var _hoisted_4 = {
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return $props.show ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
-    "class": "form-select",
-    "aria-label": "Default select example",
+    "class": "form-select form-select-sm",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.selected_reason = $event;
     })
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.reasons, function (reason) {
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.options, function (option, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
-      key: reason
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(reason), 1
+      key: index
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(option), 1
     /* TEXT */
     );
   }), 128
@@ -21959,14 +22000,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $data.other_reason = $event;
     }),
     type: "text",
-    placeholder: "Inny powód"
+    placeholder: "Inny powód..."
   }, null, 512
   /* NEED_PATCH */
   )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.other_reason]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary",
     onClick: _cache[2] || (_cache[2] = function () {
-      return $options.notSure && $options.notSure.apply($options, arguments);
+      return $options.processNotSure && $options.processNotSure.apply($options, arguments);
     })
   }, " Zapisz ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
@@ -22005,10 +22046,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     random: true,
     data: this.tweet,
     onProcess_tweet: $options.handleProcessTweet,
-    onSkip_tweet: $options.handleSkipTweet
+    onSkip_tweet: $options.handleSkipTweet,
+    onNot_sure: $options.handleNotSure
   }, null, 8
   /* PROPS */
-  , ["data", "onProcess_tweet", "onSkip_tweet"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
+  , ["data", "onProcess_tweet", "onSkip_tweet", "onNot_sure"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
 }
 
 /***/ }),

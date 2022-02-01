@@ -43,15 +43,14 @@ export default {
                 .catch(error => console.log(error))
         },
         async handleNotSure (data) {
-            console.log(data)
             var tweet = {
                 tweet_id: this.tweet.tweet_id,
                 author: this.tweet.author,
                 content: this.tweet.content,
                 date: this.tweet.date,
                 topics: JSON.stringify({
-                    user: this.user,
-                    topics: "hello"
+                    user: null,
+                    topics: null
                 }),
                 not_sure_reason: data.not_sure_reason,
                 other_reason: data.other_reason

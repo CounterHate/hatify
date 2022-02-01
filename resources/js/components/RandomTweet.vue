@@ -10,6 +10,7 @@
                 :data="this.tweet"
                 @process_tweet="handleProcessTweet"
                 @skip_tweet="handleSkipTweet"
+                @not_sure="handleNotSure"
             ></tweet>
         </div>
     </div>
@@ -48,6 +49,28 @@ export default {
                 result => (this.tweet = result[0])
             )
         },
+        async handleNotSure (data) {
+            var tweet = {
+                tweet_id: this.tweet.tweet_id,
+                author: this.tweet.author_username,
+                content: this.tweet.content,
+                date: (this.tweet.posted_utime * 1000).toString(),
+                topics: JSON.stringify({
+                    user: null,
+                    topics: null
+                }),
+                not_sure_reason: data.not_sure_reason,
+                other_reason: data.other_reason
+            }
+            console.log(tweet)
+            axios
+                .post('api/tweets', tweet)
+                .then(response => console.log(response.data))
+                .catch(error => console.error(error))
+            await getRandomTweets(1, this.url, this.auth).then(
+                result => (this.tweet = result[0])
+            )
+        },
         async handleProcessTweet (data) {
             if (data.is_hate_speech) {
                 var tweet = {
@@ -60,6 +83,7 @@ export default {
                         topics: data.topics
                     })
                 }
+                console.log(tweet)
                 axios
                     .post('api/tweets', tweet)
                     .then(response => console.log(response.data))
