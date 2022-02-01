@@ -8,7 +8,7 @@
     <br />
     <br />
     <h2>
-        Jeśli masz problem ze stwierdzenie, czy dana wypowiedź to mowa
+        Jeśli masz problem ze stwierdzeniem, czy dana wypowiedź to mowa
         nienawiści, to zastanów się czy:
     </h2>
     <ul>
@@ -19,17 +19,9 @@
         <li>nawołuje do agresji, podżega do nienawiści,</li>
         <li>zawiera groźby,</li>
         <li>zawiera wyrazy nienawiści,</li>
-        <li>zawiera wyrazy obrzydzenia,</li>
-        <li>
-            zawiera wyrazy obrzydzenia,pogardy, dehumanizacji, znieważenia,
-        </li>
-        <li>
-            zawiera negatywne stereotypy, tezy oczerniające lub szkalujące,
-        </li>
-        <li>
-            usprawiedliwia agresję, dyskryminację, gorsze traktowanie jakieś
-            osoby/grupy, - wyraża agresywny nacjonalizm
-        </li>
+        <li>zawiera wyrazy obrzydzenia,pogardy, dehumanizacji, znieważenia,</li>
+        <li>zawiera negatywne stereotypy, tezy oczerniające lub szkalujące,</li>
+        <li>usprawiedliwia agresję, dyskryminację, gorsze traktowanie jakieś osoby/grupy, - wyraża agresywny nacjonalizm</li>
     </ul>
 </template>
 

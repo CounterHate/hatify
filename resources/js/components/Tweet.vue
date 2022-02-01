@@ -44,13 +44,13 @@
             @not_sure_pressed="notSure"
         ></tweet-anotation-buttons>
     </div>
-    <div v-else>Tweet przeprocesowany</div>
 </template>
 
 <script>
 import TweetAnotationButtons from './TweetAnotationButtons.vue'
 import TopicSelect from './TopicSelect.vue'
 import NotSureSelect from './NotSureSelect.vue'
+
 export default {
     props: {
         data: Object,
@@ -79,6 +79,7 @@ export default {
     async mounted () {
         await this.getTopics()
     },
+
     methods: {
         renderNewTweet () {
             this.is_hate_speech = false

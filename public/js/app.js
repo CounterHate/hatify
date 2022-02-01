@@ -21936,7 +21936,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<h2>Czym jest mowa nienawiści</h2> Mowa nienawiści to wszelkie formy nienawistnych wypowiedzi kierowanych do ludzi ze względu na ich daną (przyrodzoną, niezbywalną) cechę ( kolor skóry, język, religię lub wyznanie, pochodzenie etniczne czy narodowe, wiek, niepełnosprawność, płeć, społeczno-kulturowa tożsamość płciowa i orientacja psychoseksualna ). <br><br><h2> Jeśli masz problem ze stwierdzenie, czy dana wypowiedź to mowa nienawiści, to zastanów się czy: </h2><ul><li> odnosi się do grupy/osoby w związku jakąś jej cechą, - zawiera obraźliwe określenia grup/osób, </li><li>nawołuje do agresji, podżega do nienawiści,</li><li>zawiera groźby,</li><li>zawiera wyrazy nienawiści,</li><li>zawiera wyrazy obrzydzenia,</li><li> zawiera wyrazy obrzydzenia,pogardy, dehumanizacji, znieważenia, </li><li> zawiera negatywne stereotypy, tezy oczerniające lub szkalujące, </li><li> usprawiedliwia agresję, dyskryminację, gorsze traktowanie jakieś osoby/grupy, - wyraża agresywny nacjonalizm </li></ul>", 6);
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<h2>Czym jest mowa nienawiści</h2> Mowa nienawiści to wszelkie formy nienawistnych wypowiedzi kierowanych do ludzi ze względu na ich daną (przyrodzoną, niezbywalną) cechę ( kolor skóry, język, religię lub wyznanie, pochodzenie etniczne czy narodowe, wiek, niepełnosprawność, płeć, społeczno-kulturowa tożsamość płciowa i orientacja psychoseksualna ). <br><br><h2> Jeśli masz problem ze stwierdzeniem, czy dana wypowiedź to mowa nienawiści, to zastanów się czy: </h2><ul><li> odnosi się do grupy/osoby w związku jakąś jej cechą, - zawiera obraźliwe określenia grup/osób, </li><li>nawołuje do agresji, podżega do nienawiści,</li><li>zawiera groźby,</li><li>zawiera wyrazy nienawiści,</li><li>zawiera wyrazy obrzydzenia,pogardy, dehumanizacji, znieważenia,</li><li>zawiera negatywne stereotypy, tezy oczerniające lub szkalujące,</li><li>usprawiedliwia agresję, dyskryminację, gorsze traktowanie jakieś osoby/grupy, - wyraża agresywny nacjonalizm</li></ul>", 6);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return _hoisted_1;
@@ -22256,9 +22256,6 @@ var _hoisted_9 = {
   key: 1
 };
 var _hoisted_10 = ["href"];
-var _hoisted_11 = {
-  key: 1
-};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_topic_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("topic-select");
 
@@ -22299,7 +22296,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onNot_sure_pressed: $options.notSure
   }, null, 8
   /* PROPS */
-  , ["onIs_hate_speech_pressed", "onSkip_tweet_pressed", "onNot_sure_pressed"])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, "Tweet przeprocesowany"));
+  , ["onIs_hate_speech_pressed", "onSkip_tweet_pressed", "onNot_sure_pressed"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
 
 /***/ }),
