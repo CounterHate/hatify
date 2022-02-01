@@ -32,11 +32,16 @@
                     :show="show_topics"
                     @process_tweet_hate_speech="processTweet"
                 ></topic-select>
+                <not-sure-select
+                    :show="show_not_sure"
+                    @process_not_sure="processNotSure"
+                ></not-sure-select>
             </div>
         </div>
         <tweet-anotation-buttons
             @is_hate_speech_pressed="showTopics"
             @skip_tweet_pressed="skipTweet"
+            @not_sure_pressed="notSure"
         ></tweet-anotation-buttons>
     </div>
     <div v-else>Tweet przeprocesowany</div>
@@ -45,6 +50,7 @@
 <script>
 import TweetAnotationButtons from './TweetAnotationButtons.vue'
 import TopicSelect from './TopicSelect.vue'
+import NotSureSelect from './NotSureSelect.vue'
 export default {
     props: {
         data: Object,
@@ -52,7 +58,8 @@ export default {
     },
     components: {
         TweetAnotationButtons,
-        TopicSelect
+        TopicSelect,
+        NotSureSelect
     },
     data () {
         return {
@@ -64,7 +71,8 @@ export default {
             },
             is_hate_speech: null,
             topics: [],
-            show_topics: false
+            show_topics: false,
+            show_not_sure: false
         }
     },
     emits: ['process_tweet', 'skip_tweet'],
@@ -93,6 +101,16 @@ export default {
                     tweet: this.data,
                     is_hate_speech: this.is_hate_speech
                 })
+        },
+        notSure () {
+            this.show_not_sure = true
+        },
+        async processNotSure (not_sure_reasons) {
+            this.$emit('not_sure', {
+                not_sure_reason: not_sure_reasons.selected_reason,
+                other_reason: not_sure_reasons.other_reason
+            })
+            this.show_not_sure = false
         },
         async processTweet (data) {
             this.is_hate_speech = data.is_hate_speech

@@ -4,7 +4,7 @@
             <button
                 class="btn btn-success"
                 type="button"
-                 @click="processTweet(true)"
+                @click="processTweet(true)"
             >
                 Mowa nienawiści
             </button>
@@ -22,6 +22,11 @@
             </button>
         </div>
         <div class="col-auto" style="padding-top: 8px; padding-left: 4px">
+            <button class="btn btn-primary" type="button" @click="notSure">
+                Nie jest to dla mnie jasne
+            </button>
+        </div>
+        <div class="col-auto" style="padding-top: 8px; padding-left: 4px">
             <button class="btn btn-primary" type="button" @click="skipTweet">
                 Pomiń
             </button>
@@ -31,19 +36,23 @@
 
 <script>
 export default {
-    emits: ['is_hate_speech_pressed', 'skip_tweet_pressed'],
+    emits: ['is_hate_speech_pressed', 'skip_tweet_pressed', 'not_sure_pressed'],
     methods: {
         processTweet (is_hate_speech) {
             this.$emit('is_hate_speech_pressed', {
-                is_hate_speech: is_hate_speech,
+                is_hate_speech: is_hate_speech
                 // selected_topics: null,
             })
         },
         skipTweet () {
             this.$emit('skip_tweet_pressed')
+        },
+        notSure () {
+            this.$emit('not_sure_pressed')
         }
     }
 }
 </script>
 
 <style></style>
+

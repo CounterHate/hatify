@@ -10,6 +10,7 @@
                 :data="this.tweet"
                 @process_tweet="handleProcessTweet"
                 @skip_tweet="handleSkipTweet"
+                @not_sure="handleNotSure"
             ></tweet>
             <div v-else>
                 Braków tweetów do weryfikacji
@@ -40,6 +41,27 @@ export default {
                     if (response.data != '') this.tweet = response.data
                 })
                 .catch(error => console.log(error))
+        },
+        async handleNotSure (data) {
+            console.log(data)
+            var tweet = {
+                tweet_id: this.tweet.tweet_id,
+                author: this.tweet.author,
+                content: this.tweet.content,
+                date: this.tweet.date,
+                topics: JSON.stringify({
+                    user: this.user,
+                    topics: "hello"
+                }),
+                not_sure_reason: data.not_sure_reason,
+                other_reason: data.other_reason
+            }
+            console.log(tweet)
+            axios
+                .patch('api/tweets/' + this.tweet.id, tweet)
+                .then(response => console.log(response.data))
+                .catch(error => console.error(error))
+            this.getTweetToVerify()
         },
         handleProcessTweet (data) {
             if (data.is_hate_speech) {
@@ -72,11 +94,11 @@ export default {
                 }),
                 verified: true
             }
-            console.log('api/tweets/' + this.tweet.id)
             axios
                 .patch('api/tweets/' + this.tweet.id, tweet)
                 .then(response => console.log(response.data))
                 .catch(error => console.error(error))
+            this.getTweetToVerify()
         },
         async handleSkipTweet () {
             await this.getTweetToVerify()

@@ -9,7 +9,7 @@
                 type="checkbox"
                 @change="toggleTopic(topic.name, index)"
             />
-            <label class="form-check-label" for="flexCheckDefault">
+            <label class="form-check-label">
                 {{ topic.name }}
             </label>
         </div>
