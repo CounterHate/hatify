@@ -10,26 +10,26 @@ export async function getRandomTweets(size, url, auth) {
                     query: {
                         bool: {
                             must: [{
-                                    match: {
-                                        lang: "pl",
-                                    },
+                                match: {
+                                    lang: "pl",
                                 },
-                                {
-                                    match: {
-                                        is_retweet: false,
-                                    },
+                            },
+                            {
+                                match: {
+                                    is_retweet: false,
                                 },
+                            },
                             ],
                             must_not: [{
-                                    match: {
-                                        is_hate_speech: true,
-                                    },
+                                match: {
+                                    is_hate_speech: true,
                                 },
-                                {
-                                    match: {
-                                        is_hate_speech: false,
-                                    },
+                            },
+                            {
+                                match: {
+                                    is_hate_speech: false,
                                 },
+                            },
                             ],
                         },
                     },
@@ -45,6 +45,7 @@ export async function getRandomTweets(size, url, auth) {
                 var tweets = [];
                 response.data.hits.hits.forEach(t => {
                     tweets.push(t._source);
+                    // console.log(t._source.tweet_id)
                 });
                 data = tweets
             })
@@ -54,4 +55,18 @@ export async function getRandomTweets(size, url, auth) {
             });
         return data
     }
+}
+
+export async function updateInIndex(url, auth, tweet, is_hate_speech) {
+    tweet.is_hate_speech = is_hate_speech;
+    await axios
+        .post(url + "/_doc/" + tweet.tweet_id, tweet, {
+            auth: auth,
+        })
+        .then((response) => {
+            console.log(response)
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 }

@@ -31,7 +31,10 @@ class TweetRequest extends FormRequest
             'topics' => ['required'],
             'verified' => [],
             'not_sure_reason' => [],
-            'other_reason' => []
+            'other_reason' => [],
+            'other_topic' => [],
+            'is_hate_speech' => ['required'],
+            'user_id' => ['required']
         ];
     }
 }

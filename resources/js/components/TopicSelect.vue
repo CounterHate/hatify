@@ -3,26 +3,34 @@
         <hr />
         Kogo atakuje ten wpis
 
-        <div class="form-check" v-for="(topic, index) in topics" :key="index">
+        <div
+            class="form-check"
+            v-for="(topic, index) in this.topics"
+            :key="index"
+        >
             <input
                 class="form-check-input"
                 type="checkbox"
-                @change="toggleTopic(topic.name, index)"
+                @change="toggleTopic(topic, index)"
             />
             <label class="form-check-label">
-                {{ topic.name }}
+                {{ topic }}
             </label>
         </div>
         <input
             class="form-control"
             v-if="show_input"
-            v-model="input_topic"
+            v-model="other_topic"
             type="text"
             placeholder="Inna ofiara"
         />
 
         <div style="padding-top: 4px;">
-            <button type="button" class="btn btn-primary" @click="processTweet">
+            <button
+                type="button"
+                class="btn btn-primary"
+                @click="processIsHateSpeech"
+            >
                 Zapisz
             </button>
         </div>
@@ -32,15 +40,26 @@
 <script>
 export default {
     props: {
-        topics: Array,
         show: Boolean
     },
     emits: ['process_tweet_hate_speech'],
     data () {
         return {
             selected_topics: [],
-            input_topic: null,
-            show_input: false
+            other_topic: null,
+            show_input: false,
+            topics: [
+                'Żydów',
+                'Muzułmanów',
+                'Romów',
+                'Osoby o innym kolorze skóry',
+                'Osoby o migranckim pochodzeniu',
+                'Osoby nieheteronormatywne',
+                'Osoby niepełnosprawne',
+                'Kobiety',
+                'Osoby starsze',
+                'Inna ofiara mowy nienawiści (wpisz)'
+            ]
         }
     },
 
@@ -49,16 +68,6 @@ export default {
             document
                 .querySelectorAll('input[type=checkbox]')
                 .forEach(el => (el.checked = false))
-        },
-        processTweet () {
-            var data = {
-                is_hate_speech: true,
-                selected_topics: this.selected_topics,
-                input_topic: this.input_topic
-            }
-            this.$emit('process_tweet_hate_speech', data)
-            this.selected_topics = []
-            this.resetCheckboxes()
         },
         toggleTopic (topic, index) {
             if (index == 9) {
@@ -70,6 +79,12 @@ export default {
             } else {
                 this.selected_topics.push(topic)
             }
+        },
+        processIsHateSpeech () {
+            this.$emit('process_tweet_hate_speech', {
+                selected_topics: this.selected_topics,
+                other_topic: this.other_topic
+            })
         }
     }
 }

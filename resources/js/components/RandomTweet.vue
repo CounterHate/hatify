@@ -3,31 +3,39 @@
         <div class="col-4">
             <hate-speech-definition></hate-speech-definition>
         </div>
-        <div class="col-auto">
+        <div class="col-8">
             <tweet
                 v-if="this.tweet != null"
-                :random="true"
                 :data="this.tweet"
-                @process_tweet="handleProcessTweet"
-                @skip_tweet="handleSkipTweet"
-                @not_sure="handleNotSure"
+                :show_reasons="this.show_reasons"
+                :show_topics="this.show_topics"
+                @process_is_hate_speech="processIsHateSpeech"
+                @process_not_sure="processNotSure"
             ></tweet>
+            <tweet-anotation-buttons
+                @is_hate_speech_pressed="handleIsHateSpeechPressed"
+                @is_not_hate_speech_pressed="handleIsNotHateSpeechPressed"
+                @skip_tweet_pressed="handleSkipTweetPressed"
+                @not_sure_pressed="handleNotSurePressed"
+            ></tweet-anotation-buttons>
         </div>
     </div>
 </template>
 
 <script>
 import Tweet from './Tweet.vue'
-import { getRandomTweets } from '../es.js'
+import TweetAnotationButtons from './TweetAnotationButtons.vue'
+import { getRandomTweets, updateInIndex } from '../es.js'
 import HateSpeechDefinition from './HateSpeechDefinition.vue'
 export default {
-    components: { Tweet, HateSpeechDefinition },
+    components: { Tweet, HateSpeechDefinition, TweetAnotationButtons },
     props: {
         user: Number
     },
     data () {
         return {
-            is_loading: false,
+            show_topics: false,
+            show_reasons: false,
             tweet: null,
             url: process.env.MIX_ES,
             index: process.env.MIX_INDEX,
@@ -43,26 +51,81 @@ export default {
         )
     },
     methods: {
+        // es methods
         getRandomTweets,
-        async handleSkipTweet () {
+        updateInIndex,
+
+        // handling anotation buttons events
+        handleIsHateSpeechPressed () {
+            this.show_reasons = false
+            this.show_topics = true
+        },
+        async handleIsNotHateSpeechPressed () {
+            await updateInIndex(
+                this.url + '/' + this.index,
+                this.auth,
+                this.tweet,
+                false
+            )
             await getRandomTweets(1, this.url, this.auth).then(
                 result => (this.tweet = result[0])
             )
+
+            this.show_reasons = false
+            this.show_topics = false
         },
-        async handleNotSure (data) {
+        async handleSkipTweetPressed () {
+            await getRandomTweets(1, this.url, this.auth).then(
+                result => (this.tweet = result[0])
+            )
+            this.show_topics = false
+            this.show_reasons = false
+        },
+        handleNotSurePressed (data) {
+            this.show_topics = false
+            this.show_reasons = true
+        },
+
+        // processing tweet
+        async processIsHateSpeech (data) {
             var tweet = {
                 tweet_id: this.tweet.tweet_id,
                 author: this.tweet.author_username,
                 content: this.tweet.content,
                 date: (this.tweet.posted_utime * 1000).toString(),
-                topics: JSON.stringify({
-                    user: null,
-                    topics: null
-                }),
-                not_sure_reason: data.not_sure_reason,
-                other_reason: data.other_reason
+                topics: JSON.stringify(data.selected_topics),
+                other_topic: data.other_topic,
+                user_id: this.user,
+                is_hate_speech: true
             }
-            console.log(tweet)
+            axios
+                .post('api/tweets', tweet)
+                .then(response => console.log(response.data))
+                .catch(error => console.error(error))
+
+            await updateInIndex(
+                this.url + '/' + this.index,
+                this.auth,
+                this.tweet,
+                true
+            )
+            await getRandomTweets(1, this.url, this.auth).then(
+                result => (this.tweet = result[0])
+            )
+            this.show_topics = false
+        },
+        async processNotSure (data) {
+            var tweet = {
+                tweet_id: this.tweet.tweet_id,
+                author: this.tweet.author_username,
+                content: this.tweet.content,
+                date: (this.tweet.posted_utime * 1000).toString(),
+                topics: JSON.stringify([]),
+                not_sure_reason: data.not_sure_reason,
+                other_reason: data.other_reason,
+                user_id: this.user,
+                is_hate_speech: false
+            }
             axios
                 .post('api/tweets', tweet)
                 .then(response => console.log(response.data))
@@ -70,29 +133,7 @@ export default {
             await getRandomTweets(1, this.url, this.auth).then(
                 result => (this.tweet = result[0])
             )
-        },
-        async handleProcessTweet (data) {
-            if (data.is_hate_speech) {
-                var tweet = {
-                    tweet_id: data.tweet.tweet_id,
-                    author: data.tweet.author_username,
-                    content: data.tweet.content,
-                    date: (data.tweet.posted_utime * 1000).toString(),
-                    topics: JSON.stringify({
-                        user: this.user,
-                        topics: data.topics
-                    })
-                }
-                console.log(tweet)
-                axios
-                    .post('api/tweets', tweet)
-                    .then(response => console.log(response.data))
-                    .catch(error => console.error(error))
-            }
-
-            await getRandomTweets(1, this.url, this.auth).then(
-                result => (this.tweet = result[0])
-            )
+            this.show_reasons = false
         }
     }
 }

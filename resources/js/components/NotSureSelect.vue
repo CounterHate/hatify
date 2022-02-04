@@ -34,6 +34,12 @@ export default {
     emits: ['process_not_sure'],
     data () {
         return {
+            url: process.env.MIX_ES,
+            index: process.env.MIX_INDEX,
+            auth: {
+                username: process.env.MIX_ES_USER,
+                password: process.env.MIX_ES_PASS
+            },
             options: [
                 'Brak kontekstu (np. post jest komentarzem do posta głównego, który został już usunięty)',
                 'Niejasny kontekst',

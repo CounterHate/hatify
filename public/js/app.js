@@ -21132,6 +21132,12 @@ __webpack_require__.r(__webpack_exports__);
   emits: ['process_not_sure'],
   data: function data() {
     return {
+      url: "https://es.dc9.dev:9200",
+      index: "tweets",
+      auth: {
+        username: "dc9",
+        password: "hohC2wix"
+      },
       options: ['Brak kontekstu (np. post jest komentarzem do posta głównego, który został już usunięty)', 'Niejasny kontekst', 'Niejasne znaczenie, w jakim autor/autorka posta używa danego słowa', 'Niejasne, czy dane określenie jest dostatecznie obraźliwe, by stanowić samoistny przypadek mowy nienawiści', 'Inny powód: …'],
       selected_reason: 'Brak kontekstu (np. post jest komentarzem do posta głównego, który został już usunięty)',
       other_reason: ''
@@ -21163,8 +21169,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Tweet_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tweet.vue */ "./resources/js/components/Tweet.vue");
-/* harmony import */ var _es_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../es.js */ "./resources/js/es.js");
-/* harmony import */ var _HateSpeechDefinition_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./HateSpeechDefinition.vue */ "./resources/js/components/HateSpeechDefinition.vue");
+/* harmony import */ var _TweetAnotationButtons_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TweetAnotationButtons.vue */ "./resources/js/components/TweetAnotationButtons.vue");
+/* harmony import */ var _es_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../es.js */ "./resources/js/es.js");
+/* harmony import */ var _HateSpeechDefinition_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./HateSpeechDefinition.vue */ "./resources/js/components/HateSpeechDefinition.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -21174,17 +21181,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     Tweet: _Tweet_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    HateSpeechDefinition: _HateSpeechDefinition_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    HateSpeechDefinition: _HateSpeechDefinition_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+    TweetAnotationButtons: _TweetAnotationButtons_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {
     user: Number
   },
   data: function data() {
     return {
-      is_loading: false,
+      show_topics: false,
+      show_reasons: false,
       tweet: null,
       url: "https://es.dc9.dev:9200",
       index: "tweets",
@@ -21203,7 +21213,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this.url + '/' + _this.index, _this.auth).then(function (result) {
+              return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets)(1, _this.url + '/' + _this.index, _this.auth).then(function (result) {
                 return _this.tweet = result[0];
               });
 
@@ -21216,8 +21226,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }))();
   },
   methods: {
-    getRandomTweets: _es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets,
-    handleSkipTweet: function handleSkipTweet() {
+    // es methods
+    getRandomTweets: _es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets,
+    updateInIndex: _es_js__WEBPACK_IMPORTED_MODULE_3__.updateInIndex,
+    // handling anotation buttons events
+    handleIsHateSpeechPressed: function handleIsHateSpeechPressed() {
+      this.show_reasons = false;
+      this.show_topics = true;
+    },
+    handleIsNotHateSpeechPressed: function handleIsNotHateSpeechPressed() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
@@ -21226,11 +21243,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this2.url, _this2.auth).then(function (result) {
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.updateInIndex)(_this2.url + '/' + _this2.index, _this2.auth, _this2.tweet, false);
+
+              case 2:
+                _context2.next = 4;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets)(1, _this2.url, _this2.auth).then(function (result) {
                   return _this2.tweet = result[0];
                 });
 
-              case 2:
+              case 4:
+                _this2.show_reasons = false;
+                _this2.show_topics = false;
+
+              case 6:
               case "end":
                 return _context2.stop();
             }
@@ -21238,39 +21263,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    handleNotSure: function handleNotSure(data) {
+    handleSkipTweetPressed: function handleSkipTweetPressed() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
-        var tweet;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                tweet = {
-                  tweet_id: _this3.tweet.tweet_id,
-                  author: _this3.tweet.author_username,
-                  content: _this3.tweet.content,
-                  date: (_this3.tweet.posted_utime * 1000).toString(),
-                  topics: JSON.stringify({
-                    user: null,
-                    topics: null
-                  }),
-                  not_sure_reason: data.not_sure_reason,
-                  other_reason: data.other_reason
-                };
-                console.log(tweet);
-                axios.post('api/tweets', tweet).then(function (response) {
-                  return console.log(response.data);
-                })["catch"](function (error) {
-                  return console.error(error);
-                });
-                _context3.next = 5;
-                return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this3.url, _this3.auth).then(function (result) {
+                _context3.next = 2;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets)(1, _this3.url, _this3.auth).then(function (result) {
                   return _this3.tweet = result[0];
                 });
 
-              case 5:
+              case 2:
+                _this3.show_topics = false;
+                _this3.show_reasons = false;
+
+              case 4:
               case "end":
                 return _context3.stop();
             }
@@ -21278,7 +21288,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
-    handleProcessTweet: function handleProcessTweet(data) {
+    handleNotSurePressed: function handleNotSurePressed(data) {
+      this.show_topics = false;
+      this.show_reasons = true;
+    },
+    // processing tweet
+    processIsHateSpeech: function processIsHateSpeech(data) {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
@@ -21287,36 +21302,80 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                if (data.is_hate_speech) {
-                  tweet = {
-                    tweet_id: data.tweet.tweet_id,
-                    author: data.tweet.author_username,
-                    content: data.tweet.content,
-                    date: (data.tweet.posted_utime * 1000).toString(),
-                    topics: JSON.stringify({
-                      user: _this4.user,
-                      topics: data.topics
-                    })
-                  };
-                  console.log(tweet);
-                  axios.post('api/tweets', tweet).then(function (response) {
-                    return console.log(response.data);
-                  })["catch"](function (error) {
-                    return console.error(error);
-                  });
-                }
+                tweet = {
+                  tweet_id: _this4.tweet.tweet_id,
+                  author: _this4.tweet.author_username,
+                  content: _this4.tweet.content,
+                  date: (_this4.tweet.posted_utime * 1000).toString(),
+                  topics: JSON.stringify(data.selected_topics),
+                  other_topic: data.other_topic,
+                  user_id: _this4.user,
+                  is_hate_speech: true
+                };
+                axios.post('api/tweets', tweet).then(function (response) {
+                  return console.log(response.data);
+                })["catch"](function (error) {
+                  return console.error(error);
+                });
+                _context4.next = 4;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.updateInIndex)(_this4.url + '/' + _this4.index, _this4.auth, _this4.tweet, true);
 
-                _context4.next = 3;
-                return (0,_es_js__WEBPACK_IMPORTED_MODULE_2__.getRandomTweets)(1, _this4.url, _this4.auth).then(function (result) {
+              case 4:
+                _context4.next = 6;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets)(1, _this4.url, _this4.auth).then(function (result) {
                   return _this4.tweet = result[0];
                 });
 
-              case 3:
+              case 6:
+                _this4.show_topics = false;
+
+              case 7:
               case "end":
                 return _context4.stop();
             }
           }
         }, _callee4);
+      }))();
+    },
+    processNotSure: function processNotSure(data) {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        var tweet;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                tweet = {
+                  tweet_id: _this5.tweet.tweet_id,
+                  author: _this5.tweet.author_username,
+                  content: _this5.tweet.content,
+                  date: (_this5.tweet.posted_utime * 1000).toString(),
+                  topics: JSON.stringify([]),
+                  not_sure_reason: data.not_sure_reason,
+                  other_reason: data.other_reason,
+                  user_id: _this5.user,
+                  is_hate_speech: false
+                };
+                axios.post('api/tweets', tweet).then(function (response) {
+                  return console.log(response.data);
+                })["catch"](function (error) {
+                  return console.error(error);
+                });
+                _context5.next = 4;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets)(1, _this5.url, _this5.auth).then(function (result) {
+                  return _this5.tweet = result[0];
+                });
+
+              case 4:
+                _this5.show_reasons = false;
+
+              case 5:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
       }))();
     }
   }
@@ -21492,15 +21551,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    topics: Array,
     show: Boolean
   },
   emits: ['process_tweet_hate_speech'],
   data: function data() {
     return {
       selected_topics: [],
-      input_topic: null,
-      show_input: false
+      other_topic: null,
+      show_input: false,
+      topics: ['Żydów', 'Muzułmanów', 'Romów', 'Osoby o innym kolorze skóry', 'Osoby o migranckim pochodzeniu', 'Osoby nieheteronormatywne', 'Osoby niepełnosprawne', 'Kobiety', 'Osoby starsze', 'Inna ofiara mowy nienawiści (wpisz)']
     };
   },
   methods: {
@@ -21508,16 +21567,6 @@ __webpack_require__.r(__webpack_exports__);
       document.querySelectorAll('input[type=checkbox]').forEach(function (el) {
         return el.checked = false;
       });
-    },
-    processTweet: function processTweet() {
-      var data = {
-        is_hate_speech: true,
-        selected_topics: this.selected_topics,
-        input_topic: this.input_topic
-      };
-      this.$emit('process_tweet_hate_speech', data);
-      this.selected_topics = [];
-      this.resetCheckboxes();
     },
     toggleTopic: function toggleTopic(topic, index) {
       if (index == 9) {
@@ -21530,6 +21579,12 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.selected_topics.push(topic);
       }
+    },
+    processIsHateSpeech: function processIsHateSpeech() {
+      this.$emit('process_tweet_hate_speech', {
+        selected_topics: this.selected_topics,
+        other_topic: this.other_topic
+      });
     }
   }
 });
@@ -21564,7 +21619,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     data: Object,
-    random: Boolean
+    show_topics: Boolean,
+    show_reasons: Boolean
   },
   components: {
     TweetAnotationButtons: _TweetAnotationButtons_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -21578,41 +21634,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       auth: {
         username: "dc9",
         password: "hohC2wix"
-      },
-      is_hate_speech: null,
-      topics: [],
-      show_topics: false,
-      show_not_sure: false
+      }
     };
   },
-  emits: ['process_tweet', 'skip_tweet'],
-  mounted: function mounted() {
-    var _this = this;
-
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return _this.getTopics();
-
-            case 2:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  },
+  emits: ['process_is_hate_speech', 'process_not_sure'],
   methods: {
-    renderNewTweet: function renderNewTweet() {
-      this.is_hate_speech = false;
+    processNotSure: function processNotSure(not_sure_reasons) {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.$emit('process_not_sure', {
+                  not_sure_reason: not_sure_reasons.selected_reason,
+                  other_reason: not_sure_reasons.other_reason
+                });
+
+              case 1:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     },
-    skipTweet: function skipTweet() {
-      this.$emit('skip_tweet', {});
-    },
-    getTopics: function getTopics() {
+    processIsHateSpeech: function processIsHateSpeech(topics) {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
@@ -21620,89 +21668,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
-                return axios.get('/api/topics').then(function (response) {
-                  return _this2.topics = response.data.data;
-                })["catch"](function (error) {
-                  return console.log(error);
+                _this2.$emit('process_is_hate_speech', {
+                  selected_topics: topics.selected_topics,
+                  other_topic: topics.other_topic
                 });
 
-              case 2:
+              case 1:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
-      }))();
-    },
-    showTopics: function showTopics(data) {
-      if (data.is_hate_speech) this.show_topics = true;else this.$emit('process_tweet', {
-        topics: null,
-        input_topic: null,
-        tweet: this.data,
-        is_hate_speech: this.is_hate_speech
-      });
-    },
-    notSure: function notSure() {
-      this.show_not_sure = true;
-    },
-    processNotSure: function processNotSure(not_sure_reasons) {
-      var _this3 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                _this3.$emit('not_sure', {
-                  not_sure_reason: not_sure_reasons.selected_reason,
-                  other_reason: not_sure_reasons.other_reason
-                });
-
-                _this3.show_not_sure = false;
-
-              case 2:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3);
-      }))();
-    },
-    processTweet: function processTweet(data) {
-      var _this4 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                _this4.is_hate_speech = data.is_hate_speech; // if is hate speech add to database
-
-                _this4.$emit('process_tweet', {
-                  topics: data.selected_topics,
-                  input_topic: data.input_topic,
-                  tweet: _this4.data,
-                  is_hate_speech: _this4.is_hate_speech
-                });
-
-                _this4.selected_topic = 'inny';
-                _this4.data.is_hate_speech = _this4.is_hate_speech;
-                _this4.show_topics = false;
-                axios.put(_this4.url + '/' + _this4.index + '/_doc/' + _this4.data.tweet_id, _this4.data, {
-                  auth: _this4.auth
-                }).then(function (response) {
-                  return console.log(response);
-                })["catch"](function (error) {
-                  return console.log(error);
-                });
-
-              case 6:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4);
       }))();
     }
   }
@@ -21721,20 +21697,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+var IS_HATE_SPEECH_PRESSED = 'is_hate_speech_pressed';
+var IS_NOT_HATE_SPEECH_PRESSED = 'is_not_hate_speech_pressed';
+var SKIP_TWEET_PRESSED = 'skip_tweet_pressed';
+var NOT_SURE_PRESSED = 'not_sure_pressed';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  emits: ['is_hate_speech_pressed', 'skip_tweet_pressed', 'not_sure_pressed'],
+  emits: [IS_HATE_SPEECH_PRESSED, IS_NOT_HATE_SPEECH_PRESSED, SKIP_TWEET_PRESSED, NOT_SURE_PRESSED],
   methods: {
-    processTweet: function processTweet(is_hate_speech) {
-      this.$emit('is_hate_speech_pressed', {
-        is_hate_speech: is_hate_speech // selected_topics: null,
-
-      });
+    isHateSpeech: function isHateSpeech() {
+      this.$emit('is_hate_speech_pressed');
     },
-    skipTweet: function skipTweet() {
-      this.$emit('skip_tweet_pressed');
+    isNotHateSpeech: function isNotHateSpeech() {
+      this.$emit('is_not_hate_speech_pressed');
     },
     notSure: function notSure() {
       this.$emit('not_sure_pressed');
+    },
+    skipTweet: function skipTweet() {
+      this.$emit('skip_tweet_pressed');
     }
   }
 });
@@ -21756,6 +21736,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _HateSpeechDefinition_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HateSpeechDefinition.vue */ "./resources/js/components/HateSpeechDefinition.vue");
 /* harmony import */ var _Tweet_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tweet.vue */ "./resources/js/components/Tweet.vue");
+/* harmony import */ var _TweetAnotationButtons_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TweetAnotationButtons.vue */ "./resources/js/components/TweetAnotationButtons.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -21764,20 +21745,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     HateSpeechDefinition: _HateSpeechDefinition_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Tweet: _Tweet_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    Tweet: _Tweet_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    TweetAnotationButtons: _TweetAnotationButtons_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   props: {
     user: Number
   },
   data: function data() {
     return {
-      tweet: null
+      tweet: null,
+      show_topics: false,
+      show_reasons: false
     };
   },
   methods: {
+    // get tweet
     getTweetToVerify: function getTweetToVerify() {
       var _this = this;
 
@@ -21801,7 +21787,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    handleNotSure: function handleNotSure(data) {
+    // handling anotation buttons events
+    handleIsHateSpeechPressed: function handleIsHateSpeechPressed() {
+      this.show_reasons = false;
+      this.show_topics = true;
+    },
+    handleIsNotHateSpeechPressed: function handleIsNotHateSpeechPressed() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
@@ -21815,23 +21806,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   author: _this2.tweet.author,
                   content: _this2.tweet.content,
                   date: _this2.tweet.date,
-                  topics: JSON.stringify({
-                    user: null,
-                    topics: null
-                  }),
-                  not_sure_reason: data.not_sure_reason,
-                  other_reason: data.other_reason
+                  topics: _this2.tweet.topics,
+                  verified: true,
+                  is_hate_speech: false,
+                  user_id: _this2.user
                 };
-                console.log(tweet);
-                axios.patch('api/tweets/' + _this2.tweet.id, tweet).then(function (response) {
+                _context2.next = 3;
+                return axios.post('api/tweets', tweet).then(function (response) {
                   return console.log(response.data);
                 })["catch"](function (error) {
                   return console.error(error);
                 });
 
-                _this2.getTweetToVerify();
+              case 3:
+                _context2.next = 5;
+                return _this2.getTweetToVerify();
 
-              case 4:
+              case 5:
+                _this2.show_reasons = false;
+                _this2.show_topics = false;
+
+              case 7:
               case "end":
                 return _context2.stop();
             }
@@ -21839,47 +21834,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    handleProcessTweet: function handleProcessTweet(data) {
-      if (data.is_hate_speech) {
-        // add new record
-        var tweet = {
-          tweet_id: data.tweet.tweet_id,
-          author: data.tweet.author,
-          content: data.tweet.content,
-          date: data.tweet.date,
-          topics: JSON.stringify({
-            user: this.user,
-            topics: data.topics
-          }),
-          verified: true
-        };
-        axios.post('api/tweets', tweet).then(function (response) {
-          return console.log(response.data);
-        })["catch"](function (error) {
-          return console.error(error);
-        });
-      } // update old record
-
-
-      var tweet = {
-        tweet_id: this.tweet.tweet_id,
-        author: this.tweet.author,
-        content: this.tweet.content,
-        date: this.tweet.date,
-        topics: JSON.stringify({
-          user: this.user,
-          topics: this.tweet.topics
-        }),
-        verified: true
-      };
-      axios.patch('api/tweets/' + this.tweet.id, tweet).then(function (response) {
-        return console.log(response.data);
-      })["catch"](function (error) {
-        return console.error(error);
-      });
-      this.getTweetToVerify();
-    },
-    handleSkipTweet: function handleSkipTweet() {
+    handleSkipTweetPressed: function handleSkipTweetPressed() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
@@ -21891,31 +21846,116 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this3.getTweetToVerify();
 
               case 2:
+                _this3.show_topics = false;
+                _this3.show_reasons = false;
+
+              case 4:
               case "end":
                 return _context3.stop();
             }
           }
         }, _callee3);
       }))();
+    },
+    handleNotSurePressed: function handleNotSurePressed(data) {
+      this.show_topics = false;
+      this.show_reasons = true;
+    },
+    // processing tweet
+    processNotSure: function processNotSure(data) {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        var tweet;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                tweet = {
+                  tweet_id: _this4.tweet.tweet_id,
+                  author: _this4.tweet.author,
+                  content: _this4.tweet.content,
+                  date: _this4.tweet.date,
+                  topics: _this4.tweet.topics,
+                  not_sure_reason: data.not_sure_reason,
+                  other_reason: data.other_reason,
+                  verified: true,
+                  is_hate_speech: false,
+                  user_id: _this4.user
+                };
+                console.log(tweet);
+                axios.post('api/tweets/', tweet).then(function (response) {
+                  return console.log(response.data);
+                })["catch"](function (error) {
+                  return console.error(error);
+                });
+
+                _this4.getTweetToVerify();
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    processIsHateSpeech: function processIsHateSpeech(data) {
+      // add new record
+      var tweet = {
+        tweet_id: this.tweet.tweet_id,
+        author: this.tweet.author,
+        content: this.tweet.content,
+        date: this.tweet.date,
+        topics: JSON.stringify(data.selected_topics),
+        other_topic: data.other_topic,
+        verified: true,
+        is_hate_speech: true,
+        user_id: this.user
+      };
+      axios.post('api/tweets', tweet).then(function (response) {
+        return console.log(response.data);
+      })["catch"](function (error) {
+        return console.error(error);
+      }); // update old record
+
+      var tweet = {
+        tweet_id: this.tweet.tweet_id,
+        author: this.tweet.author,
+        content: this.tweet.content,
+        date: this.tweet.date,
+        topics: this.tweet.topics,
+        verified: true,
+        is_hate_speech: true,
+        user_id: this.user
+      };
+      axios.patch('api/tweets/' + this.tweet.id, tweet).then(function (response) {
+        return console.log(response.data);
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+      this.show_reasons = false;
+      this.show_topics = false;
+      this.getTweetToVerify();
     }
   },
   mounted: function mounted() {
-    var _this4 = this;
+    var _this5 = this;
 
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
         while (1) {
-          switch (_context4.prev = _context4.next) {
+          switch (_context5.prev = _context5.next) {
             case 0:
-              _context4.next = 2;
-              return _this4.getTweetToVerify();
+              _context5.next = 2;
+              return _this5.getTweetToVerify();
 
             case 2:
             case "end":
-              return _context4.stop();
+              return _context5.stop();
           }
         }
-      }, _callee4);
+      }, _callee5);
     }))();
   }
 });
@@ -22034,23 +22074,32 @@ var _hoisted_2 = {
   "class": "col-4"
 };
 var _hoisted_3 = {
-  "class": "col-auto"
+  "class": "col-8"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_hate_speech_definition = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("hate-speech-definition");
 
   var _component_tweet = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet");
 
+  var _component_tweet_anotation_buttons = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet-anotation-buttons");
+
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_hate_speech_definition)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [this.tweet != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
     key: 0,
-    random: true,
     data: this.tweet,
-    onProcess_tweet: $options.handleProcessTweet,
-    onSkip_tweet: $options.handleSkipTweet,
-    onNot_sure: $options.handleNotSure
+    show_reasons: this.show_reasons,
+    show_topics: this.show_topics,
+    onProcess_is_hate_speech: $options.processIsHateSpeech,
+    onProcess_not_sure: $options.processNotSure
   }, null, 8
   /* PROPS */
-  , ["data", "onProcess_tweet", "onSkip_tweet", "onNot_sure"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
+  , ["data", "show_reasons", "show_topics", "onProcess_is_hate_speech", "onProcess_not_sure"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tweet_anotation_buttons, {
+    onIs_hate_speech_pressed: $options.handleIsHateSpeechPressed,
+    onIs_not_hate_speech_pressed: $options.handleIsNotHateSpeechPressed,
+    onSkip_tweet_pressed: $options.handleSkipTweetPressed,
+    onNot_sure_pressed: $options.handleNotSurePressed
+  }, null, 8
+  /* PROPS */
+  , ["onIs_hate_speech_pressed", "onIs_not_hate_speech_pressed", "onSkip_tweet_pressed", "onNot_sure_pressed"])])]);
 }
 
 /***/ }),
@@ -22173,7 +22222,7 @@ var _hoisted_6 = {
   }
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return $props.show ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, _hoisted_3, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.topics, function (topic, index) {
+  return $props.show ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, _hoisted_3, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.topics, function (topic, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       "class": "form-check",
       key: index
@@ -22181,11 +22230,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "form-check-input",
       type: "checkbox",
       onChange: function onChange($event) {
-        return $options.toggleTopic(topic.name, index);
+        return $options.toggleTopic(topic, index);
       }
     }, null, 40
     /* PROPS, HYDRATE_EVENTS */
-    , _hoisted_4), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(topic.name), 1
+    , _hoisted_4), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(topic), 1
     /* TEXT */
     )]);
   }), 128
@@ -22194,17 +22243,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 0,
     "class": "form-control",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.input_topic = $event;
+      return $data.other_topic = $event;
     }),
     type: "text",
     placeholder: "Inna ofiara"
   }, null, 512
   /* NEED_PATCH */
-  )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.input_topic]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.other_topic]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary",
     onClick: _cache[1] || (_cache[1] = function () {
-      return $options.processTweet && $options.processTweet.apply($options, arguments);
+      return $options.processIsHateSpeech && $options.processIsHateSpeech.apply($options, arguments);
     })
   }, " Zapisz ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
@@ -22224,52 +22273,47 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  key: 0
-};
 
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_3 = {
+var _hoisted_2 = {
   "class": "card"
 };
-var _hoisted_4 = {
+var _hoisted_3 = {
   "class": "card-body"
 };
-var _hoisted_5 = {
+var _hoisted_4 = {
   key: 0,
   "class": "card-title"
 };
-var _hoisted_6 = {
+var _hoisted_5 = {
   key: 1,
   "class": "card-title"
 };
-var _hoisted_7 = {
+var _hoisted_6 = {
   "class": "card-subtitle mb-2 text-muted"
 };
-var _hoisted_8 = {
+var _hoisted_7 = {
   key: 0
 };
-var _hoisted_9 = {
+var _hoisted_8 = {
   key: 1
 };
-var _hoisted_10 = ["href"];
+var _hoisted_9 = ["href"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_topic_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("topic-select");
 
   var _component_not_sure_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("not-sure-select");
 
-  var _component_tweet_anotation_buttons = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet-anotation-buttons");
-
-  return this.is_hate_speech == null || $props.random ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [$props.data.author_username ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.author_username), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [$props.data.author_username ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.author_username), 1
   /* TEXT */
-  )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.author), 1
+  )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.author), 1
   /* TEXT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_7, [$props.data.posted_utime ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(new Date($props.data.posted_utime * 1000)), 1
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_6, [$props.data.posted_utime ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(new Date($props.data.posted_utime * 1000)), 1
   /* TEXT */
-  )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(new Date(parseInt($props.data.date))), 1
+  )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(new Date(parseInt($props.data.date))), 1
   /* TEXT */
   ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.content), 1
   /* TEXT */
@@ -22279,24 +22323,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     target: "_blank"
   }, "Zobacz tweet", 8
   /* PROPS */
-  , _hoisted_10), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_topic_select, {
-    topics: this.topics,
-    show: $data.show_topics,
-    onProcess_tweet_hate_speech: $options.processTweet
+  , _hoisted_9), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_topic_select, {
+    show: $props.show_topics,
+    onProcess_tweet_hate_speech: $options.processIsHateSpeech
   }, null, 8
   /* PROPS */
-  , ["topics", "show", "onProcess_tweet_hate_speech"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_not_sure_select, {
-    show: $data.show_not_sure,
+  , ["show", "onProcess_tweet_hate_speech"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_not_sure_select, {
+    show: $props.show_reasons,
     onProcess_not_sure: $options.processNotSure
   }, null, 8
   /* PROPS */
-  , ["show", "onProcess_not_sure"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tweet_anotation_buttons, {
-    onIs_hate_speech_pressed: $options.showTopics,
-    onSkip_tweet_pressed: $options.skipTweet,
-    onNot_sure_pressed: $options.notSure
-  }, null, 8
-  /* PROPS */
-  , ["onIs_hate_speech_pressed", "onSkip_tweet_pressed", "onNot_sure_pressed"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
+  , ["show", "onProcess_not_sure"])])])], 64
+  /* STABLE_FRAGMENT */
+  );
 }
 
 /***/ }),
@@ -22315,59 +22354,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "row"
+  "class": "row",
+  style: {
+    "padding-left": "12px"
+  }
 };
 var _hoisted_2 = {
-  "class": "col-auto",
-  style: {
-    "padding-top": "8px",
-    "padding-right": "4px"
-  }
+  "class": "col-auto padded"
 };
 var _hoisted_3 = {
-  "class": "col-auto",
-  style: {
-    "padding-top": "8px",
-    "padding-left": "4px",
-    "padding-right": "4px"
-  }
+  "class": "col-auto padded"
 };
 var _hoisted_4 = {
-  "class": "col-auto",
-  style: {
-    "padding-top": "8px",
-    "padding-left": "4px"
-  }
+  "class": "col-auto padded"
 };
 var _hoisted_5 = {
-  "class": "col-auto",
-  style: {
-    "padding-top": "8px",
-    "padding-left": "4px"
-  }
+  "class": "col-auto padded"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-success",
-    type: "button",
-    onClick: _cache[0] || (_cache[0] = function ($event) {
-      return $options.processTweet(true);
+    onClick: _cache[0] || (_cache[0] = function () {
+      return $options.isHateSpeech && $options.isHateSpeech.apply($options, arguments);
     })
   }, " Mowa nienawiści ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-danger",
-    type: "button",
-    onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $options.processTweet(false);
+    onClick: _cache[1] || (_cache[1] = function () {
+      return $options.isNotHateSpeech && $options.isNotHateSpeech.apply($options, arguments);
     })
   }, " Nie jest to mowa nienawiści ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary",
-    type: "button",
+    "class": "btn btn-warning",
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.notSure && $options.notSure.apply($options, arguments);
     })
   }, " Nie jest to dla mnie jasne ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary",
-    type: "button",
     onClick: _cache[3] || (_cache[3] = function () {
       return $options.skipTweet && $options.skipTweet.apply($options, arguments);
     })
@@ -22396,26 +22417,32 @@ var _hoisted_2 = {
   "class": "col-4"
 };
 var _hoisted_3 = {
-  "class": "col-auto"
-};
-var _hoisted_4 = {
-  key: 1
+  "class": "col-8"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_hate_speech_definition = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("hate-speech-definition");
 
   var _component_tweet = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet");
 
+  var _component_tweet_anotation_buttons = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet-anotation-buttons");
+
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_hate_speech_definition)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [this.tweet != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
     key: 0,
-    random: true,
     data: this.tweet,
-    onProcess_tweet: $options.handleProcessTweet,
-    onSkip_tweet: $options.handleSkipTweet,
-    onNot_sure: $options.handleNotSure
+    show_reasons: this.show_reasons,
+    show_topics: this.show_topics,
+    onProcess_is_hate_speech: $options.processIsHateSpeech,
+    onProcess_not_sure: $options.processNotSure
   }, null, 8
   /* PROPS */
-  , ["data", "onProcess_tweet", "onSkip_tweet", "onNot_sure"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, " Braków tweetów do weryfikacji "))])]);
+  , ["data", "show_reasons", "show_topics", "onProcess_is_hate_speech", "onProcess_not_sure"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tweet_anotation_buttons, {
+    onIs_hate_speech_pressed: $options.handleIsHateSpeechPressed,
+    onIs_not_hate_speech_pressed: $options.handleIsNotHateSpeechPressed,
+    onSkip_tweet_pressed: $options.handleSkipTweetPressed,
+    onNot_sure_pressed: $options.handleNotSurePressed
+  }, null, 8
+  /* PROPS */
+  , ["onIs_hate_speech_pressed", "onIs_not_hate_speech_pressed", "onSkip_tweet_pressed", "onNot_sure_pressed"])])]);
 }
 
 /***/ }),
@@ -22504,7 +22531,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getRandomTweets": () => (/* binding */ getRandomTweets)
+/* harmony export */   "getRandomTweets": () => (/* binding */ getRandomTweets),
+/* harmony export */   "updateInIndex": () => (/* binding */ updateInIndex)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
@@ -22564,7 +22592,7 @@ function _getRandomTweets() {
             }).then(function (response) {
               var tweets = [];
               response.data.hits.hits.forEach(function (t) {
-                tweets.push(t._source);
+                tweets.push(t._source); // console.log(t._source.tweet_id)
               });
               data = tweets;
             })["catch"](function (error) {
@@ -22583,6 +22611,36 @@ function _getRandomTweets() {
     }, _callee);
   }));
   return _getRandomTweets.apply(this, arguments);
+}
+
+function updateInIndex(_x4, _x5, _x6, _x7) {
+  return _updateInIndex.apply(this, arguments);
+}
+
+function _updateInIndex() {
+  _updateInIndex = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(url, auth, tweet, is_hate_speech) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            tweet.is_hate_speech = is_hate_speech;
+            _context2.next = 3;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default().post(url + "/_doc/" + tweet.tweet_id, tweet, {
+              auth: auth
+            }).then(function (response) {
+              console.log(response);
+            })["catch"](function (error) {
+              console.error(error);
+            });
+
+          case 3:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _updateInIndex.apply(this, arguments);
 }
 
 /***/ }),
@@ -27046,6 +27104,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-clear {\n  background-color: transparent;\n  border-color: transparent;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.padded {\n    padding-top: 8px;\n    padding-left: 0px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -58864,6 +58946,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TweetAnotationButtons_vue_vue_type_style_index_0_id_36d5fe54_lang_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../node_modules/vue-loader/dist/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TweetAnotationButtons_vue_vue_type_style_index_0_id_36d5fe54_lang_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TweetAnotationButtons_vue_vue_type_style_index_0_id_36d5fe54_lang_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
 /*!****************************************************************************!*\
   !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
@@ -59348,13 +59460,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweetAnotationButtons.vue?vue&type=template&id=36d5fe54 */ "./resources/js/components/TweetAnotationButtons.vue?vue&type=template&id=36d5fe54");
 /* harmony import */ var _TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TweetAnotationButtons.vue?vue&type=script&lang=js */ "./resources/js/components/TweetAnotationButtons.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _TweetAnotationButtons_vue_vue_type_style_index_0_id_36d5fe54_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css */ "./resources/js/components/TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css");
+/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TweetAnotationButtons.vue"]])
+
+
+const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TweetAnotationButtons.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59656,6 +59771,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ShowTweets_vue_vue_type_style_index_0_id_2ed732aa_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../node_modules/vue-loader/dist/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ShowTweets.vue?vue&type=style&index=0&id=2ed732aa&lang=css */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ShowTweets.vue?vue&type=style&index=0&id=2ed732aa&lang=css");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TweetAnotationButtons_vue_vue_type_style_index_0_id_36d5fe54_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../node_modules/vue-loader/dist/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css");
 
 
 /***/ }),
