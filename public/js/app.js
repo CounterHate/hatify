@@ -21976,10 +21976,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<h2>Czym jest mowa nienawiści</h2> Mowa nienawiści to wszelkie formy nienawistnych wypowiedzi kierowanych do ludzi ze względu na ich daną (przyrodzoną, niezbywalną) cechę ( kolor skóry, język, religię lub wyznanie, pochodzenie etniczne czy narodowe, wiek, niepełnosprawność, płeć, społeczno-kulturowa tożsamość płciowa i orientacja psychoseksualna ). <br><br><h2> Jeśli masz problem ze stwierdzeniem, czy dana wypowiedź to mowa nienawiści, to zastanów się czy: </h2><ul><li> odnosi się do grupy/osoby w związku jakąś jej cechą, - zawiera obraźliwe określenia grup/osób, </li><li>nawołuje do agresji, podżega do nienawiści,</li><li>zawiera groźby,</li><li>zawiera wyrazy nienawiści,</li><li>zawiera wyrazy obrzydzenia,pogardy, dehumanizacji, znieważenia,</li><li>zawiera negatywne stereotypy, tezy oczerniające lub szkalujące,</li><li>usprawiedliwia agresję, dyskryminację, gorsze traktowanie jakieś osoby/grupy, - wyraża agresywny nacjonalizm</li></ul>", 6);
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<h4>Czym jest mowa nienawiści</h4> Mowa nienawiści to wszelkie formy nienawistnych wypowiedzi kierowanych do ludzi ze względu na ich daną (przyrodzoną, niezbywalną) cechę ( kolor skóry, język, religię lub wyznanie, pochodzenie etniczne czy narodowe, wiek, niepełnosprawność, płeć, społeczno-kulturowa tożsamość płciowa i orientacja psychoseksualna ). <br><br><h5> Jeśli masz problem ze stwierdzeniem, czy dana wypowiedź to mowa nienawiści, to zastanów się czy: </h5><ul><li> odnosi się do grupy/osoby w związku jakąś jej cechą, - zawiera obraźliwe określenia grup/osób,<br><code>@SUNFFL0W3R Ten czarnuch u góry to Barack Obama<br> @Witek99624689 tam same zboki , lesby i pedały </code></li><li>nawołuje do agresji, podżega do nienawiści,<br><code>@HolinkaPis Dopuścić do tej kryptoku®wy stado arabusów, niech z urzędu, ubogacą zawszonego śmierdziela. Następnie umieścić ku®ew w formalinie, jako patoeksponat.</code></li><li>zawiera groźby,</li><li>zawiera wyrazy nienawiści,<br><code> @se_pl Zdychajcie ruskie boty nowego wału. diengów nie budiet sabaki<br> @MBalawelder Ja nienawidzę parchów i Ukraińców. A pisowskich parchów i Ukraińców mógłbym ponawlekac na pale. </code></li><li>zawiera wyrazy obrzydzenia,pogardy, dehumanizacji, znieważenia,<br><code> @EwaZajaczkowska @KONFEDERACJA_ Nachodźcy zjedli kotka bo głodni byli. Tylko futerko zostało.<br> @Czaroit1 @wPolscepl @michalkarnowski @Marek_Pyza @marcin_wiklo Chazarski małpi ryj </code></li><li>zawiera negatywne stereotypy, tezy oczerniające lub szkalujące,<br><code> @lis_tomasz Co ty parchu bredzisz to byli dwaj wspólnicy w tym przekręcie na polskimi narodzie, typowa zagrywa żydokomuny. </code></li><li>usprawiedliwia agresję, dyskryminację, gorsze traktowanie jakieś osoby/grupy, - wyraża agresywny nacjonalizm<br><code> @BH32322620 @Bajarka1 @JakubBierzynski A to są ludzie? Dla mnie to bandyci, nachodźcy. Pomoc bandycie to złamanie prawa. Od munduru, ruska szmato, odczep się. Mundur to nie kitel. </code></li></ul>", 6);
+
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "alert alert-primary",
+  role: "alert"
+}, " Wystarczy spełnienie jednego z wymienionych warunków, aby wypowiedź mogła zostać uznana za mowę nienawiści ", -1
+/* HOISTED */
+);
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Opcję „Pomiń” wybieramy, kiedy dany post wydaje się być wyłapany „przypadkowo” lub gdy w analizowanym poście pojawia się słowo-klucz w znaczeniu innym niż określenie grupy wrażliwej lub jej członka/członkini, np.:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("code", null, " @sticky_fn @Venusik4 No ta więc cię bronie ciapaku – słowo „ciapak” w znaczeniu „ktoś nieporadny, niezaradny” wielbię tysiące książkowych postaci ale co by się nie działo Jude i Maxon always have a special place in my heart – słowo „Jude” w znaczeniu imienia postaci książkowej babka z ruskiego musiała do szkoły jechać i może na lekcje nie zdążyć to dała nam link yt by film obejrzeć, wchodzę patrzę a tam bajka ruska xd nic nie rozumiem ale jako tło do genshina może być – słowo „ruski” w znaczeniu potocznego określenia lekcji języka rosyjskiego w szkole ")])], -1
+/* HOISTED */
+);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return _hoisted_1;
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, _hoisted_7, _hoisted_8], 64
+  /* STABLE_FRAGMENT */
+  );
 }
 
 /***/ }),
@@ -22071,10 +22084,10 @@ var _hoisted_1 = {
   "class": "row"
 };
 var _hoisted_2 = {
-  "class": "col-4"
+  "class": "col-5"
 };
 var _hoisted_3 = {
-  "class": "col-8"
+  "class": "col-7"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_hate_speech_definition = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("hate-speech-definition");
@@ -59289,13 +59302,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _HateSpeechDefinition_vue_vue_type_template_id_c1dbbaec__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HateSpeechDefinition.vue?vue&type=template&id=c1dbbaec */ "./resources/js/components/HateSpeechDefinition.vue?vue&type=template&id=c1dbbaec");
 /* harmony import */ var _HateSpeechDefinition_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HateSpeechDefinition.vue?vue&type=script&lang=js */ "./resources/js/components/HateSpeechDefinition.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_HateSpeechDefinition_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_HateSpeechDefinition_vue_vue_type_template_id_c1dbbaec__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/HateSpeechDefinition.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_HateSpeechDefinition_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_HateSpeechDefinition_vue_vue_type_template_id_c1dbbaec__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/HateSpeechDefinition.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59317,13 +59330,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _NotSureSelect_vue_vue_type_template_id_c8dce36e__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NotSureSelect.vue?vue&type=template&id=c8dce36e */ "./resources/js/components/NotSureSelect.vue?vue&type=template&id=c8dce36e");
 /* harmony import */ var _NotSureSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NotSureSelect.vue?vue&type=script&lang=js */ "./resources/js/components/NotSureSelect.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_NotSureSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_NotSureSelect_vue_vue_type_template_id_c8dce36e__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/NotSureSelect.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_NotSureSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_NotSureSelect_vue_vue_type_template_id_c8dce36e__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/NotSureSelect.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59345,13 +59358,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _RandomTweet_vue_vue_type_template_id_15538753__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RandomTweet.vue?vue&type=template&id=15538753 */ "./resources/js/components/RandomTweet.vue?vue&type=template&id=15538753");
 /* harmony import */ var _RandomTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RandomTweet.vue?vue&type=script&lang=js */ "./resources/js/components/RandomTweet.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_RandomTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_RandomTweet_vue_vue_type_template_id_15538753__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/RandomTweet.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_RandomTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_RandomTweet_vue_vue_type_template_id_15538753__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/RandomTweet.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59374,7 +59387,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ShowTweets.vue?vue&type=template&id=2ed732aa */ "./resources/js/components/ShowTweets.vue?vue&type=template&id=2ed732aa");
 /* harmony import */ var _ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ShowTweets.vue?vue&type=script&lang=js */ "./resources/js/components/ShowTweets.vue?vue&type=script&lang=js");
 /* harmony import */ var _ShowTweets_vue_vue_type_style_index_0_id_2ed732aa_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ShowTweets.vue?vue&type=style&index=0&id=2ed732aa&lang=css */ "./resources/js/components/ShowTweets.vue?vue&type=style&index=0&id=2ed732aa&lang=css");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -59382,7 +59395,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/ShowTweets.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/ShowTweets.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59404,13 +59417,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _TopicSelect_vue_vue_type_template_id_8a1ee720__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TopicSelect.vue?vue&type=template&id=8a1ee720 */ "./resources/js/components/TopicSelect.vue?vue&type=template&id=8a1ee720");
 /* harmony import */ var _TopicSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TopicSelect.vue?vue&type=script&lang=js */ "./resources/js/components/TopicSelect.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_TopicSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TopicSelect_vue_vue_type_template_id_8a1ee720__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TopicSelect.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_TopicSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TopicSelect_vue_vue_type_template_id_8a1ee720__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TopicSelect.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59432,13 +59445,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tweet.vue?vue&type=template&id=4683c2d4 */ "./resources/js/components/Tweet.vue?vue&type=template&id=4683c2d4");
 /* harmony import */ var _Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tweet.vue?vue&type=script&lang=js */ "./resources/js/components/Tweet.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/Tweet.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/Tweet.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59461,7 +59474,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweetAnotationButtons.vue?vue&type=template&id=36d5fe54 */ "./resources/js/components/TweetAnotationButtons.vue?vue&type=template&id=36d5fe54");
 /* harmony import */ var _TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TweetAnotationButtons.vue?vue&type=script&lang=js */ "./resources/js/components/TweetAnotationButtons.vue?vue&type=script&lang=js");
 /* harmony import */ var _TweetAnotationButtons_vue_vue_type_style_index_0_id_36d5fe54_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css */ "./resources/js/components/TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -59469,7 +59482,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TweetAnotationButtons.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TweetAnotationButtons.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59491,13 +59504,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _VerifyTweet_vue_vue_type_template_id_1c23b05d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VerifyTweet.vue?vue&type=template&id=1c23b05d */ "./resources/js/components/VerifyTweet.vue?vue&type=template&id=1c23b05d");
 /* harmony import */ var _VerifyTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VerifyTweet.vue?vue&type=script&lang=js */ "./resources/js/components/VerifyTweet.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_VerifyTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_VerifyTweet_vue_vue_type_template_id_1c23b05d__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/VerifyTweet.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_lsobiecki_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_VerifyTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_VerifyTweet_vue_vue_type_template_id_1c23b05d__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/VerifyTweet.vue"]])
 /* hot reload */
 if (false) {}
 

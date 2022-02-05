@@ -29,6 +29,8 @@ host('91.192.224.142')
 
 task('build', function () {
     run('cd {{release_path}} && build');
+    run('cd {{release_path}} && npm install');
+    run('cd {{release_path}} && npm run dev');
 });
 
 // [Optional] if deploy fails automatically unlock.
@@ -36,8 +38,6 @@ after('deploy:failed', 'deploy:unlock');
 
 
 
-
 // Migrate database before symlink new release.
-
 before('deploy:symlink', 'artisan:migrate');
 
