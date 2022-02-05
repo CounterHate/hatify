@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 /*
@@ -28,7 +29,11 @@ Route::get('/', function () {
 
 Route::get('/verify', function () {
     return view('verify', ['user' => Auth::user()]);
-})->middleware(['auth'])->name('/');
+})->middleware(['auth'])->name('/verify');
+
+Route::get('/stats', function () {
+    return view('stats', ['users' => User::all()]);
+})->middleware(['auth'])->name('/stats');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -14,6 +14,9 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/verify">Weryfikacja</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/stats">Statystyki</a>
+                </li>
             </ul>
             {{-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
