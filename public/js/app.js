@@ -21773,8 +21773,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get('/api/tweetToVerify').then(function (response) {
-                  if (response.data != '') _this.tweet = response.data;
+                return axios.get("/api/tweetToVerify").then(function (response) {
+                  if (response.data != "") _this.tweet = response.data;
                 })["catch"](function (error) {
                   return console.log(error);
                 });
@@ -21812,7 +21812,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   user_id: _this2.user
                 };
                 _context2.next = 3;
-                return axios.post('api/tweets', tweet).then(function (response) {
+                return axios.post("api/tweets", tweet).then(function (response) {
                   return console.log(response.data);
                 })["catch"](function (error) {
                   return console.error(error);
@@ -21879,12 +21879,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   topics: _this4.tweet.topics,
                   not_sure_reason: data.not_sure_reason,
                   other_reason: data.other_reason,
-                  verified: true,
+                  verified: false,
                   is_hate_speech: false,
                   user_id: _this4.user
                 };
                 console.log(tweet);
-                axios.post('api/tweets/', tweet).then(function (response) {
+                axios.post("api/tweets/", tweet).then(function (response) {
                   return console.log(response.data);
                 })["catch"](function (error) {
                   return console.error(error);
@@ -21892,7 +21892,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this4.getTweetToVerify();
 
-              case 4:
+                _this4.show_reasons = false;
+
+              case 5:
               case "end":
                 return _context4.stop();
             }
@@ -21913,7 +21915,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         is_hate_speech: true,
         user_id: this.user
       };
-      axios.post('api/tweets', tweet).then(function (response) {
+      axios.post("api/tweets", tweet).then(function (response) {
         return console.log(response.data);
       })["catch"](function (error) {
         return console.error(error);
@@ -21927,9 +21929,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         topics: this.tweet.topics,
         verified: true,
         is_hate_speech: true,
-        user_id: this.user
+        user_id: this.tweet.user
       };
-      axios.patch('api/tweets/' + this.tweet.id, tweet).then(function (response) {
+      axios.patch("api/tweets/" + this.tweet.id, tweet).then(function (response) {
         return console.log(response.data);
       })["catch"](function (error) {
         return console.error(error);
@@ -59289,13 +59291,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _HateSpeechDefinition_vue_vue_type_template_id_c1dbbaec__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HateSpeechDefinition.vue?vue&type=template&id=c1dbbaec */ "./resources/js/components/HateSpeechDefinition.vue?vue&type=template&id=c1dbbaec");
 /* harmony import */ var _HateSpeechDefinition_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HateSpeechDefinition.vue?vue&type=script&lang=js */ "./resources/js/components/HateSpeechDefinition.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_HateSpeechDefinition_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_HateSpeechDefinition_vue_vue_type_template_id_c1dbbaec__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/HateSpeechDefinition.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_HateSpeechDefinition_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_HateSpeechDefinition_vue_vue_type_template_id_c1dbbaec__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/HateSpeechDefinition.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59317,13 +59319,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _NotSureSelect_vue_vue_type_template_id_c8dce36e__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NotSureSelect.vue?vue&type=template&id=c8dce36e */ "./resources/js/components/NotSureSelect.vue?vue&type=template&id=c8dce36e");
 /* harmony import */ var _NotSureSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NotSureSelect.vue?vue&type=script&lang=js */ "./resources/js/components/NotSureSelect.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_NotSureSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_NotSureSelect_vue_vue_type_template_id_c8dce36e__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/NotSureSelect.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_NotSureSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_NotSureSelect_vue_vue_type_template_id_c8dce36e__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/NotSureSelect.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59345,13 +59347,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _RandomTweet_vue_vue_type_template_id_15538753__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RandomTweet.vue?vue&type=template&id=15538753 */ "./resources/js/components/RandomTweet.vue?vue&type=template&id=15538753");
 /* harmony import */ var _RandomTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RandomTweet.vue?vue&type=script&lang=js */ "./resources/js/components/RandomTweet.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_RandomTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_RandomTweet_vue_vue_type_template_id_15538753__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/RandomTweet.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_RandomTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_RandomTweet_vue_vue_type_template_id_15538753__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/RandomTweet.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59374,7 +59376,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ShowTweets.vue?vue&type=template&id=2ed732aa */ "./resources/js/components/ShowTweets.vue?vue&type=template&id=2ed732aa");
 /* harmony import */ var _ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ShowTweets.vue?vue&type=script&lang=js */ "./resources/js/components/ShowTweets.vue?vue&type=script&lang=js");
 /* harmony import */ var _ShowTweets_vue_vue_type_style_index_0_id_2ed732aa_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ShowTweets.vue?vue&type=style&index=0&id=2ed732aa&lang=css */ "./resources/js/components/ShowTweets.vue?vue&type=style&index=0&id=2ed732aa&lang=css");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -59382,7 +59384,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/ShowTweets.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/ShowTweets.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59404,13 +59406,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _TopicSelect_vue_vue_type_template_id_8a1ee720__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TopicSelect.vue?vue&type=template&id=8a1ee720 */ "./resources/js/components/TopicSelect.vue?vue&type=template&id=8a1ee720");
 /* harmony import */ var _TopicSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TopicSelect.vue?vue&type=script&lang=js */ "./resources/js/components/TopicSelect.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_TopicSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TopicSelect_vue_vue_type_template_id_8a1ee720__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TopicSelect.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_TopicSelect_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TopicSelect_vue_vue_type_template_id_8a1ee720__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TopicSelect.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59432,13 +59434,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tweet.vue?vue&type=template&id=4683c2d4 */ "./resources/js/components/Tweet.vue?vue&type=template&id=4683c2d4");
 /* harmony import */ var _Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tweet.vue?vue&type=script&lang=js */ "./resources/js/components/Tweet.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/Tweet.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Tweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Tweet_vue_vue_type_template_id_4683c2d4__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/Tweet.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59461,7 +59463,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweetAnotationButtons.vue?vue&type=template&id=36d5fe54 */ "./resources/js/components/TweetAnotationButtons.vue?vue&type=template&id=36d5fe54");
 /* harmony import */ var _TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TweetAnotationButtons.vue?vue&type=script&lang=js */ "./resources/js/components/TweetAnotationButtons.vue?vue&type=script&lang=js");
 /* harmony import */ var _TweetAnotationButtons_vue_vue_type_style_index_0_id_36d5fe54_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css */ "./resources/js/components/TweetAnotationButtons.vue?vue&type=style&index=0&id=36d5fe54&lang=css");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -59469,7 +59471,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TweetAnotationButtons.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_TweetAnotationButtons_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TweetAnotationButtons_vue_vue_type_template_id_36d5fe54__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/TweetAnotationButtons.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -59491,13 +59493,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _VerifyTweet_vue_vue_type_template_id_1c23b05d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VerifyTweet.vue?vue&type=template&id=1c23b05d */ "./resources/js/components/VerifyTweet.vue?vue&type=template&id=1c23b05d");
 /* harmony import */ var _VerifyTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VerifyTweet.vue?vue&type=script&lang=js */ "./resources/js/components/VerifyTweet.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_Laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_VerifyTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_VerifyTweet_vue_vue_type_template_id_1c23b05d__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/VerifyTweet.vue"]])
+const __exports__ = /*#__PURE__*/(0,_Users_pawelkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_VerifyTweet_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_VerifyTweet_vue_vue_type_template_id_1c23b05d__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/VerifyTweet.vue"]])
 /* hot reload */
 if (false) {}
 

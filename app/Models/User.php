@@ -41,4 +41,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function tweets()
+    {
+        return $this->hasMany(Tweet::class);
+    }
+
+    public function tweetCount()
+    {
+        return $this->tweets()->count();
+    }
+
+    public function verifiedCount()
+    {
+        return $this->tweets()->where('verified', 1)->count();
+    }
+
+    public function notSureCount()
+    {
+        return $this->tweets()->where('is_hate_speech', 0)->count();
+    }
+
+    public function anotatedCount()
+    {
+        return $this->tweets()->where('is_hate_speech', 1)->count() - $this->verifiedCount();
+    }
 }
