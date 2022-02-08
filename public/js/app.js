@@ -21553,18 +21553,18 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     show: Boolean
   },
-  emits: ['process_tweet_hate_speech'],
+  emits: ["process_tweet_hate_speech"],
   data: function data() {
     return {
       selected_topics: [],
       other_topic: null,
       show_input: false,
-      topics: ['Żydów', 'Muzułmanów', 'Romów', 'Osoby o innym kolorze skóry', 'Osoby o migranckim pochodzeniu', 'Osoby nieheteronormatywne', 'Osoby niepełnosprawne', 'Kobiety', 'Osoby starsze', 'Inna ofiara mowy nienawiści (wpisz)']
+      topics: ["Żydów", "Romów", "Kobiety", "Osoby należące do mniejszości religijnych w Polsce", "Osoby o innym kolorze skóry", "Osoby z doświadczeniem migracji", "Osoby LGBTQ+", "Osoby z niepełnosprawnościami", "Osoby starsze", "Osoby należące do mniejszości etnicznych lub narodowych w Polsce", "Inna ofiara mowy nienawiści (wpisz)"]
     };
   },
   methods: {
     resetCheckboxes: function resetCheckboxes() {
-      document.querySelectorAll('input[type=checkbox]').forEach(function (el) {
+      document.querySelectorAll("input[type=checkbox]").forEach(function (el) {
         return el.checked = false;
       });
     },
@@ -21581,7 +21581,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     processIsHateSpeech: function processIsHateSpeech() {
-      this.$emit('process_tweet_hate_speech', {
+      this.$emit("process_tweet_hate_speech", {
         selected_topics: this.selected_topics,
         other_topic: this.other_topic
       });
