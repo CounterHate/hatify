@@ -1,9 +1,9 @@
 <template>
     <div class="row">
-        <div class="col-4">
+        <div class="col-5">
             <hate-speech-definition></hate-speech-definition>
         </div>
-        <div class="col-8">
+        <div class="col-7">
             <tweet
                 v-if="this.tweet != null"
                 :data="this.tweet"
