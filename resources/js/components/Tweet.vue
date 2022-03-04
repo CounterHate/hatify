@@ -15,17 +15,35 @@
                 <div v-else>{{ new Date(parseInt(data.date)) }}</div>
             </h6>
             <p>{{ data.content }}</p>
-            <a
-                :href="
-                    'https://twitter.com/' +
-                        data.author_username +
-                        '/status/' +
-                        data.tweet_id
-                "
-                class="btn btn-primary"
-                target="_blank"
-                >Zobacz tweet</a
-            >
+            <div class="row">
+                <div class="col-auto padded">
+                    <a
+                        :href="
+                            'https://twitter.com/' +
+                                data.author_username +
+                                '/status/' +
+                                data.tweet_id
+                        "
+                        class="btn btn-primary"
+                        target="_blank"
+                        >Zobacz tweet</a
+                    >
+                </div>
+                <div class="col-auto padded">
+                    <a
+                        :href="
+                            'https://twitter.com/' +
+                                data.author_username +
+                                '/status/' +
+                                data.tweet_id
+                        "
+                        class="btn btn-primary"
+                        target="_blank"
+                        >Zobacz podobne</a
+                    >
+                </div>
+            </div>
+
             <topic-select
                 :show="show_topics"
                 @process_tweet_hate_speech="processIsHateSpeech"
@@ -82,4 +100,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.padded {
+    padding-top: 8px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+</style>
