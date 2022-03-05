@@ -39,4 +39,29 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+
+
+Route::middleware(['auth'])->name('similar')->prefix('/similar')->group(function() {
+    Route::get('/', function() {
+        return view('similar', ['tweet_id' => null]);
+    });
+
+    Route::get('/{tweet_id}', function($tweet_id) {
+        return view('similar', ['tweet_id' => $tweet_id]);
+    });
+});
+
+Route::middleware(['auth'])->name('userTweets')->prefix('/userTweets')->group(function () {
+    Route::get('/', function() {
+        return view('userTweets', ['username' => null]);
+    });
+    Route::get('/{username}', function($username) {
+        return view('userTweets', ['username' => $username]);
+    });
+});
+
+
+
+
+
 require __DIR__ . '/auth.php';

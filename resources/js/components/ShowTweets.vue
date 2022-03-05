@@ -20,6 +20,8 @@
   <tweet
     :random="false"
     :data="tweet"
+    :anotation_view="false"
+    :verification_view="false"
     @process_tweet="handleProcessTweet"
     v-for="tweet in tweets"
     v-bind:key="tweet"

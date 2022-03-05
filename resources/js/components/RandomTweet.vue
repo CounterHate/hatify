@@ -9,6 +9,8 @@
                 :data="this.tweet"
                 :show_reasons="this.show_reasons"
                 :show_topics="this.show_topics"
+                :anotation_view="true"
+                :verification_view="false"
                 @process_is_hate_speech="processIsHateSpeech"
                 @process_not_sure="processNotSure"
             ></tweet>

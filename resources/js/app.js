@@ -6,7 +6,9 @@ import { createApp } from 'vue';
 import ShowTweets from './components/ShowTweets.vue';
 import RandomTweet from './components/RandomTweet.vue';
 import VerifyTweet from './components/VerifyTweet.vue';
+import SimilarTweets from './components/SimilarTweets.vue';
+import UserTweets from './components/UserTweets.vue';
 
-const app = createApp({ components: { ShowTweets, RandomTweet, VerifyTweet } });
+const app = createApp({ components: { ShowTweets, RandomTweet, VerifyTweet, SimilarTweets, UserTweets } });
 
 app.mount('#app');

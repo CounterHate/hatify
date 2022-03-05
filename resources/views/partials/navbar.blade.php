@@ -9,6 +9,12 @@
                     <a class="nav-link" aria-current="page" href="/search">Szukaj</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/similar/ ">Szukaj podobnej treści</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/userTweets/ ">Szukaj innych autora</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/">Anotacja</a>
                 </li>
                 <li class="nav-item">
