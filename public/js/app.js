@@ -21196,6 +21196,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       show_topics: false,
       show_reasons: false,
       tweet: null,
+      username_to_anotation: "",
       url: "https://es.dc9.dev:9200",
       index: "tweets",
       auth: {
@@ -21213,7 +21214,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets)(1, _this.url + '/' + _this.index, _this.auth).then(function (result) {
+              return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets)(1, _this.url + "/" + _this.index, _this.auth, _this.username_to_anotation).then(function (result) {
                 return _this.tweet = result[0];
               });
 
@@ -21243,11 +21244,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.updateInIndex)(_this2.url + '/' + _this2.index, _this2.auth, _this2.tweet, false);
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.updateInIndex)(_this2.url + "/" + _this2.index, _this2.auth, _this2.tweet, false);
 
               case 2:
                 _context2.next = 4;
-                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets)(1, _this2.url, _this2.auth).then(function (result) {
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets)(1, _this2.url, _this2.auth, _this2.username_to_anotation).then(function (result) {
                   return _this2.tweet = result[0];
                 });
 
@@ -21272,7 +21273,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets)(1, _this3.url, _this3.auth).then(function (result) {
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.getRandomTweets)(1, _this3.url, _this3.auth, _this3.username_to_anotation).then(function (result) {
                   return _this3.tweet = result[0];
                 });
 
@@ -21312,13 +21313,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   user_id: _this4.user,
                   is_hate_speech: true
                 };
-                axios.post('api/tweets', tweet).then(function (response) {
+                axios.post("api/tweets", tweet).then(function (response) {
                   return console.log(response.data);
                 })["catch"](function (error) {
                   return console.error(error);
                 });
                 _context4.next = 4;
-                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.updateInIndex)(_this4.url + '/' + _this4.index, _this4.auth, _this4.tweet, true);
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_3__.updateInIndex)(_this4.url + "/" + _this4.index, _this4.auth, _this4.tweet, true);
 
               case 4:
                 _context4.next = 6;
@@ -21357,7 +21358,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   user_id: _this5.user,
                   is_hate_speech: false
                 };
-                axios.post('api/tweets', tweet).then(function (response) {
+                axios.post("api/tweets", tweet).then(function (response) {
                   return console.log(response.data);
                 })["catch"](function (error) {
                   return console.error(error);
@@ -22338,6 +22339,22 @@ var _hoisted_2 = {
 var _hoisted_3 = {
   "class": "col-7"
 };
+
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-label"
+}, "Konto do anotowania", -1
+/* HOISTED */
+);
+
+var _hoisted_5 = {
+  "class": "row"
+};
+var _hoisted_6 = {
+  "class": "col"
+};
+var _hoisted_7 = {
+  "class": "col-auto"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_hate_speech_definition = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("hate-speech-definition");
 
@@ -22345,7 +22362,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_tweet_anotation_buttons = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet-anotation-buttons");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_hate_speech_definition)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [this.tweet != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_hate_speech_definition)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    "class": "form-control",
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $data.username_to_anotation = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.username_to_anotation]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary",
+    onClick: _cache[1] || (_cache[1] = function () {
+      return $options.handleSkipTweetPressed && $options.handleSkipTweetPressed.apply($options, arguments);
+    })
+  }, " Szukaj ")])]), this.tweet != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
     key: 0,
     data: this.tweet,
     show_reasons: this.show_reasons,
@@ -23040,47 +23070,85 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
-function getRandomTweets(_x, _x2, _x3) {
+function getRandomTweets(_x, _x2, _x3, _x4) {
   return _getRandomTweets.apply(this, arguments);
 }
 
 function _getRandomTweets() {
-  _getRandomTweets = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(size, url, auth) {
+  _getRandomTweets = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(size, url, auth, username_to_anotation) {
     var query, data;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            query = {
-              size: size,
-              query: {
-                function_score: {
-                  random_score: {},
-                  query: {
-                    bool: {
-                      must: [{
-                        match: {
-                          lang: "pl"
-                        }
-                      }, {
-                        match: {
-                          is_retweet: false
-                        }
-                      }],
-                      must_not: [{
-                        match: {
-                          is_hate_speech: true
-                        }
-                      }, {
-                        match: {
-                          is_hate_speech: false
-                        }
-                      }]
+            if (username_to_anotation != '') {
+              query = {
+                size: size,
+                query: {
+                  function_score: {
+                    random_score: {},
+                    query: {
+                      bool: {
+                        must: [{
+                          match: {
+                            lang: "pl"
+                          }
+                        }, {
+                          match: {
+                            is_retweet: false
+                          }
+                        }, {
+                          match: {
+                            author_username: username_to_anotation
+                          }
+                        }],
+                        must_not: [{
+                          match: {
+                            is_hate_speech: true
+                          }
+                        }, {
+                          match: {
+                            is_hate_speech: false
+                          }
+                        }]
+                      }
                     }
                   }
                 }
-              }
-            };
+              };
+            } else {
+              query = {
+                size: size,
+                query: {
+                  function_score: {
+                    random_score: {},
+                    query: {
+                      bool: {
+                        must: [{
+                          match: {
+                            lang: "pl"
+                          }
+                        }, {
+                          match: {
+                            is_retweet: false
+                          }
+                        }],
+                        must_not: [{
+                          match: {
+                            is_hate_speech: true
+                          }
+                        }, {
+                          match: {
+                            is_hate_speech: false
+                          }
+                        }]
+                      }
+                    }
+                  }
+                }
+              };
+            }
+
             _context.next = 3;
             return axios__WEBPACK_IMPORTED_MODULE_1___default().post(url + "/_search", query, {
               auth: auth
@@ -23108,7 +23176,7 @@ function _getRandomTweets() {
   return _getRandomTweets.apply(this, arguments);
 }
 
-function getUserTweets(_x4, _x5, _x6) {
+function getUserTweets(_x5, _x6, _x7) {
   return _getUserTweets.apply(this, arguments);
 }
 
@@ -23160,7 +23228,7 @@ function _getUserTweets() {
   return _getUserTweets.apply(this, arguments);
 }
 
-function getSimilarTweets(_x7, _x8, _x9, _x10) {
+function getSimilarTweets(_x8, _x9, _x10, _x11) {
   return _getSimilarTweets.apply(this, arguments);
 }
 
@@ -23248,7 +23316,7 @@ function _getSimilarTweets() {
   return _getSimilarTweets.apply(this, arguments);
 }
 
-function updateInIndex(_x11, _x12, _x13, _x14) {
+function updateInIndex(_x12, _x13, _x14, _x15) {
   return _updateInIndex.apply(this, arguments);
 }
 

@@ -1,41 +1,85 @@
 import axios from "axios";
 
-export async function getRandomTweets(size, url, auth) {
+export async function getRandomTweets(size, url, auth, username_to_anotation) {
     {
-        var query = {
-            size: size,
-            query: {
-                function_score: {
-                    random_score: {},
-                    query: {
-                        bool: {
-                            must: [{
-                                    match: {
-                                        lang: "pl",
+        var query;
+        if (username_to_anotation != '') {
+            query = {
+                size: size,
+                query: {
+                    function_score: {
+                        random_score: {},
+                        query: {
+                            bool: {
+                                must: [{
+                                        match: {
+                                            lang: "pl",
+                                        },
                                     },
-                                },
-                                {
-                                    match: {
-                                        is_retweet: false,
+                                    {
+                                        match: {
+                                            is_retweet: false,
+                                        },
                                     },
-                                },
-                            ],
-                            must_not: [{
-                                    match: {
-                                        is_hate_speech: true,
+                                    {
+                                        match: {
+                                            author_username: username_to_anotation
+                                        }
+                                    }
+                                ],
+                                must_not: [{
+                                        match: {
+                                            is_hate_speech: true,
+                                        },
                                     },
-                                },
-                                {
-                                    match: {
-                                        is_hate_speech: false,
+                                    {
+                                        match: {
+                                            is_hate_speech: false,
+                                        },
                                     },
-                                },
-                            ],
+                                ],
+                            },
                         },
                     },
                 },
-            },
-        };
+            };
+        } else {
+            query = {
+                size: size,
+                query: {
+                    function_score: {
+                        random_score: {},
+                        query: {
+                            bool: {
+                                must: [{
+                                        match: {
+                                            lang: "pl",
+                                        },
+                                    },
+                                    {
+                                        match: {
+                                            is_retweet: false,
+                                        },
+                                    },
+                                ],
+                                must_not: [{
+                                        match: {
+                                            is_hate_speech: true,
+                                        },
+                                    },
+                                    {
+                                        match: {
+                                            is_hate_speech: false,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                },
+            };
+        }
+
         var data;
         await axios
             .post(url + "/_search", query, {
