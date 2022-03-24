@@ -1,5 +1,82 @@
 import axios from "axios";
 
+export async function getRandomFBdata(size, url, auth, author_id) {
+    var query;
+    if (author_id) {
+        query = {
+            size: size,
+            query: {
+                function_score: {
+                    random_score: {},
+                    query: {
+                        bool: {
+                            must: [{
+                                match: {
+                                    author_id: author_id
+                                }
+                            }],
+                            must_not: [{
+                                    match: {
+                                        is_hate_speech: true,
+                                    },
+                                },
+                                {
+                                    match: {
+                                        is_hate_speech: false,
+                                    },
+                                },
+                            ],
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        query = {
+            size: size,
+            query: {
+                function_score: {
+                    random_score: {},
+                    query: {
+                        bool: {
+                            must_not: [{
+                                    match: {
+                                        is_hate_speech: true,
+                                    },
+                                },
+                                {
+                                    match: {
+                                        is_hate_speech: false,
+                                    },
+                                },
+                            ],
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    var data;
+    await axios
+        .post(url + "/_search", query, {
+            auth: auth,
+        })
+        .then((response) => {
+            var posts = [];
+            response.data.hits.hits.forEach(p => {
+                posts.push(p._source);
+                // console.log(t._source.tweet_id)
+            });
+            data = posts
+        })
+        .catch((error) => {
+            console.error(error);
+            data = [];
+        });
+    return data
+}
+
 export async function getRandomTweets(size, url, auth, username_to_anotation) {
     {
         var query;
