@@ -78,6 +78,16 @@ class TweetController extends Controller
 
     public function getTweetToVerify()
     {
-        return Tweet::inRandomOrder()->where('verified', false)->first();
+        return Tweet::inRandomOrder()->where('verified', false)->where('is_tweet', true)->first();
+    }
+
+    public function getFbPostToVerify()
+    {
+        return Tweet::inRandomOrder()->where('verified', false)->where('is_facebook_post', true)->first();
+    }
+
+    public function getFbCommentToVerify()
+    {
+        return Tweet::inRandomOrder()->where('verified', false)->where('is_facebook_comment', true)->first();
     }
 }

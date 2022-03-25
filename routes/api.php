@@ -25,3 +25,5 @@ Route::apiResource('topics', TopicController::class);
 
 Route::get('/tweetCount', [TweetController::class, 'tweetCount']);
 Route::get('/tweetToVerify', [TweetController::class, 'getTweetToVerify']);
+Route::get('/fbPostToVerify', [TweetController::class, 'getFbPostToVerify']);
+Route::get('/fbCommentToVerify', [TweetController::class, 'getFbCommentToVerify']);

@@ -15,13 +15,13 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/index', function () {
-    return view('index', ['user' => Auth::user()]);
-})->middleware(['auth'])->name('/index');
+// Route::get('/index', function () {
+//     return view('index', ['user' => Auth::user()]);
+// })->middleware(['auth'])->name('/index');
 
-Route::get('/search', function () {
-    return view('search', ['user' => Auth::user()]);
-})->middleware(['auth'])->name('/search');
+// Route::get('/search', function () {
+//     return view('search', ['user' => Auth::user()]);
+// })->middleware(['auth'])->name('/search');
 
 Route::get('/', function () {
     return view('random', ['user' => Auth::user()]);
@@ -41,22 +41,22 @@ Route::get('/dashboard', function () {
 
 
 
-Route::middleware(['auth'])->name('similar')->prefix('/similar')->group(function() {
-    Route::get('/', function() {
-        return view('similar', ['tweet_id' => null]);
+Route::middleware(['auth'])->name('similar')->prefix('/similar')->group(function () {
+    Route::get('/{media}', function ($media) {
+        return view('similar', ['data_id' => null, 'media' => $media]);
     });
 
-    Route::get('/{tweet_id}', function($tweet_id) {
-        return view('similar', ['tweet_id' => $tweet_id]);
+    Route::get('/{media}/{data_id}', function ($media, $data_id) {
+        return view('similar', ['data_id' => $data_id, 'media' => $media]);
     });
 });
 
 Route::middleware(['auth'])->name('userTweets')->prefix('/userTweets')->group(function () {
-    Route::get('/', function() {
-        return view('userTweets', ['username' => null]);
+    Route::get('/{media}', function ($media) {
+        return view('userTweets', ['username' => null, 'media' => $media]);
     });
-    Route::get('/{username}', function($username) {
-        return view('userTweets', ['username' => $username]);
+    Route::get('/{media}/{username}', function ($media, $username) {
+        return view('userTweets', ['username' => $username, 'media' => $media]);
     });
 });
 

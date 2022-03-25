@@ -16,6 +16,7 @@
       </h6>
       <p>{{ data.content }}</p>
       <div class="row">
+        <!-- show tweet button -->
         <div class="col-auto padded">
           <a
             :href="
@@ -29,17 +30,25 @@
             >Zobacz tweet</a
           >
         </div>
-        <div class="col-auto padded" v-if="this.verification_view || this.anotation_view">
+        <!-- show tweets with similar content button -->
+        <div
+          class="col-auto padded"
+          v-if="this.verification_view || this.anotation_view"
+        >
           <a
-            :href="'/similar/' + data.tweet_id"
+            :href="'/similar/twitter/' + data.tweet_id"
             class="btn btn-primary"
             target="_blank"
             >Zobacz podobne</a
           >
         </div>
-        <div class="col-auto padded" v-if="this.verification_view || this.anotation_view">
+        <!-- show other tweets from this author button -->
+        <div
+          class="col-auto padded"
+          v-if="this.verification_view || this.anotation_view"
+        >
           <a
-            :href="'/userTweets/' + data.author_username"
+            :href="'/userTweets/twitter/' + data.author_username"
             class="btn btn-primary"
             target="_blank"
             >Zobacz inne tweety tego uzytkownika</a
@@ -76,16 +85,6 @@ export default {
     TweetAnotationButtons,
     TopicSelect,
     NotSureSelect,
-  },
-  data() {
-    return {
-      url: process.env.MIX_ES,
-      index: process.env.MIX_INDEX,
-      auth: {
-        username: process.env.MIX_ES_USER,
-        password: process.env.MIX_ES_PASS,
-      },
-    };
   },
   emits: ["process_is_hate_speech", "process_not_sure"],
   methods: {

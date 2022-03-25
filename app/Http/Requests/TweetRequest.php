@@ -34,7 +34,13 @@ class TweetRequest extends FormRequest
             'other_reason' => [],
             'other_topic' => [],
             'is_hate_speech' => ['required'],
-            'user_id' => ['required']
+            'user_id' => ['required'],
+            'is_tweet' => ['required'],
+            'is_facebook_post' => ['required'],
+            'is_facebook_comment' => ['required'],
+            'fb_url' => [],
+            'page_id' => [],
+            'page_name' => []
         ];
     }
 }

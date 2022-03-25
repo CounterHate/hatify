@@ -25,8 +25,6 @@
         />
         <label class="form-check-label"> Facebook </label>
       </div>
-
-      <!-- account search form -->
       <label class="form-label">Konto do anotowania</label>
       <div class="row">
         <div class="col">
@@ -54,32 +52,51 @@
         @process_is_hate_speech="processIsHateSpeech"
         @process_not_sure="processNotSure"
       ></tweet>
+
+      <fb-post
+        v-if="this.fb_post != null"
+        :data="this.fb_post"
+        :show_topics="this.show_topics"
+        :show_reasons="this.show_reasons"
+        :anotation_view="true"
+        @process_is_hate_speech="processIsHateSpeech"
+        @process_not_sure="processNotSure"
+      ></fb-post>
+
+      <fb-comment
+        v-if="this.fb_comment != null"
+        :data="this.fb_comment"
+        :show_topics="this.show_topics"
+        :show_reasons="this.show_reasons"
+        :anotation_view="true"
+        @process_is_hate_speech="processIsHateSpeech"
+        @process_not_sure="processNotSure"
+      ></fb-comment>
+
       <tweet-anotation-buttons
         @is_hate_speech_pressed="handleIsHateSpeechPressed"
         @is_not_hate_speech_pressed="handleIsNotHateSpeechPressed"
         @skip_tweet_pressed="handleSkipTweetPressed"
         @not_sure_pressed="handleNotSurePressed"
       ></tweet-anotation-buttons>
-      <fb-post v-if="this.fb_post != null"></fb-post>
-      <fb-comment v-if="this.fb_comment != null"></fb-comment>
     </div>
   </div>
 </template>
 
 <script>
 import Tweet from "./Tweet.vue";
-import FBPost from "./FBPost.vue";
+import FbPost from "./FbPost.vue";
+import FbComment from "./FbComment.vue";
 import TweetAnotationButtons from "./TweetAnotationButtons.vue";
 import { getRandomTweets, updateInIndex, getRandomFBdata } from "../es.js";
 import HateSpeechDefinition from "./HateSpeechDefinition.vue";
-import FBComment from "./FBComment.vue";
 export default {
   components: {
     Tweet,
     HateSpeechDefinition,
     TweetAnotationButtons,
-    FBPost,
-    FBComment,
+    FbPost,
+    FbComment,
   },
   props: {
     user: Number,
@@ -124,36 +141,84 @@ export default {
       this.show_topics = true;
     },
     async handleIsNotHateSpeechPressed() {
-      await updateInIndex(
-        this.url + "/" + this.index,
-        this.auth,
-        this.tweet,
-        false
-      );
-      await getRandomTweets(
-        1,
-        this.url,
-        this.auth,
-        this.username_to_anotation
-      ).then((result) => (this.tweet = result[0]));
+      // handling not hate speech for tweet
+      if (this.twitter_mode) {
+        //updating tweet in index, setting is_hate_speech to false
+        await updateInIndex(
+          this.url + "/" + this.tweets_index + "/_doc/" + this.tweet.tweet_id,
+          this.auth,
+          this.tweet,
+          false
+        );
+        // getting new tweet
+        await getRandomTweets(
+          1,
+          this.url,
+          this.auth,
+          this.username_to_anotation
+        ).then((result) => (this.tweet = result[0]));
+
+        // handling not hate speech for facebook content
+      } else if (this.facebook_mode) {
+        // checking if comment or post
+        if (this.fb_post) {
+          // updating post in index, setting is_hate_speech to false
+          await updateInIndex(
+            this.url +
+              "/" +
+              this.fb_posts_index +
+              "/_doc/" +
+              this.fb_post.post_id,
+            this.auth,
+            this.fb_post,
+            false
+          ).then((_) => {
+            // getting new post
+            var indices = ["fb_posts", "fb_comments"];
+            var index = indices[Math.floor(Math.random() * indices.length)];
+
+            getRandomFBdata(
+              1,
+              this.url + "/" + index,
+              this.auth,
+              this.username_to_anotation
+            ).then((result) => {
+              this.tweet = null;
+              this.fb_comment = null;
+              this.fb_post = result[0];
+            });
+          });
+        } else if (this.fb_comment) {
+          // updating post in index, setting is_hate_speech to false
+          await updateInIndex(
+            this.url +
+              "/" +
+              this.fb_comments_index +
+              "/_doc/" +
+              this.fb_comment.comment_id,
+            this.auth,
+            this.fb_comment,
+            false
+          );
+          // getting new post
+          var indices = ["fb_posts", "fb_comments"];
+          var index = indices[Math.floor(Math.random() * indices.length)];
+
+          await getRandomFBdata(
+            1,
+            this.url + "/" + index,
+            this.auth,
+            this.username_to_anotation
+          ).then((result) => {
+            this.tweet = null;
+            this.fb_comment = null;
+            this.fb_post = result[0];
+          });
+        }
+      }
 
       this.show_reasons = false;
       this.show_topics = false;
-    },
-    async handleSkipTweetPressed() {
-      await getRandomTweets(
-        1,
-        this.url,
-        this.auth,
-        this.username_to_anotation
-      ).then((result) => (this.tweet = result[0]));
-
-      this.show_topics = false;
-      this.show_reasons = false;
-    },
-    handleNotSurePressed(data) {
-      this.show_topics = false;
-      this.show_reasons = true;
     },
     changeMode(mode) {
       if (mode == "twitter") {
@@ -165,53 +230,303 @@ export default {
       }
     },
 
+    async handleSkipTweetPressed() {
+      if (this.twitter_mode) {
+        this.fb_post = null;
+        this.fb_comment = null;
+        await getRandomTweets(
+          1,
+          this.url + "/" + this.tweets_index,
+          this.auth,
+          this.username_to_anotation
+        ).then((result) => (this.tweet = result[0]));
+      } else if (this.facebook_mode) {
+        // randomize between post and comment
+        var indices = ["fb_posts", "fb_comments"];
+        var index = indices[Math.floor(Math.random() * indices.length)];
+
+        await getRandomFBdata(
+          1,
+          this.url + "/" + index,
+          this.auth,
+          this.username_to_anotation
+        ).then((result) => {
+          this.tweet = null;
+          if (index == "fb_posts") {
+            this.fb_comment = null;
+            this.fb_post = result[0];
+          } else {
+            this.fb_comment = result[0];
+            this.fb_post = null;
+          }
+        });
+      }
+
+      this.show_topics = false;
+      this.show_reasons = false;
+    },
+    handleNotSurePressed(data) {
+      this.show_topics = false;
+      this.show_reasons = true;
+    },
+
     // processing tweet
     async processIsHateSpeech(data) {
-      var tweet = {
-        tweet_id: this.tweet.tweet_id,
-        author: this.tweet.author_username,
-        content: this.tweet.content,
-        date: (this.tweet.posted_utime * 1000).toString(),
-        topics: JSON.stringify(data.selected_topics),
-        other_topic: data.other_topic,
-        user_id: this.user,
-        is_hate_speech: true,
-      };
-      axios
-        .post("api/tweets", tweet)
-        .then((response) => console.log(response.data))
-        .catch((error) => console.error(error));
+      if (this.twitter_mode) {
+        // process tweet
 
-      await updateInIndex(
-        this.url + "/" + this.index,
-        this.auth,
-        this.tweet,
-        true
-      );
-      await getRandomTweets(1, this.url, this.auth).then(
-        (result) => (this.tweet = result[0])
-      );
+        var tweet = {
+          tweet_id: this.tweet.tweet_id,
+          author: this.tweet.author_username,
+          content: this.tweet.content,
+          date: (this.tweet.posted_utime * 1000).toString(),
+          topics: JSON.stringify(data.selected_topics),
+          other_topic: data.other_topic,
+          user_id: this.user,
+          is_hate_speech: true,
+          is_tweet: true,
+          is_facebook_post: false,
+          is_facebook_comment: false,
+          fb_url: null,
+          page_id: null,
+        };
+
+        axios
+          .post("api/tweets", tweet)
+          .then((response) => console.log(response.data))
+          .catch((error) => console.error(error));
+
+        await updateInIndex(
+          this.url + "/" + this.tweets_index + "/_doc/" + this.tweet.tweet_id,
+          this.auth,
+          this.tweet,
+          true
+        );
+
+        await getRandomTweets(
+          1,
+          this.url,
+          this.auth,
+          this.username_to_anotation
+        ).then((result) => (this.tweet = result[0]));
+      } else if (this.facebook_mode) {
+        // process facebook content
+
+        if (this.fb_post) {
+          var fbdata = {
+            tweet_id: this.fb_post.post_id.toString(),
+            author: this.fb_post.author_id,
+            content: this.fb_post.content,
+            date: (this.fb_post.date * 1000).toString(),
+            topics: JSON.stringify(data.selected_topics),
+            other_topic: data.other_topic,
+            user_id: this.user,
+            is_hate_speech: true,
+            is_facebook_post: true,
+            is_tweet: false,
+            is_facebook_comment: false,
+            fb_url:
+              "https://facebook.com/" +
+              this.fb_post.page_id +
+              "/posts/" +
+              this.fb_post.post_id,
+            page_id: this.fb_post.page_id,
+            page_name: this.fb_post.page_name,
+          };
+
+          axios
+            .post("api/tweets", fbdata)
+            .then((response) => console.log(response.data))
+            .catch((error) => console.error(error));
+
+          await updateInIndex(
+            this.url +
+              "/" +
+              this.fb_posts_index +
+              "/_doc/" +
+              this.fb_post.post_id,
+            this.auth,
+            this.fb_post,
+            true
+          );
+
+          await getRandomFBdata(
+            1,
+            this.url + "/" + this.fb_posts_index,
+            this.auth,
+            this.username_to_anotation
+          ).then((result) => {
+            this.tweet = null;
+            this.fb_comment = null;
+            this.fb_post = result[0];
+          });
+        } else if (this.fb_comment) {
+          var fbdata = {
+            tweet_id: this.fb_comment.comment_id.toString(),
+            author: this.fb_comment.author_id,
+            content: this.fb_comment.content,
+            date: (this.fb_comment.date * 1000).toString(),
+            topics: JSON.stringify(data.selected_topics),
+            other_topic: data.other_topic,
+            user_id: this.user,
+            is_hate_speech: true,
+            is_facebook_post: false,
+            is_tweet: false,
+            is_facebook_comment: true,
+            fb_url:
+              "https://facebook.com/" +
+              this.fb_comment.page_id +
+              "/posts/" +
+              this.fb_comment.original_post_id +
+              "/?comment_id=" +
+              data.comment_id,
+            page_id: this.fb_comment.page_id,
+            page_name: this.fb_comment.page_name,
+          };
+
+          axios
+            .post("api/tweets", fbdata)
+            .then((response) => console.log(response.data))
+            .catch((error) => console.error(error));
+
+          await updateInIndex(
+            this.url +
+              "/" +
+              this.fb_comments_index +
+              "/_doc/" +
+              this.fb_comment.comment_id,
+            this.auth,
+            this.fb_comment,
+            true
+          );
+
+          await getRandomFBdata(
+            1,
+            this.url + "/" + this.fb_comments_index,
+            this.auth,
+            this.username_to_anotation
+          ).then((result) => {
+            this.tweet = null;
+            this.fb_comment = result[0];
+            this.fb_post = null;
+          });
+        } else {
+          console.log("How did we get here?");
+        }
+      }
+
       this.show_topics = false;
     },
+
+    // processi when user is not sure if hate speech
     async processNotSure(data) {
-      var tweet = {
-        tweet_id: this.tweet.tweet_id,
-        author: this.tweet.author_username,
-        content: this.tweet.content,
-        date: (this.tweet.posted_utime * 1000).toString(),
-        topics: JSON.stringify([]),
-        not_sure_reason: data.not_sure_reason,
-        other_reason: data.other_reason,
-        user_id: this.user,
-        is_hate_speech: false,
-      };
-      axios
-        .post("api/tweets", tweet)
-        .then((response) => console.log(response.data))
-        .catch((error) => console.error(error));
-      await getRandomTweets(1, this.url, this.auth).then(
-        (result) => (this.tweet = result[0])
-      );
+      if (this.twitter_mode) {
+        var tweet = {
+          tweet_id: this.tweet.tweet_id,
+          author: this.tweet.author_username,
+          content: this.tweet.content,
+          date: (this.tweet.posted_utime * 1000).toString(),
+          topics: JSON.stringify([]),
+          not_sure_reason: data.not_sure_reason,
+          other_reason: data.other_reason,
+          user_id: this.user,
+          is_hate_speech: false,
+          is_facebook_post: false,
+          is_tweet: true,
+          is_facebook_comment: false,
+          fb_url: null,
+        };
+
+        axios
+          .post("api/tweets", tweet)
+          .then((response) => console.log(response.data))
+          .catch((error) => console.error(error));
+        await getRandomTweets(
+          1,
+          this.url,
+          this.auth,
+          this.username_to_anotation
+        ).then((result) => (this.tweet = result[0]));
+      } else {
+        if (this.fb_post) {
+          var fbdata = {
+            tweet_id: this.fb_post.post_id.toString(),
+            author: this.fb_post.author_id,
+            content: this.fb_post.content,
+            date: (this.fb_post.date * 1000).toString(),
+            topics: JSON.stringify([]),
+            not_sure_reason: data.not_sure_reason,
+            other_topic: data.other_topic,
+            user_id: this.user,
+            is_hate_speech: false,
+            is_facebook_post: true,
+            is_tweet: false,
+            is_facebook_comment: false,
+            fb_url:
+              "https://facebook.com/" +
+              this.fb_post.page_id +
+              "/posts/" +
+              this.fb_post.post_id,
+          };
+
+          axios
+            .post("api/tweets", fbdata)
+            .then((response) => console.log(response.data))
+            .catch((error) => console.error(error));
+
+          await getRandomFBdata(
+            1,
+            this.url + "/" + this.fb_posts_index,
+            this.auth,
+            this.username_to_anotation
+          ).then((result) => {
+            this.tweet = null;
+            this.fb_comment = null;
+            this.fb_post = result[0];
+          });
+        } else {
+          {
+            var fbdata = {
+              tweet_id: this.fb_comment.comment_id.toString(),
+              author: this.fb_comment.author_id,
+              content: this.fb_comment.content,
+              date: (this.fb_comment.date * 1000).toString(),
+              topics: JSON.stringify([]),
+              not_sure_reason: data.not_sure_reason,
+              other_topic: data.other_topic,
+              user_id: this.user,
+              is_hate_speech: false,
+              is_facebook_post: false,
+              is_tweet: false,
+              is_facebook_comment: true,
+              fb_url:
+                "https://facebook.com/" +
+                this.fb_comment.page_id +
+                "/posts/" +
+                this.fb_comment.original_post_id +
+                "/?comment_id=" +
+                data.comment_id,
+            };
+
+            axios
+              .post("api/tweets", fbdata)
+              .then((response) => console.log(response.data))
+              .catch((error) => console.error(error));
+
+            await getRandomFBdata(
+              1,
+              this.url + "/" + this.fb_comments_index,
+              this.auth,
+              this.username_to_anotation
+            ).then((result) => {
+              this.tweet = null;
+              this.fb_comment = result[0];
+              this.fb_post = null;
+            });
+          }
+        }
+      }
+
       this.show_reasons = false;
     },
   },
