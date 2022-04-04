@@ -20,7 +20,7 @@
         <div v-if="data.posted_utime">
           {{ new Date(data.posted_utime * 1000) }}
         </div>
-        <div v-else>{{ new Date(parseInt(data.date)) }}</div>
+        <div v-else>{{ new Date(parseInt(data.date * 1000)) }}</div>
       </h6>
       <p>{{ data.content }}</p>
       <div class="row">
