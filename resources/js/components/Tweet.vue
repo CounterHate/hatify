@@ -15,8 +15,28 @@
         <div v-else>{{ new Date(parseInt(data.date)) }}</div>
       </h6>
       <p>{{ data.content }}</p>
+      <div v-if="this.public_metrics">
+        <div class="row">
+          <div class="col-auto">
+            <b>Polubienia: </b>{{ this.public_metrics.like_count }}
+          </div>
+          <div class="col-auto">
+            <b>Odpowiedzi:</b> {{ this.public_metrics.reply_count }}
+          </div>
+          <div class="col-auto">
+            <b>Retweety:</b> {{ this.public_metrics.retweet_count }}
+          </div>
+          <div class="col-auto">
+            <b>Cytaty:</b> {{ this.public_metrics.quote_count }}
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <!-- show tweet button -->
+        <div class="col-auto padded">
+          <button class="btn btn-primary" @click="getStats">Statystyki</button>
+        </div>
         <div class="col-auto padded">
           <a
             :href="
@@ -87,6 +107,11 @@ export default {
     NotSureSelect,
   },
   emits: ["process_is_hate_speech", "process_not_sure"],
+  data() {
+    return {
+      public_metrics: null,
+    };
+  },
   methods: {
     async processNotSure(not_sure_reasons) {
       this.$emit("process_not_sure", {
@@ -99,6 +124,15 @@ export default {
         selected_topics: topics.selected_topics,
         other_topic: topics.other_topic,
       });
+    },
+    async getStats() {
+      await axios
+        .get("/tweetStats/" + this.data.tweet_id)
+        .then((response) => {
+          console.log(response.data.data.public_metrics);
+          this.public_metrics = response.data.data.public_metrics;
+        })
+        .catch((error) => {});
     },
   },
 };

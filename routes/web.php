@@ -1,9 +1,16 @@
 <?php
 
 use App\Models\Topic;
+use App\Models\Tweet;
 use App\Models\User;
+use Atymic\Twitter\Twitter as TwitterContract;
+use Atymic\Twitter\Facade\Twitter;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
+use function React\Promise\Stream\first;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,6 +65,20 @@ Route::middleware(['auth'])->name('userTweets')->prefix('/userTweets')->group(fu
     Route::get('/{media}/{username}', function ($media, $username) {
         return view('userTweets', ['username' => $username, 'media' => $media]);
     });
+});
+
+Route::get('/tweetStats/{tweet_id}', function ($tweet_id) {
+
+    $params = [
+        'place.fields' => '',
+        'tweet.fields' => 'public_metrics',
+        'expansions' => '',
+        TwitterContract::KEY_RESPONSE_FORMAT => TwitterContract::RESPONSE_FORMAT_JSON,
+    ];
+
+
+    $data = json_decode(Twitter::forApiV2()->getTweet($tweet_id, $params));
+    return $data;
 });
 
 

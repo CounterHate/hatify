@@ -22340,6 +22340,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     NotSureSelect: _NotSureSelect_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   emits: ["process_is_hate_speech", "process_not_sure"],
+  data: function data() {
+    return {
+      public_metrics: null
+    };
+  },
   methods: {
     processNotSure: function processNotSure(not_sure_reasons) {
       var _this = this;
@@ -22381,6 +22386,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         }, _callee2);
+      }))();
+    },
+    getStats: function getStats() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios.get("/tweetStats/" + _this3.data.tweet_id).then(function (response) {
+                  console.log(response.data.data.public_metrics);
+                  _this3.public_metrics = response.data.data.public_metrics;
+                })["catch"](function (error) {});
+
+              case 2:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
       }))();
     }
   }
@@ -24017,22 +24044,63 @@ var _hoisted_8 = {
   key: 1
 };
 var _hoisted_9 = {
-  "class": "row"
+  key: 2
 };
 var _hoisted_10 = {
+  "class": "row"
+};
+var _hoisted_11 = {
+  "class": "col-auto"
+};
+
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Polubienia: ", -1
+/* HOISTED */
+);
+
+var _hoisted_13 = {
+  "class": "col-auto"
+};
+
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Odpowiedzi:", -1
+/* HOISTED */
+);
+
+var _hoisted_15 = {
+  "class": "col-auto"
+};
+
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Retweety:", -1
+/* HOISTED */
+);
+
+var _hoisted_17 = {
+  "class": "col-auto"
+};
+
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Cytaty:", -1
+/* HOISTED */
+);
+
+var _hoisted_19 = {
+  "class": "row"
+};
+var _hoisted_20 = {
   "class": "col-auto padded"
 };
-var _hoisted_11 = ["href"];
-var _hoisted_12 = {
+var _hoisted_21 = {
+  "class": "col-auto padded"
+};
+var _hoisted_22 = ["href"];
+var _hoisted_23 = {
   key: 0,
   "class": "col-auto padded"
 };
-var _hoisted_13 = ["href"];
-var _hoisted_14 = {
+var _hoisted_24 = ["href"];
+var _hoisted_25 = {
   key: 1,
   "class": "col-auto padded"
 };
-var _hoisted_15 = ["href"];
+var _hoisted_26 = ["href"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_topic_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("topic-select");
 
@@ -24048,25 +24116,38 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.content), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show tweet button "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  ), this.public_metrics ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.public_metrics.like_count), 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.public_metrics.reply_count), 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.public_metrics.retweet_count), 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.public_metrics.quote_count), 1
+  /* TEXT */
+  )])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show tweet button "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary",
+    onClick: _cache[0] || (_cache[0] = function () {
+      return $options.getStats && $options.getStats.apply($options, arguments);
+    })
+  }, "Statystyki")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: 'https://twitter.com/' + $props.data.author_username + '/status/' + $props.data.tweet_id,
     "class": "btn btn-primary",
     target: "_blank"
   }, "Zobacz tweet", 8
   /* PROPS */
-  , _hoisted_11)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show tweets with similar content button "), this.verification_view || this.anotation_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  , _hoisted_22)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show tweets with similar content button "), this.verification_view || this.anotation_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: '/similar/twitter/' + $props.data.tweet_id,
     "class": "btn btn-primary",
     target: "_blank"
   }, "Zobacz podobne", 8
   /* PROPS */
-  , _hoisted_13)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show other tweets from this author button "), this.verification_view || this.anotation_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  , _hoisted_24)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show other tweets from this author button "), this.verification_view || this.anotation_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: '/userTweets/twitter/' + $props.data.author_username,
     "class": "btn btn-primary",
     target: "_blank"
   }, "Zobacz inne tweety tego uzytkownika", 8
   /* PROPS */
-  , _hoisted_15)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_topic_select, {
+  , _hoisted_26)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_topic_select, {
     show: $props.show_topics,
     onProcess_tweet_hate_speech: $options.processIsHateSpeech
   }, null, 8
