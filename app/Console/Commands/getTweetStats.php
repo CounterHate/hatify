@@ -58,8 +58,8 @@ class getTweetStats extends Command
             $t->reply_count = $d->public_metrics->reply_count;
             $t->retweet_count = $d->public_metrics->retweet_count;
             $t->like_count = $d->public_metrics->like_count;
-            $t->quote_count = 17;
-            // $t->quote_count = $d->public_metrics->quote_count;
+            // $t->quote_count = 17;
+            $t->quote_count = $d->public_metrics->quote_count;
             $t->save();
         }
         return Command::SUCCESS;
