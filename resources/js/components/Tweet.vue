@@ -112,6 +112,11 @@ export default {
       public_metrics: null,
     };
   },
+  watch: {
+    data(oldData, newData) {
+      this.public_metrics = null;
+    },
+  },
   methods: {
     async processNotSure(not_sure_reasons) {
       this.$emit("process_not_sure", {
