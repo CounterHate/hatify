@@ -342,6 +342,7 @@ export async function getSimilarTweets(url, auth, tweet_id, content) {
     if (content == null) {
         query = {
             query: {
+                size:100,
                 bool: {
                     must: [{
                             match: {
