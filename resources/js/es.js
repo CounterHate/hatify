@@ -4,7 +4,7 @@ export async function getRandomFBdata(size, url, auth, author_id) {
     var query;
     if (author_id) {
         query = {
-            size: 100,
+            size: size,
             query: {
                 function_score: {
                     random_score: {},
@@ -342,7 +342,6 @@ export async function getSimilarTweets(url, auth, tweet_id, content) {
     if (content == null) {
         query = {
             query: {
-                size: 100,
                 bool: {
                     must: [{
                             match: {
@@ -372,7 +371,7 @@ export async function getSimilarTweets(url, auth, tweet_id, content) {
 
     query = {
         query: {
-           size: 100,
+            size: 100,
             bool: {
                 must: [{
                         match: {
