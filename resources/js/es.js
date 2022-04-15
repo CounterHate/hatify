@@ -4,7 +4,7 @@ export async function getRandomFBdata(size, url, auth, author_id) {
     var query;
     if (author_id) {
         query = {
-            size: size,
+            size: 100,
             query: {
                 function_score: {
                     random_score: {},
