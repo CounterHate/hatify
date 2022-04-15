@@ -22345,6 +22345,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       public_metrics: null
     };
   },
+  watch: {
+    data: function data(oldData, newData) {
+      this.public_metrics = null;
+    }
+  },
   methods: {
     processNotSure: function processNotSure(not_sure_reasons) {
       var _this = this;
