@@ -370,8 +370,9 @@ export async function getSimilarTweets(url, auth, tweet_id, content) {
     }
 
     query = {
+        size: 100,
         query: {
-            size: 100,
+
             bool: {
                 must: [{
                         match: {
