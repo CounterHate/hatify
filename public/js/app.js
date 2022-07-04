@@ -21161,7 +21161,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     "Content-Type": "multipart/form-data"
                   }
                 }).then(function (response) {
-                  return _this.score = response.score;
+                  console.log(response);
+                  _this.score = response.data.score;
                 })["catch"](function (error) {
                   console.error(error);
                 });

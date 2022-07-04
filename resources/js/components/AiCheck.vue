@@ -59,7 +59,10 @@ export default {
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       })
-        .then((response) => (this.score = response.score))
+        .then((response) => {
+          console.log(response);
+          this.score = response.data.score;
+        })
         .catch((error) => {
           console.error(error);
         });
