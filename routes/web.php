@@ -34,6 +34,10 @@ Route::get('/', function () {
     return view('random', ['user' => Auth::user()]);
 })->middleware(['auth'])->name('/');
 
+Route::get('/aiCheck', function () {
+    return view('aiCheck', ['user' => Auth::user()]);
+})->middleware(['auth'])->name('/');
+
 Route::get('/verify', function () {
     return view('verify', ['user' => Auth::user()]);
 })->middleware(['auth'])->name('/verify');
