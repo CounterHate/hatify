@@ -26,7 +26,6 @@
   >
     Jest {{ this.score }} prawdopodobieństwa, ze treść zawiera mowę nienawiści
   </div>
-  
 </template>
 <script>
 import { getRandomTweets } from "../es.js";
@@ -43,6 +42,7 @@ export default {
         password: process.env.MIX_ES_PASS,
       },
       score: null,
+      url: "http://counterhate.info/api/evaluate",
     };
   },
   components: {
@@ -51,13 +51,12 @@ export default {
   methods: {
     getRandomTweets,
     async checkIfHateSpeech() {
-      this.score = "86%";
-      //   await axios
-      //     .post(url + "/evaluate", this.tweet.content)
-      //     .then((response) => console.log(response))
-      //     .catch((error) => {
-      //       console.error(error);
-      //     });
+      await axios
+        .post(this.url, this.tweet.content)
+        .then((response) => (this.score = response.score))
+        .catch((error) => {
+          console.error(error);
+        });
     },
     async getTweet() {
       await this.getRandomTweets(
