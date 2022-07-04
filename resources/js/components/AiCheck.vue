@@ -22,7 +22,7 @@
     v-if="this.score"
     class="alert alert-success"
     role="alert"
-    style="margin;top: 8px"
+    style="margin-top: 8px"
   >
     Jest {{ this.score }} prawdopodobieństwa, ze treść zawiera mowę nienawiści
   </div>
@@ -42,7 +42,7 @@ export default {
         password: process.env.MIX_ES_PASS,
       },
       score: null,
-      url: "http://counterhate.info/api/evaluate",
+      url: "https://counterhate.info/api2/evaluate",
     };
   },
   components: {
