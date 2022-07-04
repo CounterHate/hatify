@@ -42,7 +42,7 @@ export default {
         password: process.env.MIX_ES_PASS,
       },
       score: null,
-      url: "https://counterhate.info/api2/evaluate",
+      api_url: "https://counterhate.info/api2/evaluate",
     };
   },
   components: {
@@ -51,8 +51,14 @@ export default {
   methods: {
     getRandomTweets,
     async checkIfHateSpeech() {
-      await axios
-        .post(this.url, this.tweet.content)
+      var formData = new FormData();
+      formData.append("text", this.tweet.content);
+      await axios({
+        method: "post",
+        url: this.api_url,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
         .then((response) => (this.score = response.score))
         .catch((error) => {
           console.error(error);
