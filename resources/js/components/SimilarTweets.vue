@@ -1,53 +1,51 @@
 <template>
+
+  <!-- form to pick view mode twitter/fb -->
   <div class="form-check" style="margin-top: 16px">
-    <input
-      v-if="this.media == 'twitter'"
-      class="form-check-input"
-      type="radio"
-      @click="changeMode('twitter')"
-      name="modeRadio"
-      checked
-    />
-    <input
-      v-else
-      class="form-check-input"
-      type="radio"
-      @click="changeMode('twitter')"
-      name="modeRadio"
-    />
+    <input v-if="this.media == 'twitter'" class="form-check-input" type="radio" @click="changeMode('twitter')"
+      name="modeRadio" checked />
+    <input v-else class="form-check-input" type="radio" @click="changeMode('twitter')" name="modeRadio" />
     <label class="form-check-label"> Twitter </label>
   </div>
   <div class="form-check">
-    <input
-      v-if="this.media == 'facebook'"
-      class="form-check-input"
-      type="radio"
-      @click="changeMode('facebook')"
-      name="modeRadio"
-      checked
-    />
-    <input
-      v-else
-      class="form-check-input"
-      type="radio"
-      @click="changeMode('facebook')"
-      name="modeRadio"
-    />
+    <input v-if="this.media == 'facebook'" class="form-check-input" type="radio" @click="changeMode('facebook')"
+      name="modeRadio" checked />
+    <input v-else class="form-check-input" type="radio" @click="changeMode('facebook')" name="modeRadio" />
     <label class="form-check-label"> Facebook </label>
   </div>
-  <div class="input-group mb-3">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Treść do wyszukania"
-      v-model="content_to_search"
-      v-on:keyup.enter="getQueryTweets"
-    />
-    <span class="input-group-text" id="basic-addon2"
-      ><button class="btn btn-clear" @click="getQueryTweets">
-        <i class="bi bi-search"></i></button
-    ></span>
+
+  <!-- form to pick data order -->
+
+  <div class="form-check" style="margin-top: 16px">
+    <label>Sortuj</label>
+    <select class="form-select" v-model="sortOrder" @change="sortTweets">
+      <option v-for="option in this.sortOptions" :value="option.value"> {{ option.text }}</option>
+    </select>
   </div>
+
+  <!-- form to pick data order -->
+
+  <div class="form-check" style="margin-top: 16px">
+    <label>Ile wpisów zwrócić</label>
+    <select class="form-select" v-model="size">
+      <option selected value="10">10</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="500">500</option>
+      <option value="1000">1000</option>
+      <option value="10000">10000</option>
+    </select>
+  </div>
+
+  <!-- form for text to search -->
+  <div class="input-group mb-3" style="margin-top: 16px">
+    <input type="text" class="form-control" placeholder="Treść do wyszukania" v-model="content_to_search"
+      v-on:keyup.enter="getQueryTweets" />
+    <span class="input-group-text" id="basic-addon2"><button class="btn btn-clear" @click="getQueryTweets">
+        <i class="bi bi-search"></i></button></span>
+  </div>
+
+  <!-- results -->
   <div class="d-flex justify-content-center" v-if="is_loading">
     <div class="spinner-border" role="status">
       <span class="sr-only"></span>
@@ -56,27 +54,21 @@
   <div v-if="this.no_results == true">
     Brak wyników dla treści "{{ this.content_to_search }}"
   </div>
+
+  <!-- render tweets -->
   <div v-if="twitter_mode">
-    <tweet v-for="t in this.tweets" :key="t" :data="t"></tweet>
+    <tweet v-for="(t, index) in this.tweets" :key="index" :data="t"></tweet>
   </div>
   <div v-else>
+
+    <!-- render fb posts and comments -->
     <div v-if="this.fb_posts.length > 0">
-      <fb-post
-        v-for="p in this.fb_posts"
-        :key="p"
-        :data="p"
-        :anotation_view="false"
-        :verification_view="false"
-      ></fb-post>
+      <fb-post v-for="p in this.fb_posts" :key="p" :data="p" :anotation_view="false" :verification_view="false">
+      </fb-post>
     </div>
     <div v-if="this.fb_comments.length > 0">
-      <fb-comment
-        v-for="c in this.fb_comments"
-        :key="c"
-        :data="c"
-        :anotation_view="false"
-        :verification_view="false"
-      ></fb-comment>
+      <fb-comment v-for="c in this.fb_comments" :key="c" :data="c" :anotation_view="false" :verification_view="false">
+      </fb-comment>
     </div>
   </div>
 </template>
@@ -84,7 +76,7 @@
 import Tweet from "./Tweet.vue";
 import FbPost from "./FbPost.vue";
 import FbComment from "./FbComment.vue";
-import { getSimilarTweets, getSimilarFbData } from "../es.js";
+import { getSimilarTweets, getSimilarFbData, sortData } from "../es.js";
 export default {
   props: { data_id: String, media: String },
   components: { Tweet, FbPost, FbComment },
@@ -106,6 +98,12 @@ export default {
       content_to_search: null,
       is_loading: false,
       no_results: false,
+      sortOrder: null,
+      sortOptions: [
+        { value: 'ascending', text: 'Od najstarszych' },
+        { value: 'descending', text: 'Od najnowszych' }
+      ],
+      size: 10,
     };
   },
   methods: {
@@ -128,9 +126,10 @@ export default {
             this.url + "/" + this.tweets_index,
             this.auth,
             null,
-            this.content_to_search
+            this.content_to_search,
+            this.size
           ).then((data) => {
-            this.tweets = data;
+            this.tweets = sortData(data, this.sortOrder);
             if (this.tweets.length == 0) {
               this.no_results = true;
             } else {
@@ -172,6 +171,11 @@ export default {
         }
       }
     },
+    sortTweets() {
+      console.log('sorting')
+      if (this.sortOrder == 'ascending') this.tweets = sortData(this.tweets, false)
+      if (this.sortOrder == 'descending') this.tweets = sortData(this.tweets, true)
+    },
   },
 
   async mounted() {
@@ -187,9 +191,10 @@ export default {
           this.url + "/" + this.tweets_index,
           this.auth,
           this.data_id,
-          null
+          null,
+          this.size
         ).then((data) => {
-          this.tweets = data;
+          this.tweets = sortData(data, this.sortOrder);
           if (this.tweets.length == 0) {
             this.no_results = true;
           } else {

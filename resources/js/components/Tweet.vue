@@ -10,7 +10,7 @@
       </h5>
       <h6 class="card-subtitle mb-2 text-muted">
         <div v-if="data.posted_utime">
-          {{ new Date(data.posted_utime * 1000) }}
+          {{ new Date(+data.posted_utime) }}
         </div>
         <div v-else>{{ new Date(parseInt(data.date)) }}</div>
       </h6>
@@ -38,52 +38,26 @@
           <button class="btn btn-primary" @click="getStats">Statystyki</button>
         </div>
         <div class="col-auto padded">
-          <a
-            :href="
-              'https://twitter.com/' +
-              data.author_username +
-              '/status/' +
-              data.tweet_id
-            "
-            class="btn btn-primary"
-            target="_blank"
-            >Zobacz tweet</a
-          >
+          <a :href="
+            'https://twitter.com/' +
+            data.author_username +
+            '/status/' +
+            data.tweet_id
+          " class="btn btn-primary" target="_blank">Zobacz tweet</a>
         </div>
         <!-- show tweets with similar content button -->
-        <div
-          class="col-auto padded"
-          v-if="this.verification_view || this.anotation_view"
-        >
-          <a
-            :href="'/similar/twitter/' + data.tweet_id"
-            class="btn btn-primary"
-            target="_blank"
-            >Zobacz podobne</a
-          >
+        <div class="col-auto padded" v-if="this.verification_view || this.anotation_view">
+          <a :href="'/similar/twitter/' + data.tweet_id" class="btn btn-primary" target="_blank">Zobacz podobne</a>
         </div>
         <!-- show other tweets from this author button -->
-        <div
-          class="col-auto padded"
-          v-if="this.verification_view || this.anotation_view"
-        >
-          <a
-            :href="'/userTweets/twitter/' + data.author_username"
-            class="btn btn-primary"
-            target="_blank"
-            >Zobacz inne tweety tego uzytkownika</a
-          >
+        <div class="col-auto padded" v-if="this.verification_view || this.anotation_view">
+          <a :href="'/userTweets/twitter/' + data.author_username" class="btn btn-primary" target="_blank">Zobacz inne
+            tweety tego uzytkownika</a>
         </div>
       </div>
 
-      <topic-select
-        :show="show_topics"
-        @process_tweet_hate_speech="processIsHateSpeech"
-      ></topic-select>
-      <not-sure-select
-        :show="show_reasons"
-        @process_not_sure="processNotSure"
-      ></not-sure-select>
+      <topic-select :show="show_topics" @process_tweet_hate_speech="processIsHateSpeech"></topic-select>
+      <not-sure-select :show="show_reasons" @process_not_sure="processNotSure"></not-sure-select>
     </div>
   </div>
 </template>
@@ -137,8 +111,8 @@ export default {
           console.log(response.data.data.public_metrics);
           this.public_metrics = response.data.data.public_metrics;
         })
-        .catch((error) => {});
-    },
+        .catch((error) => { });
+    }
   },
 };
 </script>

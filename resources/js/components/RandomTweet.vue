@@ -7,32 +7,17 @@
       <!-- choose between fb and tt -->
 
       <div class="form-check" style="margin-top: 16px">
-        <input
-          class="form-check-input"
-          type="radio"
-          @click="changeMode('twitter')"
-          name="modeRadio"
-          checked
-        />
+        <input class="form-check-input" type="radio" @click="changeMode('twitter')" name="modeRadio" checked />
         <label class="form-check-label"> Twitter </label>
       </div>
       <div class="form-check">
-        <input
-          class="form-check-input"
-          type="radio"
-          @click="changeMode('facebook')"
-          name="modeRadio"
-        />
+        <input class="form-check-input" type="radio" @click="changeMode('facebook')" name="modeRadio" />
         <label class="form-check-label"> Facebook </label>
       </div>
       <label class="form-label">Konto do anotowania</label>
       <div class="row">
         <div class="col">
-          <input
-            type="text"
-            class="form-control"
-            v-model="username_to_anotation"
-          />
+          <input type="text" class="form-control" v-model="username_to_anotation" />
         </div>
         <div class="col-auto">
           <button class="btn btn-primary" @click="handleSkipTweetPressed">
@@ -42,43 +27,21 @@
       </div>
 
       <!-- display data -->
-      <tweet
-        v-if="this.tweet != null"
-        :data="this.tweet"
-        :show_reasons="this.show_reasons"
-        :show_topics="this.show_topics"
-        :anotation_view="true"
-        :verification_view="false"
-        @process_is_hate_speech="processIsHateSpeech"
-        @process_not_sure="processNotSure"
-      ></tweet>
+      <tweet v-if="this.tweet != null" :data="this.tweet" :show_reasons="this.show_reasons"
+        :show_topics="this.show_topics" :anotation_view="true" :verification_view="false"
+        @process_is_hate_speech="processIsHateSpeech" @process_not_sure="processNotSure"></tweet>
 
-      <fb-post
-        v-if="this.fb_post != null"
-        :data="this.fb_post"
-        :show_topics="this.show_topics"
-        :show_reasons="this.show_reasons"
-        :anotation_view="true"
-        @process_is_hate_speech="processIsHateSpeech"
-        @process_not_sure="processNotSure"
-      ></fb-post>
+      <fb-post v-if="this.fb_post != null" :data="this.fb_post" :show_topics="this.show_topics"
+        :show_reasons="this.show_reasons" :anotation_view="true" @process_is_hate_speech="processIsHateSpeech"
+        @process_not_sure="processNotSure"></fb-post>
 
-      <fb-comment
-        v-if="this.fb_comment != null"
-        :data="this.fb_comment"
-        :show_topics="this.show_topics"
-        :show_reasons="this.show_reasons"
-        :anotation_view="true"
-        @process_is_hate_speech="processIsHateSpeech"
-        @process_not_sure="processNotSure"
-      ></fb-comment>
+      <fb-comment v-if="this.fb_comment != null" :data="this.fb_comment" :show_topics="this.show_topics"
+        :show_reasons="this.show_reasons" :anotation_view="true" @process_is_hate_speech="processIsHateSpeech"
+        @process_not_sure="processNotSure"></fb-comment>
 
-      <tweet-anotation-buttons
-        @is_hate_speech_pressed="handleIsHateSpeechPressed"
-        @is_not_hate_speech_pressed="handleIsNotHateSpeechPressed"
-        @skip_tweet_pressed="handleSkipTweetPressed"
-        @not_sure_pressed="handleNotSurePressed"
-      ></tweet-anotation-buttons>
+      <tweet-anotation-buttons @is_hate_speech_pressed="handleIsHateSpeechPressed"
+        @is_not_hate_speech_pressed="handleIsNotHateSpeechPressed" @skip_tweet_pressed="handleSkipTweetPressed"
+        @not_sure_pressed="handleNotSurePressed"></tweet-anotation-buttons>
     </div>
   </div>
 </template>
@@ -165,10 +128,10 @@ export default {
           // updating post in index, setting is_hate_speech to false
           await updateInIndex(
             this.url +
-              "/" +
-              this.fb_posts_index +
-              "/_doc/" +
-              this.fb_post.post_id,
+            "/" +
+            this.fb_posts_index +
+            "/_doc/" +
+            this.fb_post.post_id,
             this.auth,
             this.fb_post,
             false
@@ -192,10 +155,10 @@ export default {
           // updating post in index, setting is_hate_speech to false
           await updateInIndex(
             this.url +
-              "/" +
-              this.fb_comments_index +
-              "/_doc/" +
-              this.fb_comment.comment_id,
+            "/" +
+            this.fb_comments_index +
+            "/_doc/" +
+            this.fb_comment.comment_id,
             this.auth,
             this.fb_comment,
             false
@@ -341,10 +304,10 @@ export default {
 
           await updateInIndex(
             this.url +
-              "/" +
-              this.fb_posts_index +
-              "/_doc/" +
-              this.fb_post.post_id,
+            "/" +
+            this.fb_posts_index +
+            "/_doc/" +
+            this.fb_post.post_id,
             this.auth,
             this.fb_post,
             true
@@ -391,10 +354,10 @@ export default {
 
           await updateInIndex(
             this.url +
-              "/" +
-              this.fb_comments_index +
-              "/_doc/" +
-              this.fb_comment.comment_id,
+            "/" +
+            this.fb_comments_index +
+            "/_doc/" +
+            this.fb_comment.comment_id,
             this.auth,
             this.fb_comment,
             true
@@ -533,4 +496,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>
