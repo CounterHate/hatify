@@ -9,11 +9,11 @@
                     <a class="nav-link" aria-current="page" href="/search">Szukaj</a>
                 </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/similar/twitter ">Szukaj podobnej treści</a>
+                    <a class="nav-link" aria-current="page" href="/search/twitter ">Szukaj</a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/userTweets/twitter ">Szukaj innych autora</a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/">Anotacja</a>
                 </li>

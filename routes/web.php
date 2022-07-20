@@ -22,14 +22,6 @@ use function React\Promise\Stream\first;
 |
 */
 
-// Route::get('/index', function () {
-//     return view('index', ['user' => Auth::user()]);
-// })->middleware(['auth'])->name('/index');
-
-// Route::get('/search', function () {
-//     return view('search', ['user' => Auth::user()]);
-// })->middleware(['auth'])->name('/search');
-
 Route::get('/', function () {
     return view('random', ['user' => Auth::user()]);
 })->middleware(['auth'])->name('/');
@@ -52,13 +44,17 @@ Route::get('/dashboard', function () {
 
 
 
-Route::middleware(['auth'])->name('similar')->prefix('/similar')->group(function () {
+Route::middleware(['auth'])->name('search')->prefix('/search')->group(function () {
     Route::get('/{media}', function ($media) {
-        return view('similar', ['data_id' => null, 'media' => $media]);
+        return view('search', ['data_id' => null, 'media' => $media]);
     });
 
-    Route::get('/{media}/{data_id}', function ($media, $data_id) {
-        return view('similar', ['data_id' => $data_id, 'media' => $media]);
+    Route::get('/{media}/data_id={data_id}', function ($media, $data_id) {
+        return view('search', ['data_id' => $data_id, 'media' => $media]);
+    });
+
+    Route::get('/{media}/author_username={author_username}', function ($media, $author_username) {
+        return view('search', ['author_username' => $author_username, 'media' => $media]);
     });
 });
 

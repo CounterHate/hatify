@@ -42,7 +42,9 @@ export default {
         password: process.env.MIX_ES_PASS,
       },
       score: null,
-      api_url: "https://counterhate.info/api2/evaluate",
+      // api_url: "https://counterhate.info/api2/evaluate",
+      api_url: "http://127.0.0.1:5000/evaluate"
+
     };
   },
   components: {

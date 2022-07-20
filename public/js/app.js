@@ -21133,7 +21133,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         password: "hohC2wix"
       },
       score: null,
-      api_url: "https://counterhate.info/api2/evaluate"
+      // api_url: "https://counterhate.info/api2/evaluate",
+      api_url: "http://127.0.0.1:5000/evaluate"
     };
   },
   components: {
@@ -21980,6 +21981,265 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SearchContent.vue?vue&type=script&lang=js":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SearchContent.vue?vue&type=script&lang=js ***!
+  \*******************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Tweet_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tweet.vue */ "./resources/js/components/Tweet.vue");
+/* harmony import */ var _FbPost_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FbPost.vue */ "./resources/js/components/FbPost.vue");
+/* harmony import */ var _FbComment_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FbComment.vue */ "./resources/js/components/FbComment.vue");
+/* harmony import */ var _es_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../es.js */ "./resources/js/es.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    data_id: String,
+    media: String,
+    author: String
+  },
+  components: {
+    Tweet: _Tweet_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    FbPost: _FbPost_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    FbComment: _FbComment_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
+  data: function data() {
+    return {
+      url: "https://es.dc9.dev:9200",
+      tweets_index: "tweets",
+      fb_posts_index: "fb_posts",
+      fb_comments_index: "fb_comments",
+      auth: {
+        username: "dc9",
+        password: "hohC2wix"
+      },
+      tweets: [],
+      fb_posts: [],
+      fb_comments: [],
+      content: null,
+      author_username: null,
+      is_loading: false,
+      no_results: false,
+      sortOrder: null,
+      sortOptions: [{
+        value: 'ascending',
+        text: 'Od najstarszych'
+      }, {
+        value: 'descending',
+        text: 'Od najnowszych'
+      }],
+      size: 10,
+      sizeOptions: [{
+        value: '10',
+        text: '10'
+      }, {
+        value: '50',
+        text: '50'
+      }, {
+        value: '100',
+        text: '100'
+      }, {
+        value: '500',
+        text: '500'
+      }, {
+        value: '1000',
+        text: '1000'
+      }, {
+        value: '5000',
+        text: '5000'
+      }, {
+        value: '10000',
+        text: '10000'
+      }],
+      media_chosen: 'twitter',
+      mediaOptions: [{
+        value: 'twitter',
+        text: 'twitter'
+      }, {
+        value: 'facebook',
+        text: 'facebook'
+      }]
+    };
+  },
+  methods: {
+    getTweets: _es_js__WEBPACK_IMPORTED_MODULE_4__.getTweets,
+    getFbData: _es_js__WEBPACK_IMPORTED_MODULE_4__.getFbData,
+    sortData: function sortData() {
+      if (this.media_chosen == 'facebook') {
+        if (this.sortOrder == 'ascending') {
+          this.fb_posts.sort(function (a, b) {
+            return a.date > b.date ? 1 : -1;
+          });
+          this.fb_comments.sort(function (a, b) {
+            return a.date > b.date ? 1 : -1;
+          });
+        }
+
+        if (this.sortOrder == 'descending') {
+          this.fb_posts.sort(function (a, b) {
+            return a.date < b.date ? 1 : -1;
+          });
+          this.fb_comments.sort(function (a, b) {
+            return a.date < b.date ? 1 : -1;
+          });
+        }
+      }
+
+      if (this.media_chosen == 'twitter') {
+        if (this.sortOrder == 'ascending') this.tweets.sort(function (a, b) {
+          return a.posted_utime > b.posted_utime ? 1 : -1;
+        });
+        if (this.sortOrder == 'descending') this.tweets.sort(function (a, b) {
+          return a.posted_utime < b.posted_utime ? 1 : -1;
+        });
+      }
+    },
+    getData: function getData() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(_this.media_chosen == 'twitter')) {
+                  _context.next = 4;
+                  break;
+                }
+
+                _this.is_loading = true;
+                _context.next = 4;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.getTweets)(_this.url + "/" + _this.tweets_index, _this.auth, _this.size, _this.content, _this.author_username).then(function (data) {
+                  _this.tweets = data;
+
+                  _this.sortData(data, _this.sortOrder, _this.media_chosen);
+
+                  if (_this.tweets.length == 0) {
+                    _this.no_results = true;
+                  } else {
+                    _this.no_results = false;
+                  }
+
+                  _this.is_loading = false;
+                })["catch"](function (error) {
+                  console.log(error);
+                });
+
+              case 4:
+                if (!(_this.media_chosen == 'facebook')) {
+                  _context.next = 12;
+                  break;
+                }
+
+                console.log("getting fb posts");
+                _context.next = 8;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.getFbData)(_this.url + "/" + _this.fb_posts_index, _this.auth, _this.size, _this.content, _this.author_username).then(function (data) {
+                  _this.fb_posts = data;
+                });
+
+              case 8:
+                console.log("getting fb comments");
+                _context.next = 11;
+                return (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.getFbData)(_this.url + "/" + _this.fb_comments_index, _this.auth, _this.size, _this.content, _this.author_username).then(function (data) {
+                  _this.fb_comments = data;
+                });
+
+              case 11:
+                if (_this.fb_posts.length == 0 && _this.fb_comments.length == 0) {
+                  _this.no_results = true;
+                } else {
+                  _this.no_results = false;
+                }
+
+              case 12:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _this2.media_chosen = _this2.media;
+              _this2.author_username = _this2.author;
+
+              if (!_this2.data_id) {
+                _context2.next = 12;
+                break;
+              }
+
+              if (!(_this2.media_chosen == 'twitter')) {
+                _context2.next = 6;
+                break;
+              }
+
+              _context2.next = 6;
+              return (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.getTweet)(_this2.url + "/" + _this2.tweets_index, _this2.auth, _this2.data_id).then(function (data) {
+                _this2.content = data.content;
+              });
+
+            case 6:
+              if (!(_this2.media_chosen == 'facebook')) {
+                _context2.next = 12;
+                break;
+              }
+
+              _context2.next = 9;
+              return (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.getFbRecord)(_this2.url + "/" + _this2.fb_posts_index, 'fb_post', _this2.auth, _this2.data_id).then(function (data) {
+                if (data) _this2.content = data.content;
+              });
+
+            case 9:
+              if (!(_this2.content == null)) {
+                _context2.next = 12;
+                break;
+              }
+
+              _context2.next = 12;
+              return (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.getFbRecord)(_this2.url + "/" + _this2.fb_comments_index, 'fb_comment', _this2.auth, _this2.data_id).then(function (data) {
+                if (data) _this2.content = data.content;
+              });
+
+            case 12:
+              _context2.next = 14;
+              return _this2.getData();
+
+            case 14:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ShowTweets.vue?vue&type=script&lang=js":
 /*!****************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ShowTweets.vue?vue&type=script&lang=js ***!
@@ -22131,254 +22391,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SimilarTweets.vue?vue&type=script&lang=js":
-/*!*******************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SimilarTweets.vue?vue&type=script&lang=js ***!
-  \*******************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Tweet_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tweet.vue */ "./resources/js/components/Tweet.vue");
-/* harmony import */ var _FbPost_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FbPost.vue */ "./resources/js/components/FbPost.vue");
-/* harmony import */ var _FbComment_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FbComment.vue */ "./resources/js/components/FbComment.vue");
-/* harmony import */ var _es_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../es.js */ "./resources/js/es.js");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: {
-    data_id: String,
-    media: String
-  },
-  components: {
-    Tweet: _Tweet_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    FbPost: _FbPost_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    FbComment: _FbComment_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
-  },
-  data: function data() {
-    return {
-      url: "https://es.dc9.dev:9200",
-      tweets_index: "tweets",
-      fb_posts_index: "fb_posts",
-      fb_comments_index: "fb_comments",
-      auth: {
-        username: "dc9",
-        password: "hohC2wix"
-      },
-      tweets: [],
-      fb_posts: [],
-      fb_comments: [],
-      twitter_mode: true,
-      facebook_mode: false,
-      content_to_search: null,
-      is_loading: false,
-      no_results: false,
-      sortOrder: null,
-      sortOptions: [{
-        value: 'ascending',
-        text: 'Od najstarszych'
-      }, {
-        value: 'descending',
-        text: 'Od najnowszych'
-      }],
-      size: 10
-    };
-  },
-  methods: {
-    getSimilarTweets: _es_js__WEBPACK_IMPORTED_MODULE_4__.getSimilarTweets,
-    getSimilarFbData: _es_js__WEBPACK_IMPORTED_MODULE_4__.getSimilarFbData,
-    changeMode: function changeMode(mode) {
-      if (mode == "twitter") {
-        this.twitter_mode = true;
-        this.facebook_mode = false;
-      } else {
-        this.facebook_mode = true;
-        this.twitter_mode = false;
-      }
-    },
-    getQueryTweets: function getQueryTweets() {
-      var _this = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var indices, index;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (!_this.content_to_search) {
-                  _context.next = 12;
-                  break;
-                }
-
-                if (!_this.twitter_mode) {
-                  _context.next = 7;
-                  break;
-                }
-
-                console.log("getting twitter content");
-                _context.next = 5;
-                return (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.getSimilarTweets)(_this.url + "/" + _this.tweets_index, _this.auth, null, _this.content_to_search, _this.size).then(function (data) {
-                  _this.tweets = (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.sortData)(data, _this.sortOrder);
-
-                  if (_this.tweets.length == 0) {
-                    _this.no_results = true;
-                  } else {
-                    _this.no_results = false;
-                  }
-
-                  _this.is_loading = false;
-                });
-
-              case 5:
-                _context.next = 12;
-                break;
-
-              case 7:
-                console.log("getting fb content");
-                indices = [_this.fb_posts_index, _this.fb_comments_index];
-                index = indices[Math.floor(Math.random() * indices.length)];
-                _context.next = 12;
-                return (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.getSimilarFbData)(_this.url + "/" + index, _this.auth, null, _this.content_to_search, index).then(function (data) {
-                  _this.fb_posts = [];
-                  _this.fb_comments = [];
-                  data.forEach(function (d) {
-                    if (index == _this.fb_posts_index) {
-                      _this.fb_posts.push(d);
-
-                      if (_this.fb_posts.length == 0) {
-                        _this.no_results = true;
-                      } else {
-                        _this.no_results = false;
-                      }
-                    } else {
-                      _this.fb_comments.push(d);
-
-                      if (_this.fb_comments.length == 0) {
-                        _this.no_results = true;
-                      } else {
-                        _this.no_results = false;
-                      }
-                    }
-                  });
-                });
-
-              case 12:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
-    sortTweets: function sortTweets() {
-      console.log('sorting');
-      if (this.sortOrder == 'ascending') this.tweets = (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.sortData)(this.tweets, false);
-      if (this.sortOrder == 'descending') this.tweets = (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.sortData)(this.tweets, true);
-    }
-  },
-  mounted: function mounted() {
-    var _this2 = this;
-
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-      var indices, index;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              console.log(_this2.media);
-
-              if (_this2.media != "twitter") {
-                _this2.facebook_mode = true;
-                _this2.twitter_mode = false;
-              }
-
-              if (!_this2.twitter_mode) {
-                _context2.next = 9;
-                break;
-              }
-
-              if (!_this2.data_id) {
-                _context2.next = 7;
-                break;
-              }
-
-              _this2.is_loading = true;
-              _context2.next = 7;
-              return (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.getSimilarTweets)(_this2.url + "/" + _this2.tweets_index, _this2.auth, _this2.data_id, null, _this2.size).then(function (data) {
-                _this2.tweets = (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.sortData)(data, _this2.sortOrder);
-
-                if (_this2.tweets.length == 0) {
-                  _this2.no_results = true;
-                } else {
-                  _this2.no_results = false;
-                }
-
-                _this2.is_loading = false;
-              });
-
-            case 7:
-              _context2.next = 15;
-              break;
-
-            case 9:
-              if (!_this2.data_id) {
-                _context2.next = 15;
-                break;
-              }
-
-              _this2.is_loading = true;
-              indices = [_this2.fb_posts_index, _this2.fb_comments_index];
-              index = indices[Math.floor(Math.random() * indices.length)];
-              _context2.next = 15;
-              return (0,_es_js__WEBPACK_IMPORTED_MODULE_4__.getSimilarFbData)(_this2.url, _this2.auth, _this2.data_id, null, index).then(function (data) {
-                _this2.is_loading = false;
-                console.log("vue data:", data);
-                data.forEach(function (d) {
-                  if (index == _this2.fb_posts_index) {
-                    _this2.fb_posts.push(d);
-
-                    if (_this2.fb_posts.length == 0) {
-                      _this2.no_results = true;
-                    } else {
-                      _this2.no_results = false;
-                    }
-                  } else {
-                    _this2.fb_comments.push(d);
-
-                    if (_this2.fb_comments.length == 0) {
-                      _this2.no_results = true;
-                    } else {
-                      _this2.no_results = false;
-                    }
-                  }
-                });
-              });
-
-            case 15:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }))();
   }
 });
 
@@ -23426,15 +23438,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", null, "Fanpage: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.page_name), 1
   /* TEXT */
-  ), $props.anotation_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    href: 'https://facebook.com/' + $props.data.author_id,
-    target: "_blank"
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.author_id), 9
-  /* TEXT, PROPS */
-  , _hoisted_6)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  ), $props.verification_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: 'https://facebook.com/' + $props.data.author,
     target: "_blank"
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.author), 9
+  /* TEXT, PROPS */
+  , _hoisted_6)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h5", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    href: 'https://facebook.com/' + $props.data.author_id,
+    target: "_blank"
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.data.author_id), 9
   /* TEXT, PROPS */
   , _hoisted_9)])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_10, [$props.data.posted_utime ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(new Date($props.data.posted_utime * 1000)), 1
   /* TEXT */
@@ -23464,13 +23476,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_18)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.anotation_view || this.verification_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show similar content "), $props.data.page_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
     key: 0,
-    href: '/similar/facebook/' + $props.data.comment_id,
+    href: '/search/facebook/data_id=' + $props.data.comment_id,
     "class": "btn btn-primary",
     target: "_blank"
   }, "Zobacz podobne", 8
   /* PROPS */
   , _hoisted_20)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.anotation_view || this.verification_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show other content from user "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    href: '/userTweets/facebook/' + $props.data.author_id,
+    href: '/search/facebook/author_username=' + $props.data.author_id,
     "class": "btn btn-primary",
     target: "_blank"
   }, "Zobacz inne posty użytkownika", 8
@@ -23603,13 +23615,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, "Zobacz post", 8
   /* PROPS */
   , _hoisted_16)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.anotation_view || this.verification_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show similar content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    href: '/similar/facebook/' + $props.data.post_id,
+    href: '/search/facebook/data_id=' + $props.data.post_id,
     "class": "btn btn-primary",
     target: "_blank"
   }, "Zobacz podobne", 8
   /* PROPS */
   , _hoisted_18)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.anotation_view || this.verification_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show other content from user "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    href: '/userTweets/facebook/' + $props.data.author_id,
+    href: '/search/facebook/author_username=' + $props.data.author_id,
     "class": "btn btn-primary",
     target: "_blank"
   }, "Zobacz inne posty użytkownika", 8
@@ -23878,6 +23890,284 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SearchContent.vue?vue&type=template&id=757b14d6":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SearchContent.vue?vue&type=template&id=757b14d6 ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+var _hoisted_1 = {
+  "class": "row"
+};
+var _hoisted_2 = {
+  "class": "col"
+};
+var _hoisted_3 = {
+  "class": "form-check",
+  style: {
+    "padding-left": "0px"
+  }
+};
+
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Sortuj", -1
+/* HOISTED */
+);
+
+var _hoisted_5 = ["value"];
+var _hoisted_6 = {
+  "class": "col"
+};
+var _hoisted_7 = {
+  "class": "form-check",
+  style: {
+    "padding-left": "0px"
+  }
+};
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Sortuj", -1
+/* HOISTED */
+);
+
+var _hoisted_9 = ["value"];
+var _hoisted_10 = {
+  "class": "col"
+};
+var _hoisted_11 = {
+  "class": "form-check",
+  style: {
+    "padding-left": "0px"
+  }
+};
+
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Ile wpisów zwrócić", -1
+/* HOISTED */
+);
+
+var _hoisted_13 = ["value"];
+var _hoisted_14 = {
+  "class": "row",
+  style: {
+    "margin-top": "8px"
+  }
+};
+var _hoisted_15 = {
+  "class": "col"
+};
+var _hoisted_16 = {
+  "class": "mb-3"
+};
+
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "contentInput",
+  "class": "form-label"
+}, "Treść do wyszukiwania", -1
+/* HOISTED */
+);
+
+var _hoisted_18 = {
+  "class": "col"
+};
+var _hoisted_19 = {
+  key: 0,
+  "class": "mb-3"
+};
+
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "authorInput",
+  "class": "form-label"
+}, "Konto do wyszukiwania", -1
+/* HOISTED */
+);
+
+var _hoisted_21 = {
+  key: 1,
+  "class": "mb-3"
+};
+
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "authorInput",
+  "class": "form-label"
+}, "Id konta do wyszukiwania", -1
+/* HOISTED */
+);
+
+var _hoisted_23 = {
+  key: 0,
+  "class": "d-flex justify-content-center"
+};
+
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "spinner-border",
+  role: "status"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "sr-only"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_25 = [_hoisted_24];
+var _hoisted_26 = {
+  key: 1
+};
+var _hoisted_27 = {
+  key: 2
+};
+var _hoisted_28 = {
+  key: 3
+};
+var _hoisted_29 = {
+  key: 0
+};
+var _hoisted_30 = {
+  key: 1
+};
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_tweet = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet");
+
+  var _component_fb_post = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("fb-post");
+
+  var _component_fb_comment = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("fb-comment");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" select row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" form to pick data order "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "class": "form-select",
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $data.media_chosen = $event;
+    })
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.mediaOptions, function (option) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      value: option.value
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(option.text), 9
+    /* TEXT, PROPS */
+    , _hoisted_5);
+  }), 256
+  /* UNKEYED_FRAGMENT */
+  ))], 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.media_chosen]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" form to pick data order "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "class": "form-select",
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $data.sortOrder = $event;
+    }),
+    onChange: _cache[2] || (_cache[2] = function () {
+      return $options.sortData && $options.sortData.apply($options, arguments);
+    })
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.sortOptions, function (option) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      value: option.value
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(option.text), 9
+    /* TEXT, PROPS */
+    , _hoisted_9);
+  }), 256
+  /* UNKEYED_FRAGMENT */
+  ))], 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.sortOrder]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" form to pick data order "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "class": "form-select",
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+      return $data.size = $event;
+    })
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.sizeOptions, function (option) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      value: option.value
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(option.text), 9
+    /* TEXT, PROPS */
+    , _hoisted_13);
+  }), 256
+  /* UNKEYED_FRAGMENT */
+  ))], 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.size]])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" text input row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" form for text to search "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    "class": "form-control",
+    id: "contentInput",
+    placeholder: "Treść do wyszukania",
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+      return $data.content = $event;
+    }),
+    onKeyup: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
+      return $options.getData && $options.getData.apply($options, arguments);
+    }, ["enter"]))
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.content]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" form for account to search "), this.media_chosen == 'twitter' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    "class": "form-control",
+    id: "authorInput",
+    placeholder: "konto do wyszukiwania",
+    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+      return $data.author_username = $event;
+    }),
+    onKeyup: _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
+      return $options.getData && $options.getData.apply($options, arguments);
+    }, ["enter"]))
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.author_username]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.media_chosen == 'facebook' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    "class": "form-control",
+    id: "authorInput",
+    placeholder: "Id konta do wyszukiwania",
+    "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
+      return $data.author_username = $event;
+    }),
+    onKeyup: _cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
+      return $options.getData && $options.getData.apply($options, arguments);
+    }, ["enter"]))
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.author_username]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "submit",
+    "class": "btn btn-success mb-3",
+    onClick: _cache[10] || (_cache[10] = function () {
+      return $options.getData && $options.getData.apply($options, arguments);
+    })
+  }, "Szukaj"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" results "), $data.is_loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_23, _hoisted_25)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.no_results == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_26, " Brak wyników dla treści \"" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.content) + "\" ", 1
+  /* TEXT */
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" render tweets "), this.media_chosen == 'twitter' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_27, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.tweets, function (t, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
+      key: index,
+      data: t
+    }, null, 8
+    /* PROPS */
+    , ["data"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" render fb posts and comments "), this.fb_posts.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_29, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.fb_posts, function (p) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_fb_post, {
+      key: p,
+      data: p,
+      anotation_view: false,
+      verification_view: false
+    }, null, 8
+    /* PROPS */
+    , ["data"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.fb_comments.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_30, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.fb_comments, function (c) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_fb_comment, {
+      key: c,
+      data: c,
+      anotation_view: false,
+      verification_view: false
+    }, null, 8
+    /* PROPS */
+    , ["data"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]))], 64
+  /* STABLE_FRAGMENT */
+  );
+}
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ShowTweets.vue?vue&type=template&id=2ed732aa":
 /*!********************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ShowTweets.vue?vue&type=template&id=2ed732aa ***!
@@ -23956,239 +24246,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }), 128
   /* KEYED_FRAGMENT */
   ))], 64
-  /* STABLE_FRAGMENT */
-  );
-}
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SimilarTweets.vue?vue&type=template&id=2aa24b12":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SimilarTweets.vue?vue&type=template&id=2aa24b12 ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render)
-/* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-
-var _hoisted_1 = {
-  "class": "form-check",
-  style: {
-    "margin-top": "16px"
-  }
-};
-
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "form-check-label"
-}, " Twitter ", -1
-/* HOISTED */
-);
-
-var _hoisted_3 = {
-  "class": "form-check"
-};
-
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "form-check-label"
-}, " Facebook ", -1
-/* HOISTED */
-);
-
-var _hoisted_5 = {
-  "class": "form-check",
-  style: {
-    "margin-top": "16px"
-  }
-};
-
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Sortuj", -1
-/* HOISTED */
-);
-
-var _hoisted_7 = ["value"];
-var _hoisted_8 = {
-  "class": "form-check",
-  style: {
-    "margin-top": "16px"
-  }
-};
-
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Ile wpisów zwrócić", -1
-/* HOISTED */
-);
-
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<option selected value=\"10\">10</option><option value=\"50\">50</option><option value=\"100\">100</option><option value=\"500\">500</option><option value=\"1000\">1000</option><option value=\"10000\">10000</option>", 6);
-
-var _hoisted_16 = [_hoisted_10];
-var _hoisted_17 = {
-  "class": "input-group mb-3",
-  style: {
-    "margin-top": "16px"
-  }
-};
-var _hoisted_18 = {
-  "class": "input-group-text",
-  id: "basic-addon2"
-};
-
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-  "class": "bi bi-search"
-}, null, -1
-/* HOISTED */
-);
-
-var _hoisted_20 = [_hoisted_19];
-var _hoisted_21 = {
-  key: 0,
-  "class": "d-flex justify-content-center"
-};
-
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "spinner-border",
-  role: "status"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "sr-only"
-})], -1
-/* HOISTED */
-);
-
-var _hoisted_23 = [_hoisted_22];
-var _hoisted_24 = {
-  key: 1
-};
-var _hoisted_25 = {
-  key: 2
-};
-var _hoisted_26 = {
-  key: 3
-};
-var _hoisted_27 = {
-  key: 0
-};
-var _hoisted_28 = {
-  key: 1
-};
-function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_tweet = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tweet");
-
-  var _component_fb_post = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("fb-post");
-
-  var _component_fb_comment = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("fb-comment");
-
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" form to pick view mode twitter/fb "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [this.media == 'twitter' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("input", {
-    key: 0,
-    "class": "form-check-input",
-    type: "radio",
-    onClick: _cache[0] || (_cache[0] = function ($event) {
-      return $options.changeMode('twitter');
-    }),
-    name: "modeRadio",
-    checked: ""
-  })) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("input", {
-    key: 1,
-    "class": "form-check-input",
-    type: "radio",
-    onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $options.changeMode('twitter');
-    }),
-    name: "modeRadio"
-  })), _hoisted_2]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [this.media == 'facebook' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("input", {
-    key: 0,
-    "class": "form-check-input",
-    type: "radio",
-    onClick: _cache[2] || (_cache[2] = function ($event) {
-      return $options.changeMode('facebook');
-    }),
-    name: "modeRadio",
-    checked: ""
-  })) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("input", {
-    key: 1,
-    "class": "form-check-input",
-    type: "radio",
-    onClick: _cache[3] || (_cache[3] = function ($event) {
-      return $options.changeMode('facebook');
-    }),
-    name: "modeRadio"
-  })), _hoisted_4]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" form to pick data order "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
-    "class": "form-select",
-    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-      return $data.sortOrder = $event;
-    }),
-    onChange: _cache[5] || (_cache[5] = function () {
-      return $options.sortTweets && $options.sortTweets.apply($options, arguments);
-    })
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.sortOptions, function (option) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
-      value: option.value
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(option.text), 9
-    /* TEXT, PROPS */
-    , _hoisted_7);
-  }), 256
-  /* UNKEYED_FRAGMENT */
-  ))], 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.sortOrder]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" form to pick data order "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
-    "class": "form-select",
-    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
-      return $data.size = $event;
-    })
-  }, _hoisted_16, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.size]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" form for text to search "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
-    "class": "form-control",
-    placeholder: "Treść do wyszukania",
-    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
-      return $data.content_to_search = $event;
-    }),
-    onKeyup: _cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
-      return $options.getQueryTweets && $options.getQueryTweets.apply($options, arguments);
-    }, ["enter"]))
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.content_to_search]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-clear",
-    onClick: _cache[9] || (_cache[9] = function () {
-      return $options.getQueryTweets && $options.getQueryTweets.apply($options, arguments);
-    })
-  }, _hoisted_20)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" results "), $data.is_loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, _hoisted_23)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.no_results == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_24, " Brak wyników dla treści \"" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.content_to_search) + "\" ", 1
-  /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" render tweets "), $data.twitter_mode ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_25, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.tweets, function (t, index) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_tweet, {
-      key: index,
-      data: t
-    }, null, 8
-    /* PROPS */
-    , ["data"]);
-  }), 128
-  /* KEYED_FRAGMENT */
-  ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" render fb posts and comments "), this.fb_posts.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_27, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.fb_posts, function (p) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_fb_post, {
-      key: p,
-      data: p,
-      anotation_view: false,
-      verification_view: false
-    }, null, 8
-    /* PROPS */
-    , ["data"]);
-  }), 128
-  /* KEYED_FRAGMENT */
-  ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.fb_comments.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_28, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.fb_comments, function (c) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_fb_comment, {
-      key: c,
-      data: c,
-      anotation_view: false,
-      verification_view: false
-    }, null, 8
-    /* PROPS */
-    , ["data"]);
-  }), 128
-  /* KEYED_FRAGMENT */
-  ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]))], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -24403,13 +24460,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, "Zobacz tweet", 8
   /* PROPS */
   , _hoisted_22)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show tweets with similar content button "), this.verification_view || this.anotation_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    href: '/similar/twitter/' + $props.data.tweet_id,
+    href: '/search/twitter/data_id=' + $props.data.tweet_id,
     "class": "btn btn-primary",
     target: "_blank"
   }, "Zobacz podobne", 8
   /* PROPS */
   , _hoisted_24)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show other tweets from this author button "), this.verification_view || this.anotation_view ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    href: '/userTweets/twitter/' + $props.data.author_username,
+    href: '/search/twitter/author_username=' + $props.data.author_username,
     "class": "btn btn-primary",
     target: "_blank"
   }, "Zobacz inne tweety tego uzytkownika", 8
@@ -24830,7 +24887,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ShowTweets_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/ShowTweets.vue */ "./resources/js/components/ShowTweets.vue");
 /* harmony import */ var _components_RandomTweet_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/RandomTweet.vue */ "./resources/js/components/RandomTweet.vue");
 /* harmony import */ var _components_VerifyTweet_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/VerifyTweet.vue */ "./resources/js/components/VerifyTweet.vue");
-/* harmony import */ var _components_SimilarTweets_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/SimilarTweets.vue */ "./resources/js/components/SimilarTweets.vue");
+/* harmony import */ var _components_SearchContent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/SearchContent.vue */ "./resources/js/components/SearchContent.vue");
 /* harmony import */ var _components_UserTweets_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/UserTweets.vue */ "./resources/js/components/UserTweets.vue");
 /* harmony import */ var _components_AiCheck_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/AiCheck.vue */ "./resources/js/components/AiCheck.vue");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
@@ -24849,7 +24906,7 @@ var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)({
     ShowTweets: _components_ShowTweets_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     RandomTweet: _components_RandomTweet_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     VerifyTweet: _components_VerifyTweet_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-    SimilarTweets: _components_SimilarTweets_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+    SearchContent: _components_SearchContent_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
     UserTweets: _components_UserTweets_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
     AiCheck: _components_AiCheck_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
   }
@@ -24911,13 +24968,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getFbData": () => (/* binding */ getFbData),
+/* harmony export */   "getFbRecord": () => (/* binding */ getFbRecord),
 /* harmony export */   "getRandomFBdata": () => (/* binding */ getRandomFBdata),
 /* harmony export */   "getRandomTweets": () => (/* binding */ getRandomTweets),
-/* harmony export */   "getSimilarFbData": () => (/* binding */ getSimilarFbData),
-/* harmony export */   "getSimilarTweets": () => (/* binding */ getSimilarTweets),
+/* harmony export */   "getTweet": () => (/* binding */ getTweet),
+/* harmony export */   "getTweets": () => (/* binding */ getTweets),
 /* harmony export */   "getUserFbData": () => (/* binding */ getUserFbData),
 /* harmony export */   "getUserTweets": () => (/* binding */ getUserTweets),
-/* harmony export */   "sortData": () => (/* binding */ sortData),
 /* harmony export */   "updateInIndex": () => (/* binding */ updateInIndex)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
@@ -25022,7 +25080,7 @@ function _getRandomFBdata() {
 
 function getRandomTweets(_x5, _x6, _x7, _x8) {
   return _getRandomTweets.apply(this, arguments);
-}
+} // probably can remove, need to double check
 
 function _getRandomTweets() {
   _getRandomTweets = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(size, url, auth, username_to_anotation) {
@@ -25031,75 +25089,42 @@ function _getRandomTweets() {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            if (username_to_anotation != '') {
-              query = {
-                size: size,
-                query: {
-                  function_score: {
-                    random_score: {},
-                    query: {
-                      bool: {
-                        must: [{
-                          match: {
-                            lang: "pl"
-                          }
-                        }, {
-                          match: {
-                            is_retweet: false
-                          }
-                        }, {
-                          match: {
-                            author_username: username_to_anotation
-                          }
-                        }],
-                        must_not: [{
-                          match: {
-                            is_hate_speech: true
-                          }
-                        }, {
-                          match: {
-                            is_hate_speech: false
-                          }
-                        }]
-                      }
+            query = {
+              size: size,
+              query: {
+                function_score: {
+                  random_score: {},
+                  query: {
+                    bool: {
+                      must: [{
+                        match: {
+                          lang: "pl"
+                        }
+                      }, {
+                        match: {
+                          is_retweet: false
+                        }
+                      }],
+                      must_not: [{
+                        match: {
+                          is_hate_speech: true
+                        }
+                      }, {
+                        match: {
+                          is_hate_speech: false
+                        }
+                      }]
                     }
                   }
                 }
-              };
-            } else {
-              query = {
-                size: size,
-                query: {
-                  function_score: {
-                    random_score: {},
-                    query: {
-                      bool: {
-                        must: [{
-                          match: {
-                            lang: "pl"
-                          }
-                        }, {
-                          match: {
-                            is_retweet: false
-                          }
-                        }],
-                        must_not: [{
-                          match: {
-                            is_hate_speech: true
-                          }
-                        }, {
-                          match: {
-                            is_hate_speech: false
-                          }
-                        }]
-                      }
-                    }
-                  }
-                }
-              };
-            }
-
-            _context2.next = 3;
+              }
+            };
+            if (username_to_anotation != '') query.query.function_score.query.bool.must.push({
+              match: {
+                author_username: username_to_anotation
+              }
+            });
+            _context2.next = 4;
             return axios__WEBPACK_IMPORTED_MODULE_1___default().post(url + "/_search", query, {
               auth: auth
             }).then(function (response) {
@@ -25113,10 +25138,10 @@ function _getRandomTweets() {
               data = [];
             });
 
-          case 3:
+          case 4:
             return _context2.abrupt("return", data);
 
-          case 4:
+          case 5:
           case "end":
             return _context2.stop();
         }
@@ -25128,7 +25153,7 @@ function _getRandomTweets() {
 
 function getUserFbData(_x9, _x10, _x11) {
   return _getUserFbData.apply(this, arguments);
-}
+} // probably can remove, need to double check
 
 function _getUserFbData() {
   _getUserFbData = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(url, auth, author_id) {
@@ -25224,198 +25249,55 @@ function _getUserTweets() {
   return _getUserTweets.apply(this, arguments);
 }
 
-function getSimilarFbData(_x15, _x16, _x17, _x18, _x19) {
-  return _getSimilarFbData.apply(this, arguments);
+function updateInIndex(_x15, _x16, _x17, _x18) {
+  return _updateInIndex.apply(this, arguments);
 }
 
-function _getSimilarFbData() {
-  _getSimilarFbData = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(url, auth, data_id, content, index) {
-    var query, fb_content, again, fb_data;
+function _updateInIndex() {
+  _updateInIndex = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(url, auth, data, is_hate_speech) {
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            again = false;
-
-            if (!(content == null)) {
-              _context5.next = 9;
-              break;
-            }
-
-            if (index == 'fb_posts') {
-              query = {
-                query: {
-                  match: {
-                    post_id: data_id
-                  }
-                }
-              };
-            } else {
-              query = {
-                query: {
-                  match: {
-                    comment_id: data_id
-                  }
-                }
-              };
-            }
-
-            console.log("query: ", query);
-            console.log("url: ", url + "/" + index);
-            _context5.next = 7;
-            return axios__WEBPACK_IMPORTED_MODULE_1___default().post(url + "/" + index + "/_search", query, {
+            data.is_hate_speech = is_hate_speech;
+            console.log(data);
+            _context5.next = 4;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default().post(url, data, {
               auth: auth
-            }).then(function (response) {
-              console.log(response.data);
-              if (response.data.hits.total == 0) again = true;else fb_content = response.data.hits.hits[0]._source.content;
+            }).then(function (response) {// console.log(response)
             })["catch"](function (error) {
-              again = true;
+              console.error(error);
             });
 
-          case 7:
-            _context5.next = 10;
-            break;
-
-          case 9:
-            fb_content = content;
-
-          case 10:
-            if (index == 'fb_posts') index = 'fb_comments';else index = 'fb_posts';
-
-            if (!again) {
-              _context5.next = 20;
-              break;
-            }
-
-            if (!(content == null)) {
-              _context5.next = 19;
-              break;
-            }
-
-            if (index == 'fb_posts') {
-              query = {
-                query: {
-                  match: {
-                    post_id: data_id
-                  }
-                }
-              };
-            } else {
-              query = {
-                query: {
-                  match: {
-                    comment_id: data_id
-                  }
-                }
-              };
-            }
-
-            console.log("query: ", query);
-            _context5.next = 17;
-            return axios__WEBPACK_IMPORTED_MODULE_1___default().post(url + "/" + index + "/_search", query, {
-              auth: auth
-            }).then(function (response) {
-              console.log(response.data);
-              if (response.data.hits.total == 0) again = true;else fb_content = response.data.hits.hits[0]._source.content;
-            })["catch"](function (error) {
-              console.log(error);
-            });
-
-          case 17:
-            _context5.next = 20;
-            break;
-
-          case 19:
-            fb_content = content;
-
-          case 20:
-            query = {
-              query: {
-                match: {
-                  content: fb_content
-                }
-              }
-            };
-            fb_data = [];
-            _context5.next = 24;
-            return axios__WEBPACK_IMPORTED_MODULE_1___default().post(url + "/" + index + "/_search", query, {
-              auth: auth
-            }).then(function (response) {
-              console.log(response.data);
-              response.data.hits.hits.forEach(function (t) {
-                fb_data.push(t._source);
-              });
-            })["catch"](function (error) {
-              console.log(error);
-            });
-
-          case 24:
-            return _context5.abrupt("return", fb_data);
-
-          case 25:
+          case 4:
           case "end":
             return _context5.stop();
         }
       }
     }, _callee5);
   }));
-  return _getSimilarFbData.apply(this, arguments);
+  return _updateInIndex.apply(this, arguments);
 }
 
-function getSimilarTweets(_x20, _x21, _x22, _x23, _x24) {
-  return _getSimilarTweets.apply(this, arguments);
+function getTweets(_x19, _x20) {
+  return _getTweets.apply(this, arguments);
 }
 
-function _getSimilarTweets() {
-  _getSimilarTweets = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6(url, auth, tweet_id, content, query_size) {
-    var query, tweet_content, size, tweets;
+function _getTweets() {
+  _getTweets = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6(url, auth) {
+    var size,
+        content,
+        author_username,
+        query,
+        tweets,
+        _args6 = arguments;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            size = 10;
-
-            if (!(content == null)) {
-              _context6.next = 7;
-              break;
-            }
-
-            query = {
-              query: {
-                bool: {
-                  must: [{
-                    match: {
-                      lang: "pl"
-                    }
-                  }, {
-                    match: {
-                      tweet_id: tweet_id
-                    }
-                  }]
-                }
-              }
-            };
-            _context6.next = 5;
-            return axios__WEBPACK_IMPORTED_MODULE_1___default().post(url + "/_search", query, {
-              auth: auth
-            }).then(function (response) {
-              tweet_content = response.data.hits.hits[0]._source.content;
-            })["catch"](function (error) {
-              console.log(error);
-            });
-
-          case 5:
-            _context6.next = 8;
-            break;
-
-          case 7:
-            tweet_content = content;
-
-          case 8:
-            if (query_size) {
-              size = query_size;
-            }
-
+            size = _args6.length > 2 && _args6[2] !== undefined ? _args6[2] : 10;
+            content = _args6.length > 3 && _args6[3] !== undefined ? _args6[3] : null;
+            author_username = _args6.length > 4 && _args6[4] !== undefined ? _args6[4] : null;
             query = {
               size: size,
               query: {
@@ -25426,14 +25308,24 @@ function _getSimilarTweets() {
                     }
                   }, {
                     match: {
-                      content: tweet_content
+                      is_retweet: false
                     }
                   }]
                 }
               }
             };
+            if (content) query.query.bool.must.push({
+              match: {
+                content: content
+              }
+            });
+            if (author_username) query.query.bool.must.push({
+              match: {
+                author_username: author_username
+              }
+            });
             tweets = [];
-            _context6.next = 13;
+            _context6.next = 9;
             return axios__WEBPACK_IMPORTED_MODULE_1___default().post(url + "/_search", query, {
               auth: auth
             }).then(function (response) {
@@ -25444,57 +25336,149 @@ function _getSimilarTweets() {
               console.log(error);
             });
 
-          case 13:
+          case 9:
             return _context6.abrupt("return", tweets);
 
-          case 14:
+          case 10:
           case "end":
             return _context6.stop();
         }
       }
     }, _callee6);
   }));
-  return _getSimilarTweets.apply(this, arguments);
+  return _getTweets.apply(this, arguments);
 }
 
-function updateInIndex(_x25, _x26, _x27, _x28) {
-  return _updateInIndex.apply(this, arguments);
+function getTweet(_x21, _x22, _x23) {
+  return _getTweet.apply(this, arguments);
 }
 
-function _updateInIndex() {
-  _updateInIndex = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7(url, auth, data, is_hate_speech) {
+function _getTweet() {
+  _getTweet = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7(url, auth, tweet_id) {
+    var data;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            data.is_hate_speech = is_hate_speech;
-            console.log(data);
-            _context7.next = 4;
-            return axios__WEBPACK_IMPORTED_MODULE_1___default().post(url, data, {
+            _context7.next = 2;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default().get(url + "/_doc/" + tweet_id, {
               auth: auth
-            }).then(function (response) {// console.log(response)
+            }).then(function (response) {
+              data = response.data._source;
             })["catch"](function (error) {
-              console.error(error);
+              console.log(error);
+              data = null;
             });
 
-          case 4:
+          case 2:
+            return _context7.abrupt("return", data);
+
+          case 3:
           case "end":
             return _context7.stop();
         }
       }
     }, _callee7);
   }));
-  return _updateInIndex.apply(this, arguments);
+  return _getTweet.apply(this, arguments);
 }
 
-function sortData(data, desc) {
-  if (desc) return data.sort(function (a, b) {
-    return a.posted_utime < b.posted_utime ? 1 : -1;
-  });
-  if (desc == false) return data.sort(function (a, b) {
-    return a.posted_utime > b.posted_utime ? 1 : -1;
-  });
-  return data;
+function getFbData(_x24, _x25) {
+  return _getFbData.apply(this, arguments);
+}
+
+function _getFbData() {
+  _getFbData = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee8(url, auth) {
+    var size,
+        content,
+        author_id,
+        query,
+        fb_data,
+        _args8 = arguments;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            size = _args8.length > 2 && _args8[2] !== undefined ? _args8[2] : 10;
+            content = _args8.length > 3 && _args8[3] !== undefined ? _args8[3] : null;
+            author_id = _args8.length > 4 && _args8[4] !== undefined ? _args8[4] : null;
+            query = {
+              size: size,
+              query: {
+                bool: {
+                  must: []
+                }
+              }
+            };
+            if (content) query.query.bool.must.push({
+              match: {
+                content: content
+              }
+            });
+            if (author_id) query.query.bool.must.push({
+              match: {
+                author_id: author_id
+              }
+            });
+            console.log(query);
+            fb_data = [];
+            console.log(url + "/_search");
+            _context8.next = 11;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default().post(url + "/_search", query, {
+              auth: auth
+            }).then(function (response) {
+              response.data.hits.hits.forEach(function (t) {
+                fb_data.push(t._source);
+              });
+            })["catch"](function (error) {
+              console.log(error);
+            });
+
+          case 11:
+            return _context8.abrupt("return", fb_data);
+
+          case 12:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8);
+  }));
+  return _getFbData.apply(this, arguments);
+}
+
+function getFbRecord(_x26, _x27, _x28, _x29) {
+  return _getFbRecord.apply(this, arguments);
+}
+
+function _getFbRecord() {
+  _getFbRecord = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee9(url, type, auth, record_id) {
+    var data;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.next = 2;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default().get(url + "/" + type + "/" + record_id, {
+              auth: auth
+            }).then(function (response) {
+              data = response.data._source;
+            })["catch"](function (error) {
+              console.log(error);
+              data = null;
+            });
+
+          case 2:
+            return _context9.abrupt("return", data);
+
+          case 3:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9);
+  }));
+  return _getFbRecord.apply(this, arguments);
 }
 
 /***/ }),
@@ -62409,6 +62393,34 @@ if (false) {}
 
 /***/ }),
 
+/***/ "./resources/js/components/SearchContent.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/SearchContent.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SearchContent_vue_vue_type_template_id_757b14d6__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchContent.vue?vue&type=template&id=757b14d6 */ "./resources/js/components/SearchContent.vue?vue&type=template&id=757b14d6");
+/* harmony import */ var _SearchContent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchContent.vue?vue&type=script&lang=js */ "./resources/js/components/SearchContent.vue?vue&type=script&lang=js");
+/* harmony import */ var _Users_pkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_SearchContent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_SearchContent_vue_vue_type_template_id_757b14d6__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/SearchContent.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
 /***/ "./resources/js/components/ShowTweets.vue":
 /*!************************************************!*\
   !*** ./resources/js/components/ShowTweets.vue ***!
@@ -62432,34 +62444,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/ShowTweets.vue"]])
-/* hot reload */
-if (false) {}
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
-
-/***/ }),
-
-/***/ "./resources/js/components/SimilarTweets.vue":
-/*!***************************************************!*\
-  !*** ./resources/js/components/SimilarTweets.vue ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _SimilarTweets_vue_vue_type_template_id_2aa24b12__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SimilarTweets.vue?vue&type=template&id=2aa24b12 */ "./resources/js/components/SimilarTweets.vue?vue&type=template&id=2aa24b12");
-/* harmony import */ var _SimilarTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SimilarTweets.vue?vue&type=script&lang=js */ "./resources/js/components/SimilarTweets.vue?vue&type=script&lang=js");
-/* harmony import */ var _Users_pkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
-
-
-
-
-;
-const __exports__ = /*#__PURE__*/(0,_Users_pkorpal_Code_laravel_Sites_hatify_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_SimilarTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_SimilarTweets_vue_vue_type_template_id_2aa24b12__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/SimilarTweets.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -62710,6 +62694,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/SearchContent.vue?vue&type=script&lang=js":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/SearchContent.vue?vue&type=script&lang=js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SearchContent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SearchContent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./SearchContent.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SearchContent.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/components/ShowTweets.vue?vue&type=script&lang=js":
 /*!************************************************************************!*\
   !*** ./resources/js/components/ShowTweets.vue?vue&type=script&lang=js ***!
@@ -62722,22 +62722,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ShowTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ShowTweets.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ShowTweets.vue?vue&type=script&lang=js");
- 
-
-/***/ }),
-
-/***/ "./resources/js/components/SimilarTweets.vue?vue&type=script&lang=js":
-/*!***************************************************************************!*\
-  !*** ./resources/js/components/SimilarTweets.vue?vue&type=script&lang=js ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SimilarTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SimilarTweets_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./SimilarTweets.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SimilarTweets.vue?vue&type=script&lang=js");
  
 
 /***/ }),
@@ -62918,6 +62902,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/SearchContent.vue?vue&type=template&id=757b14d6":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/SearchContent.vue?vue&type=template&id=757b14d6 ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SearchContent_vue_vue_type_template_id_757b14d6__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SearchContent_vue_vue_type_template_id_757b14d6__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./SearchContent.vue?vue&type=template&id=757b14d6 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SearchContent.vue?vue&type=template&id=757b14d6");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/ShowTweets.vue?vue&type=template&id=2ed732aa":
 /*!******************************************************************************!*\
   !*** ./resources/js/components/ShowTweets.vue?vue&type=template&id=2ed732aa ***!
@@ -62930,22 +62930,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ShowTweets_vue_vue_type_template_id_2ed732aa__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ShowTweets.vue?vue&type=template&id=2ed732aa */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/ShowTweets.vue?vue&type=template&id=2ed732aa");
-
-
-/***/ }),
-
-/***/ "./resources/js/components/SimilarTweets.vue?vue&type=template&id=2aa24b12":
-/*!*********************************************************************************!*\
-  !*** ./resources/js/components/SimilarTweets.vue?vue&type=template&id=2aa24b12 ***!
-  \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SimilarTweets_vue_vue_type_template_id_2aa24b12__WEBPACK_IMPORTED_MODULE_0__.render)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SimilarTweets_vue_vue_type_template_id_2aa24b12__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./SimilarTweets.vue?vue&type=template&id=2aa24b12 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/SimilarTweets.vue?vue&type=template&id=2aa24b12");
 
 
 /***/ }),

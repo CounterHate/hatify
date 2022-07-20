@@ -3,19 +3,19 @@
   <div class="card">
     <div class="card-body">
       <h2>Fanpage: {{ data.page_name }}</h2>
-
-      <h5 class="card-title" v-if="anotation_view">
+      <h5 class="card-title" v-if="verification_view">
         ID authora
-        <a :href="'https://facebook.com/' + data.author_id" target="_blank">{{
-          data.author_id
+        <a :href="'https://facebook.com/' + data.author" target="_blank">{{
+            data.author
         }}</a>
       </h5>
       <h5 class="card-title" v-else>
         ID authora
-        <a :href="'https://facebook.com/' + data.author" target="_blank">{{
-          data.author
+        <a :href="'https://facebook.com/' + data.author_id" target="_blank">{{
+            data.author_id
         }}</a>
       </h5>
+
       <h6 class="card-subtitle mb-2 text-muted">
         <div v-if="data.posted_utime">
           {{ new Date(data.posted_utime * 1000) }}
@@ -26,77 +26,42 @@
       <div class="row">
         <div class="col-auto padded" v-if="this.anotation_view">
           <!-- show comment button -->
-          <a
-            :href="
-              'https://facebook.com/' +
-              data.page_id +
-              '/posts/' +
-              data.original_post_id +
-              '/?comment_id=' +
-              data.comment_id
-            "
-            v-if="data.page_id"
-            class="btn btn-primary"
-            target="_blank"
-            >Zobacz komentarz</a
-          >
-          <a
-            :href="
-              'https://facebook.com/' +
-              data.group_id[0] +
-              '/posts/' +
-              data.original_post_id +
-              '/?comment_id=' +
-              data.comment_id
-            "
-            v-if="data.group_id[0]"
-            class="btn btn-primary"
-            target="_blank"
-            >Zobacz komentarz</a
-          >
+          <a :href="
+            'https://facebook.com/' +
+            data.page_id +
+            '/posts/' +
+            data.original_post_id +
+            '/?comment_id=' +
+            data.comment_id
+          " v-if="data.page_id" class="btn btn-primary" target="_blank">Zobacz komentarz</a>
+          <a :href="
+            'https://facebook.com/' +
+            data.group_id[0] +
+            '/posts/' +
+            data.original_post_id +
+            '/?comment_id=' +
+            data.comment_id
+          " v-if="data.group_id[0]" class="btn btn-primary" target="_blank">Zobacz komentarz</a>
         </div>
 
         <div class="col-auto padded" v-if="this.verification_view">
           <!-- show comment button -->
-          <a :href="data.fb_url" class="btn btn-primary" target="_blank"
-            >Zobacz komentarz</a
-          >
+          <a :href="data.fb_url" class="btn btn-primary" target="_blank">Zobacz komentarz</a>
         </div>
-        <div
-          class="col-auto padded"
-          v-if="this.anotation_view || this.verification_view"
-        >
+        <div class="col-auto padded" v-if="this.anotation_view || this.verification_view">
           <!-- show similar content -->
-          <a
-            :href="'/similar/facebook/' + data.comment_id"
-            class="btn btn-primary"
-            v-if="data.page_id"
-            target="_blank"
-            >Zobacz podobne</a
-          >
+          <a :href="'/search/facebook/data_id=' + data.comment_id" class="btn btn-primary" v-if="data.page_id"
+            target="_blank">Zobacz podobne</a>
         </div>
-        <div
-          class="col-auto padded"
-          v-if="this.anotation_view || this.verification_view"
-        >
+        <div class="col-auto padded" v-if="this.anotation_view || this.verification_view">
           <!-- show other content from user -->
-          <a
-            :href="'/userTweets/facebook/' + data.author_id"
-            class="btn btn-primary"
-            target="_blank"
-            >Zobacz inne posty użytkownika</a
-          >
+          <a :href="'/search/facebook/author_username=' + data.author_id" class="btn btn-primary" target="_blank">Zobacz
+            inne posty użytkownika</a>
         </div>
       </div>
 
-      <topic-select
-        :show="show_topics"
-        @process_tweet_hate_speech="processIsHateSpeech"
-      ></topic-select>
-      <not-sure-select
-        :show="show_reasons"
-        @process_not_sure="processNotSure"
-      ></not-sure-select>
+      <topic-select :show="show_topics" @process_tweet_hate_speech="processIsHateSpeech"></topic-select>
+      <not-sure-select :show="show_reasons" @process_not_sure="processNotSure"></not-sure-select>
     </div>
   </div>
 </template>

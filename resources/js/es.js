@@ -80,82 +80,47 @@ export async function getRandomFBdata(size, url, auth, author_id) {
 export async function getRandomTweets(size, url, auth, username_to_anotation) {
     {
         var query;
-        if (username_to_anotation != '') {
-            query = {
-                size: size,
-                query: {
-                    function_score: {
-                        random_score: {},
-                        query: {
-                            bool: {
-                                must: [{
-                                    match: {
-                                        lang: "pl",
-                                    },
+
+        query = {
+            size: size,
+            query: {
+                function_score: {
+                    random_score: {},
+                    query: {
+                        bool: {
+                            must: [{
+                                match: {
+                                    lang: "pl",
                                 },
-                                {
-                                    match: {
-                                        is_retweet: false,
-                                    },
-                                },
-                                {
-                                    match: {
-                                        author_username: username_to_anotation
-                                    }
-                                }
-                                ],
-                                must_not: [{
-                                    match: {
-                                        is_hate_speech: true,
-                                    },
-                                },
-                                {
-                                    match: {
-                                        is_hate_speech: false,
-                                    },
-                                },
-                                ],
                             },
+                            {
+                                match: {
+                                    is_retweet: false,
+                                },
+                            },
+                            ],
+                            must_not: [{
+                                match: {
+                                    is_hate_speech: true,
+                                },
+                            },
+                            {
+                                match: {
+                                    is_hate_speech: false,
+                                },
+                            },
+                            ],
                         },
                     },
                 },
-            };
-        } else {
-            query = {
-                size: size,
-                query: {
-                    function_score: {
-                        random_score: {},
-                        query: {
-                            bool: {
-                                must: [{
-                                    match: {
-                                        lang: "pl",
-                                    },
-                                },
-                                {
-                                    match: {
-                                        is_retweet: false,
-                                    },
-                                },
-                                ],
-                                must_not: [{
-                                    match: {
-                                        is_hate_speech: true,
-                                    },
-                                },
-                                {
-                                    match: {
-                                        is_hate_speech: false,
-                                    },
-                                },
-                                ],
-                            },
-                        },
-                    },
-                },
-            };
-        }
+            },
+        };
+
+        if (username_to_anotation != '') query.query.function_score.query.bool.must.push({
+            match: {
+                author_username: username_to_anotation
+            }
+        })
 
         var data;
         await axios
@@ -178,6 +143,7 @@ export async function getRandomTweets(size, url, auth, username_to_anotation) {
     }
 }
 
+// probably can remove, need to double check
 export async function getUserFbData(url, auth, author_id) {
     var query = {
         size: 10000,
@@ -202,6 +168,7 @@ export async function getUserFbData(url, auth, author_id) {
     return fb_data
 }
 
+// probably can remove, need to double check
 export async function getUserTweets(url, auth, author_username) {
     var query = {
         size: 10000,
@@ -236,178 +203,6 @@ export async function getUserTweets(url, auth, author_username) {
     return tweets
 }
 
-export async function getSimilarFbData(url, auth, data_id, content, index) {
-    var query;
-    var fb_content;
-    var again = false
-    if (content == null) {
-        if (index == 'fb_posts') {
-            query = {
-                query: {
-                    match: {
-                        post_id: data_id,
-                    },
-                }
-            };
-        } else {
-            query = {
-                query: {
-                    match: {
-                        comment_id: data_id,
-                    },
-                }
-            };
-        }
-
-        console.log("query: ", query)
-        console.log("url: ", url + "/" + index)
-        await axios.post(url + "/" + index + "/_search", query, {
-            auth: auth,
-        }).then((response) => {
-            console.log(response.data)
-            if (response.data.hits.total == 0) again = true;
-            else fb_content = response.data.hits.hits[0]._source.content
-        }).catch((error) => {
-            again = true
-        })
-    } else {
-        fb_content = content
-    }
-
-    if (index == 'fb_posts') index = 'fb_comments';
-    else index = 'fb_posts'
-
-    if (again) {
-        if (content == null) {
-            if (index == 'fb_posts') {
-                query = {
-                    query: {
-                        match: {
-                            post_id: data_id,
-                        },
-                    }
-                };
-            } else {
-                query = {
-                    query: {
-                        match: {
-                            comment_id: data_id,
-                        },
-                    }
-                };
-            }
-
-            console.log("query: ", query)
-
-            await axios.post(url + "/" + index + "/_search", query, {
-                auth: auth,
-            }).then((response) => {
-                console.log(response.data)
-                if (response.data.hits.total == 0) again = true;
-                else fb_content = response.data.hits.hits[0]._source.content
-            }).catch((error) => {
-                console.log(error)
-            })
-        } else {
-            fb_content = content
-        }
-    }
-
-
-    query = {
-        query: {
-            match: {
-                content: fb_content,
-            },
-        }
-    }
-    var fb_data = []
-
-    await axios.post(url + "/" + index + "/_search", query, {
-        auth: auth,
-    }).then((response) => {
-        console.log(response.data)
-        response.data.hits.hits.forEach(t => {
-            fb_data.push(t._source)
-        })
-    }).catch((error) => {
-        console.log(error)
-    })
-    return fb_data
-}
-
-export async function getSimilarTweets(url, auth, tweet_id, content, query_size) {
-    var query;
-    var tweet_content;
-    var size = 10;
-    if (content == null) {
-        query = {
-            query: {
-                bool: {
-                    must: [{
-                        match: {
-                            lang: "pl",
-                        },
-                    },
-                    {
-                        match: {
-                            tweet_id: tweet_id,
-                        },
-                    },
-                    ],
-
-                },
-            }
-        };
-        await axios.post(url + "/_search", query, {
-            auth: auth,
-        }).then((response) => {
-            tweet_content = response.data.hits.hits[0]._source.content
-        }).catch((error) => {
-            console.log(error)
-        })
-    } else {
-        tweet_content = content
-    }
-
-    if (query_size) {
-        size = query_size
-    }
-
-    query = {
-        size: size,
-        query: {
-
-            bool: {
-                must: [{
-                    match: {
-                        lang: "pl",
-                    },
-                },
-                {
-                    match: {
-                        content: tweet_content,
-                    },
-                },
-                ],
-
-            },
-        }
-    }
-    var tweets = []
-
-    await axios.post(url + "/_search", query, {
-        auth: auth,
-    }).then((response) => {
-        response.data.hits.hits.forEach(t => {
-            tweets.push(t._source)
-        })
-    }).catch((error) => {
-        console.log(error)
-    })
-    return tweets
-}
-
 export async function updateInIndex(url, auth, data, is_hate_speech) {
     data.is_hate_speech = is_hate_speech;
     console.log(data)
@@ -424,9 +219,96 @@ export async function updateInIndex(url, auth, data, is_hate_speech) {
 
 }
 
+export async function getTweets(url, auth, size = 10, content = null, author_username = null) {
+    var query = {
+        size: size,
+        query: {
+            bool: {
+                must: [{
+                    match: {
+                        lang: "pl",
+                    },
 
-export function sortData(data, desc) {
-    if (desc) return data.sort((a, b) => a.posted_utime < b.posted_utime ? 1 : -1);
-    if (desc == false) return data.sort((a, b) => a.posted_utime > b.posted_utime ? 1 : -1);
+                }, {
+                    match: {
+                        is_retweet: false,
+                    },
+
+                }],
+
+            },
+        }
+    }
+
+    if (content) query.query.bool.must.push({ match: { content: content } })
+    if (author_username) query.query.bool.must.push({ match: { author_username: author_username } })
+
+    var tweets = []
+
+    await axios.post(url + "/_search", query, {
+        auth: auth,
+    }).then((response) => {
+        response.data.hits.hits.forEach(t => {
+            tweets.push(t._source)
+        })
+    }).catch((error) => {
+        console.log(error)
+    })
+    return tweets
+}
+
+export async function getTweet(url, auth, tweet_id) {
+    let data;
+
+    await axios.get(url + "/_doc/" + tweet_id, {
+        auth: auth,
+    }).then((response) => {
+        data = response.data._source
+    }).catch((error) => {
+        console.log(error)
+        data = null;
+    })
+    return data
+}
+
+export async function getFbData(url, auth, size = 10, content = null, author_id = null) {
+    var query = {
+        size: size,
+        query: {
+            bool: {
+                must: []
+            }
+        }
+    }
+
+    if (content) query.query.bool.must.push({ match: { content: content } })
+    if (author_id) query.query.bool.must.push({ match: { author_id: author_id } })
+
+    console.log(query)
+    var fb_data = []
+    console.log(url + "/_search")
+    await axios.post(url + "/_search", query, {
+        auth: auth,
+    }).then((response) => {
+        response.data.hits.hits.forEach(t => {
+            fb_data.push(t._source)
+        })
+    }).catch((error) => {
+        console.log(error)
+    })
+    return fb_data
+}
+
+export async function getFbRecord(url, type, auth, record_id) {
+    let data;
+
+    await axios.get(url + "/" + type + "/" + record_id, {
+        auth: auth,
+    }).then((response) => {
+        data = response.data._source
+    }).catch((error) => {
+        console.log(error)
+        data = null;
+    })
     return data
 }

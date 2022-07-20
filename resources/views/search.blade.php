@@ -1,4 +1,5 @@
 @extends('layout')
 @section('content')
-    <show-tweets :search="true" :user={{ $user->id }} />
+    <search-content data_id='{{ $data_id ?? null }}' media='{{ $media }}'
+        author='{{ $author_username ?? null }}' />
 @endsection

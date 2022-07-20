@@ -62,7 +62,7 @@
         >
           <!-- show similar content -->
           <a
-            :href="'/similar/facebook/' + data.post_id"
+            :href="'/search/facebook/data_id=' + data.post_id"
             class="btn btn-primary"
             target="_blank"
             >Zobacz podobne</a
@@ -74,7 +74,7 @@
         >
           <!-- show other content from user -->
           <a
-            :href="'/userTweets/facebook/' + data.author_id"
+            :href="'/search/facebook/author_username=' + data.author_id"
             class="btn btn-primary"
             target="_blank"
             >Zobacz inne posty użytkownika</a

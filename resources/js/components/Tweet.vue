@@ -47,11 +47,11 @@
         </div>
         <!-- show tweets with similar content button -->
         <div class="col-auto padded" v-if="this.verification_view || this.anotation_view">
-          <a :href="'/similar/twitter/' + data.tweet_id" class="btn btn-primary" target="_blank">Zobacz podobne</a>
+          <a :href="'/search/twitter/data_id=' + data.tweet_id" class="btn btn-primary" target="_blank">Zobacz podobne</a>
         </div>
         <!-- show other tweets from this author button -->
         <div class="col-auto padded" v-if="this.verification_view || this.anotation_view">
-          <a :href="'/userTweets/twitter/' + data.author_username" class="btn btn-primary" target="_blank">Zobacz inne
+          <a :href="'/search/twitter/author_username=' + data.author_username" class="btn btn-primary" target="_blank">Zobacz inne
             tweety tego uzytkownika</a>
         </div>
       </div>
