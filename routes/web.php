@@ -22,9 +22,13 @@ use function React\Promise\Stream\first;
 |
 */
 
-Route::get('/', function () {
+Route::get('/random', function () {
     return view('random', ['user' => Auth::user()]);
-})->middleware(['auth'])->name('/');
+})->middleware(['auth'])->name('/random');
+
+Route::get('/', function () {
+    return redirect('/search/twitter');
+})->middleware(['auth']);
 
 Route::get('/aiCheck', function () {
     return view('aiCheck', ['user' => Auth::user()]);

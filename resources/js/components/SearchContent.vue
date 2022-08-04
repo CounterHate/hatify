@@ -62,6 +62,21 @@
     </div>
 
   </div>
+  <div class="row">
+    <div class="col">
+      <label>Od</label>
+      <Datepicker v-model="this.from_date"></Datepicker>
+    </div>
+    <div class="col">
+      <label>Do</label>
+      <Datepicker v-model="this.to_date"></Datepicker>
+    </div>
+    <div class="col">
+      <label class="form-label">Dokładność {{ this.min_score }}</label>
+      <input type="range" class="form-range" v-model="this.min_score" min="0" max="100" step="0.01">
+    </div>
+  </div>
+  <br />
   <button type="submit" class="btn btn-success mb-3" @click="getData">Szukaj</button>
 
   <!-- results -->
@@ -76,6 +91,7 @@
 
   <!-- render tweets -->
   <div v-if="this.media_chosen == 'twitter'">
+    <p>Znaleziono {{ this.tweets.length }} wpisów</p>
     <tweet v-for="(t, index) in this.tweets" :key="index" :data="t"></tweet>
   </div>
   <div v-else>
@@ -97,9 +113,13 @@ import Tweet from "./Tweet.vue";
 import FbPost from "./FbPost.vue";
 import FbComment from "./FbComment.vue";
 import { getTweets, getTweet, getFbData, getFbRecord } from "../es.js";
+
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
 export default {
   props: { data_id: String, media: String, author: String },
-  components: { Tweet, FbPost, FbComment },
+  components: { Tweet, FbPost, FbComment, Datepicker },
   data() {
     return {
       url: process.env.MIX_ES,
@@ -110,6 +130,9 @@ export default {
         username: process.env.MIX_ES_USER,
         password: process.env.MIX_ES_PASS,
       },
+      min_score: 0,
+      from_date: null,
+      to_date: null,
       tweets: [],
       fb_posts: [],
       fb_comments: [],
@@ -167,7 +190,10 @@ export default {
           this.url + "/" + this.tweets_index,
           this.auth, this.size,
           this.content,
-          this.author_username).then((data) => {
+          this.author_username,
+          this.from_date,
+          this.to_date,
+          this.min_score).then((data) => {
             this.tweets = data;
             this.sortData(data, this.sortOrder, this.media_chosen);
             if (this.tweets.length == 0) {

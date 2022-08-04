@@ -219,9 +219,10 @@ export async function updateInIndex(url, auth, data, is_hate_speech) {
 
 }
 
-export async function getTweets(url, auth, size = 10, content = null, author_username = null) {
+export async function getTweets(url, auth, size = 10, content = null, author_username = null, from_date = null, to_date = null, min_score = 0) {
     var query = {
         size: size,
+        min_score: min_score,
         query: {
             bool: {
                 must: [{
@@ -240,8 +241,22 @@ export async function getTweets(url, auth, size = 10, content = null, author_use
         }
     }
 
+    var gte;
+    var lte;
+
+    if (from_date) gte = new Date(from_date).getTime() / 1000;
+    if (to_date) lte = new Date(to_date).getTime() / 1000;
+
     if (content) query.query.bool.must.push({ match: { content: content } })
     if (author_username) query.query.bool.must.push({ match: { author_username: author_username } })
+    if (from_date || to_date) query.query.bool.must.push({
+        range: {
+            posted_utime: {
+                gte: gte,
+                lte: lte
+            }
+        }
+    })
 
     var tweets = []
 
@@ -249,6 +264,8 @@ export async function getTweets(url, auth, size = 10, content = null, author_use
         auth: auth,
     }).then((response) => {
         response.data.hits.hits.forEach(t => {
+            var new_tweet = t._source;
+            new_tweet.score = t._score;
             tweets.push(t._source)
         })
     }).catch((error) => {
