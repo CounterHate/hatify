@@ -9,7 +9,10 @@ import VerifyTweet from './components/VerifyTweet.vue';
 import SearchContent from './components/SearchContent.vue';
 import UserTweets from './components/UserTweets.vue';
 import AiCheck from './components/AiCheck.vue';
+import VueExcelXlsx from "vue-excel-xlsx";
+
 
 const app = createApp({ components: { ShowTweets, RandomTweet, VerifyTweet, SearchContent, UserTweets, AiCheck } });
 
+app.use(VueExcelXlsx);
 app.mount('#app');

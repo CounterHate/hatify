@@ -92,6 +92,12 @@
   <!-- render tweets -->
   <div v-if="this.media_chosen == 'twitter'">
     <p>Znaleziono {{ this.tweets.length }} wpisów</p>
+    <vue-excel-xlsx :data="this.tweets" :columns="columns" :file-name="'tweets'" :file-type="'xlsx'"
+      :sheet-name="'wyniki'">
+      Download
+    </vue-excel-xlsx>
+
+
     <tweet v-for="(t, index) in this.tweets" :key="index" :data="t"></tweet>
   </div>
   <div v-else>
@@ -122,6 +128,42 @@ export default {
   components: { Tweet, FbPost, FbComment, Datepicker },
   data() {
     return {
+      columns: [
+        {
+          label: "is_hate_speech",
+          field: "is_hate_speech",
+        },
+        {
+          label: "is_retweet",
+          field: "is_retweet",
+        },
+        {
+          label: "author_username",
+          field: "author_username",
+        },
+        {
+          label: "author_name",
+          field: "author_name",
+        },
+        {
+          label: "content",
+          field: "content",
+        },
+        {
+          label: "posted_utime",
+          field: "posted_utime",
+          dataFormat: this.dateFormat
+        },
+        {
+          label: "keywords",
+          field: "keywords",
+          dataFormat: this.keywordsFormat
+        },
+        {
+          label: "url",
+          field: "url",
+        }
+      ],
       url: process.env.MIX_ES,
       tweets_index: process.env.MIX_TWEETS_INDEX,
       fb_posts_index: process.env.MIX_FBPOSTS_INDEX,
@@ -241,6 +283,14 @@ export default {
         }
 
       }
+    },
+    dateFormat(value) {
+      return new Date(+value)
+    },
+    keywordsFormat(value) {
+      if (value == null) return value;
+      console.log(typeof value)
+      return value.toString()
     }
   },
 

@@ -266,6 +266,7 @@ export async function getTweets(url, auth, size = 10, content = null, author_use
         response.data.hits.hits.forEach(t => {
             var new_tweet = t._source;
             new_tweet.score = t._score;
+            new_tweet.url = "https://twitter.com/" + new_tweet.author_username + "/status/" + new_tweet.tweet_id
             tweets.push(t._source)
         })
     }).catch((error) => {
