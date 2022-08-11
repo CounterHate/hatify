@@ -26,4 +26,5 @@
 
         </tbody>
     </table>
+    <stats-view></stats-view>
 @endsection
