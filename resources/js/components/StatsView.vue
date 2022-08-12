@@ -1,4 +1,9 @@
 <template>
+  <categories-count
+    :data="this.hate_speech_categories_count"
+    :key="this.componentKey"
+    v-if="show_categories_count"
+  ></categories-count>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -8,9 +13,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(category, index) in this.hate_speech_categories" :key="index">
+      <tr v-for="(category, index) in this.hate_speech_categories_count" :key="index">
         <th scope="row">{{ index + 1 }}</th>
-        <td>{{ category.category }}</td>
+        <td>{{ category.name }}</td>
         <td>{{ category.count }}</td>
       </tr>
     </tbody>
@@ -36,6 +41,7 @@
   </table>
 </template>
 <script>
+import CategoriesCount from "./stats/CategoriesCount.vue";
 import {
   getHateCategories,
   countTweetsFromCategory,
@@ -47,15 +53,19 @@ export default {
     return {
       url: process.env.MIX_ES,
       tweets_index: process.env.MIX_TWEETS_INDEX,
-      hate_categories_index: process.env.MIX_HATE_CATEGORIES,
+      hate_categories_index: process.env.MIX_HATE_CATEGORIES_INDEX,
       auth: {
         username: process.env.MIX_ES_USER,
         password: process.env.MIX_ES_PASS,
       },
-      hate_speech_categories: null,
+      hate_speech_categories: [],
+      hate_speech_categories_count: [],
+      show_categories_count: false,
       words: [],
+      componentKey: 0,
     };
   },
+  components: { CategoriesCount },
   methods: {
     getHateCategories,
     countTweetsFromCategory,
@@ -66,7 +76,13 @@ export default {
       this.url + "/" + this.hate_categories_index,
       this.auth
     ).then((data) => {
-      this.hate_speech_categories = data;
+      data.forEach((d) => {
+        this.hate_speech_categories.push({
+          category: d.category,
+          count: 0,
+          words: d.words,
+        });
+      });
       this.hate_speech_categories.forEach((category) => {
         category.words.forEach((word) => {
           this.words.push({
@@ -78,14 +94,27 @@ export default {
       });
     });
 
-    this.hate_speech_categories.forEach((hsc) => {
+    this.hate_speech_categories.forEach((hsc, index) => {
+      this.hate_speech_categories_count = [];
+
       countTweetsFromCategory(
         this.url + "/" + this.tweets_index,
         this.auth,
         hsc
       ).then((data) => {
-        hsc.count = data;
+        if (data > 0) {
+          this.hate_speech_categories_count = JSON.parse(
+            JSON.stringify(this.hate_speech_categories_count)
+          );
+          this.hate_speech_categories_count.push({
+            name: hsc.category,
+            count: data,
+          });
+        }
       });
+
+      if (index == this.hate_speech_categories.length - 1)
+        this.show_categories_count = true;
     });
 
     this.words.forEach((word) => {

@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
-    <table class="table table-striped">
+    {{-- <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -25,6 +25,6 @@
             @endforeach
 
         </tbody>
-    </table>
+    </table> --}}
     <stats-view></stats-view>
 @endsection
