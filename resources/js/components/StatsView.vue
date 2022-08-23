@@ -1,54 +1,28 @@
 <template>
-  <categories-count
-    :data="this.hate_speech_categories_count"
-    :key="this.componentKey"
-    v-if="show_categories_count"
-  ></categories-count>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Kategoria</th>
-        <th scope="col">Liczba wyników</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(category, index) in this.hate_speech_categories_count" :key="index">
-        <th scope="row">{{ index + 1 }}</th>
-        <td>{{ category.name }}</td>
-        <td>{{ category.count }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Słowo</th>
-        <th scope="col">Kategoria</th>
-        <th scope="col">Liczba wyników</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(word, index) in this.words" :key="index">
-        <th scope="row">{{ index + 1 }}</th>
-        <td>{{ word.word }}</td>
-        <td>{{ word.category }}</td>
-        <td>{{ word.count }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <categories-count :data="this.hate_speech_categories_count" :words="this.words"
+    :hate_speech_categories_count="this.hate_speech_categories_count"
+    v-if="this.author == '' && this.hate_category == ''">
+  </categories-count>
+  <authors-count :data="this.hate_speech_category_authors_count" :hate_speech_category="this.hate_category"
+    v-if="this.author == '' && this.hate_category">
+  </authors-count>
+  <author-stats :data="this.author_category_count" :author="this.author" v-if="this.author && this.hate_category == ''">
+  </author-stats>
 </template>
 <script>
 import CategoriesCount from "./stats/CategoriesCount.vue";
+import AuthorsCount from "./stats/AuthorsCount.vue";
+import AuthorStats from "./stats/AuthorStats.vue"
 import {
   getHateCategories,
   countTweetsFromCategory,
   countTweetsWithWord,
+  getAuthorsForCategory,
+  countAuthorTweetsForCategory
 } from "../es.js";
 
 export default {
+  props: { author: String, hate_category: String },
   data() {
     return {
       url: process.env.MIX_ES,
@@ -60,18 +34,22 @@ export default {
       },
       hate_speech_categories: [],
       hate_speech_categories_count: [],
-      show_categories_count: false,
+      hate_speech_category_authors: [],
+      hate_speech_category_authors_count: [],
+      author_category_count: [],
       words: [],
-      componentKey: 0,
     };
   },
-  components: { CategoriesCount },
+  components: { CategoriesCount, AuthorsCount, AuthorStats },
   methods: {
     getHateCategories,
     countTweetsFromCategory,
     countTweetsWithWord,
+    getAuthorsForCategory,
+    countAuthorTweetsForCategory
   },
   async mounted() {
+
     await getHateCategories(
       this.url + "/" + this.hate_categories_index,
       this.auth
@@ -94,38 +72,91 @@ export default {
       });
     });
 
-    this.hate_speech_categories.forEach((hsc, index) => {
-      this.hate_speech_categories_count = [];
+    if (this.hate_category) {
+      this.hate_speech_categories.forEach((hsc) => {
+        if (hsc.category == this.hate_category) {
+          getAuthorsForCategory(
+            this.url + "/" + this.tweets_index,
+            this.auth,
+            hsc
+          ).then(data => {
+            this.hate_speech_category_authors = JSON.parse(
+              JSON.stringify(data)
+            )
+            this.hate_speech_category_authors.forEach((hsca) => {
+              this.hate_speech_category_authors_count = []
 
-      countTweetsFromCategory(
-        this.url + "/" + this.tweets_index,
-        this.auth,
-        hsc
-      ).then((data) => {
-        if (data > 0) {
-          this.hate_speech_categories_count = JSON.parse(
-            JSON.stringify(this.hate_speech_categories_count)
-          );
-          this.hate_speech_categories_count.push({
-            name: hsc.category,
-            count: data,
-          });
+              countAuthorTweetsForCategory(
+                this.url + "/" + this.tweets_index,
+                this.auth,
+                hsca,
+                hsc
+              ).then(data => {
+                this.hate_speech_category_authors_count = JSON.parse(
+                  JSON.stringify(this.hate_speech_category_authors_count)
+                );
+                this.hate_speech_category_authors_count.push({ author: hsca, count: data })
+                this.hate_speech_category_authors_count.sort((a, b) => b.count - a.count)
+              })
+            })
+          })
+
         }
+      })
+
+
+    } else if (this.author) {
+      this.hate_speech_categories.forEach((hsc) => {
+        countAuthorTweetsForCategory(
+          this.url + "/" + this.tweets_index,
+          this.auth,
+          this.author,
+          hsc
+        ).then(data => {
+          this.author_category_count = JSON.parse(
+            JSON.stringify(this.author_category_count)
+          );
+          if (data > 0) {
+            this.author_category_count.push({ name: hsc.category, count: data })
+            this.author_category_count.sort((a, b) => b.count - a.count)
+          }
+        })
+      })
+
+    } else {
+      this.hate_speech_categories.forEach((hsc, index) => {
+        this.hate_speech_categories_count = [];
+
+        countTweetsFromCategory(
+          this.url + "/" + this.tweets_index,
+          this.auth,
+          hsc
+        ).then((data) => {
+          if (data > 0) {
+            this.hate_speech_categories_count = JSON.parse(
+              JSON.stringify(this.hate_speech_categories_count)
+            );
+            this.hate_speech_categories_count.push({
+              name: hsc.category,
+              count: data,
+            });
+          }
+        });
       });
 
-      if (index == this.hate_speech_categories.length - 1)
-        this.show_categories_count = true;
-    });
-
-    this.words.forEach((word) => {
-      countTweetsWithWord(
-        this.url + "/" + this.tweets_index,
-        this.auth,
-        word.word
-      ).then((data) => {
-        word.count = data;
+      this.words.forEach((word) => {
+        countTweetsWithWord(
+          this.url + "/" + this.tweets_index,
+          this.auth,
+          word.word
+        ).then((data) => {
+          word.count = data;
+        });
       });
-    });
+    }
+
+
+
   },
 };
 </script>

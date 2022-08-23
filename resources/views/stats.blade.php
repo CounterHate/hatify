@@ -26,5 +26,5 @@
 
         </tbody>
     </table> --}}
-    <stats-view></stats-view>
+    <stats-view author='{{ $author ?? null }}' hate_category='{{ $hate_category ?? null }}'></stats-view>
 @endsection

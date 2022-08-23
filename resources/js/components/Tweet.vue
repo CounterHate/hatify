@@ -37,7 +37,7 @@
       <div class="row">
         <!-- show tweet button -->
         <div class="col-auto padded">
-          <button class="btn btn-primary" @click="getStats">Statystyki</button>
+          <button class="btn btn-primary" @click="getStats">Statystyki tweeta</button>
         </div>
         <div class="col-auto padded">
           <a :href="
@@ -46,6 +46,11 @@
             '/status/' +
             data.tweet_id
           " class="btn btn-primary" target="_blank">Zobacz tweet</a>
+        </div>
+        <div class="col-auto padded">
+          <a :href="
+            '/stats/author=' + data.author_username
+          " class="btn btn-primary" target="_blank">Zobacz statystyki użytkownika</a>
         </div>
         <!-- show tweets with similar content button -->
         <div class="col-auto padded" v-if="this.verification_view || this.anotation_view">
@@ -56,7 +61,7 @@
         <div class="col-auto padded" v-if="this.verification_view || this.anotation_view">
           <a :href="'/search/twitter/author_username=' + data.author_username" class="btn btn-primary"
             target="_blank">Zobacz inne
-            tweety tego uzytkownika</a>
+            tweety tego użytkownika</a>
         </div>
       </div>
 

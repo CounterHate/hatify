@@ -16,15 +16,15 @@ export async function getRandomFBdata(size, url, auth, author_id) {
                                 }
                             }],
                             must_not: [{
-                                    match: {
-                                        is_hate_speech: true,
-                                    },
+                                match: {
+                                    is_hate_speech: true,
                                 },
-                                {
-                                    match: {
-                                        is_hate_speech: false,
-                                    },
+                            },
+                            {
+                                match: {
+                                    is_hate_speech: false,
                                 },
+                            },
                             ],
                         }
                     }
@@ -40,15 +40,15 @@ export async function getRandomFBdata(size, url, auth, author_id) {
                     query: {
                         bool: {
                             must_not: [{
-                                    match: {
-                                        is_hate_speech: true,
-                                    },
+                                match: {
+                                    is_hate_speech: true,
                                 },
-                                {
-                                    match: {
-                                        is_hate_speech: false,
-                                    },
+                            },
+                            {
+                                match: {
+                                    is_hate_speech: false,
                                 },
+                            },
                             ],
                         }
                     }
@@ -89,26 +89,26 @@ export async function getRandomTweets(size, url, auth, username_to_anotation) {
                     query: {
                         bool: {
                             must: [{
-                                    match: {
-                                        lang: "pl",
-                                    },
+                                match: {
+                                    lang: "pl",
                                 },
-                                {
-                                    match: {
-                                        is_retweet: false,
-                                    },
+                            },
+                            {
+                                match: {
+                                    is_retweet: false,
                                 },
+                            },
                             ],
                             must_not: [{
-                                    match: {
-                                        is_hate_speech: true,
-                                    },
+                                match: {
+                                    is_hate_speech: true,
                                 },
-                                {
-                                    match: {
-                                        is_hate_speech: false,
-                                    },
+                            },
+                            {
+                                match: {
+                                    is_hate_speech: false,
                                 },
+                            },
                             ],
                         },
                     },
@@ -175,15 +175,15 @@ export async function getUserTweets(url, auth, author_username) {
         query: {
             bool: {
                 must: [{
-                        match: {
-                            lang: "pl",
-                        },
+                    match: {
+                        lang: "pl",
                     },
-                    {
-                        match: {
-                            author_username: author_username,
-                        },
+                },
+                {
+                    match: {
+                        author_username: author_username,
                     },
+                },
                 ],
 
             },
@@ -422,5 +422,92 @@ export async function countTweetsWithWord(url, auth, word) {
         console.log(error)
     })
 
+    return result
+}
+
+export async function getAuthorsForCategory(url, auth, category) {
+    var hate_words_string = ""
+    category.words.forEach(w => hate_words_string += (w + ', '))
+    var query = {
+        size: 10000,
+        query: {
+            bool: {
+                must: [{
+                    match: {
+                        lang: "pl",
+                    },
+
+                }, {
+                    match: {
+                        is_retweet: false,
+                    },
+
+                }, {
+                    match: {
+                        keywords: hate_words_string,
+                    },
+
+                }],
+
+            },
+        }
+    }
+
+    var data = []
+    await axios.post(url + "/_search", query, {
+        auth: auth,
+    }).then((response) => {
+        response.data.hits.hits.forEach(t => {
+            if (!data.includes(t._source.author_username))
+                data.push(t._source.author_username)
+        })
+    }).catch((error) => {
+        console.log(error)
+    })
+
+    return data
+}
+
+export async function countAuthorTweetsForCategory(url, auth, author, category) {
+    var hate_words_string = ""
+    category.words.forEach(w => hate_words_string += (w + ', '))
+    var query = {
+        query: {
+            bool: {
+                must: [{
+                    match: {
+                        lang: "pl",
+                    },
+
+                }, {
+                    match: {
+                        is_retweet: false,
+                    },
+
+                }, {
+                    match: {
+                        keywords: hate_words_string,
+                    },
+
+                },
+                {
+                    match: {
+                        author_username: author,
+                    },
+
+                }],
+
+            },
+        }
+    }
+
+    var result = 0
+    await axios.post(url + "/_count", query, {
+        auth: auth,
+    }).then((response) => {
+        result = response.data.count
+    }).catch((error) => {
+        console.log(error)
+    })
     return result
 }
