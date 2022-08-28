@@ -1,24 +1,36 @@
 <template>
-  <categories-count :data="this.hate_speech_categories_count" :words="this.words"
+  <categories-count
+    :data="this.hate_speech_categories_count"
+    :words="this.words"
     :hate_speech_categories_count="this.hate_speech_categories_count"
-    v-if="this.author == '' && this.hate_category == ''">
+    v-if="this.author == '' && this.hate_category == ''"
+  >
   </categories-count>
-  <authors-count :data="this.hate_speech_category_authors_count" :hate_speech_category="this.hate_category"
-    v-if="this.author == '' && this.hate_category">
+  <authors-count
+    :data="this.hate_speech_category_authors_count"
+    :hate_speech_category="this.hate_category"
+    v-if="this.author == '' && this.hate_category"
+  >
   </authors-count>
-  <author-stats :data="this.author_category_count" :author="this.author" v-if="this.author && this.hate_category == ''">
+  <author-stats
+    :data="this.author_category_count"
+    :author="this.author"
+    :words="this.words"
+    v-if="this.author && this.hate_category == ''"
+  >
   </author-stats>
 </template>
 <script>
 import CategoriesCount from "./stats/CategoriesCount.vue";
 import AuthorsCount from "./stats/AuthorsCount.vue";
-import AuthorStats from "./stats/AuthorStats.vue"
+import AuthorStats from "./stats/AuthorStats.vue";
 import {
   getHateCategories,
   countTweetsFromCategory,
   countTweetsWithWord,
   getAuthorsForCategory,
-  countAuthorTweetsForCategory
+  countAuthorTweetsForCategory,
+  countAuthorTweetsForWord,
 } from "../es.js";
 
 export default {
@@ -46,10 +58,10 @@ export default {
     countTweetsFromCategory,
     countTweetsWithWord,
     getAuthorsForCategory,
-    countAuthorTweetsForCategory
+    countAuthorTweetsForCategory,
+    countAuthorTweetsForWord,
   },
   async mounted() {
-
     await getHateCategories(
       this.url + "/" + this.hate_categories_index,
       this.auth
@@ -79,32 +91,34 @@ export default {
             this.url + "/" + this.tweets_index,
             this.auth,
             hsc
-          ).then(data => {
+          ).then((data) => {
             this.hate_speech_category_authors = JSON.parse(
               JSON.stringify(data)
-            )
+            );
             this.hate_speech_category_authors.forEach((hsca) => {
-              this.hate_speech_category_authors_count = []
+              this.hate_speech_category_authors_count = [];
 
               countAuthorTweetsForCategory(
                 this.url + "/" + this.tweets_index,
                 this.auth,
                 hsca,
                 hsc
-              ).then(data => {
+              ).then((data) => {
                 this.hate_speech_category_authors_count = JSON.parse(
                   JSON.stringify(this.hate_speech_category_authors_count)
                 );
-                this.hate_speech_category_authors_count.push({ author: hsca, count: data })
-                this.hate_speech_category_authors_count.sort((a, b) => b.count - a.count)
-              })
-            })
-          })
-
+                this.hate_speech_category_authors_count.push({
+                  name: hsca,
+                  count: data,
+                });
+                this.hate_speech_category_authors_count.sort(
+                  (a, b) => b.count - a.count
+                );
+              });
+            });
+          });
         }
-      })
-
-
+      });
     } else if (this.author) {
       this.hate_speech_categories.forEach((hsc) => {
         countAuthorTweetsForCategory(
@@ -112,17 +126,30 @@ export default {
           this.auth,
           this.author,
           hsc
-        ).then(data => {
+        ).then((data) => {
           this.author_category_count = JSON.parse(
             JSON.stringify(this.author_category_count)
           );
           if (data > 0) {
-            this.author_category_count.push({ name: hsc.category, count: data })
-            this.author_category_count.sort((a, b) => b.count - a.count)
+            this.author_category_count.push({
+              name: hsc.category,
+              count: data,
+            });
+            this.author_category_count.sort((a, b) => b.count - a.count);
           }
-        })
-      })
+        });
+      });
 
+      this.words.forEach((word) => {
+        countAuthorTweetsForWord(
+          this.url + "/" + this.tweets_index,
+          this.auth,
+          this.author,
+          word.word
+        ).then((data) => {
+          word.count = data;
+        });
+      });
     } else {
       this.hate_speech_categories.forEach((hsc, index) => {
         this.hate_speech_categories_count = [];
@@ -154,9 +181,6 @@ export default {
         });
       });
     }
-
-
-
   },
 };
 </script>

@@ -1,30 +1,35 @@
 <template>
-  <div>
-    <!-- visualization test -->
-    <Responsive>
-      <template #main="{ width }">
-        <Chart direction="circular" :size="{ width, height: 500 }" :data="this.data" :margin="{
-          left: Math.round((width - 360) / 2),
-          top: 40,
-          right: 0,
-          bottom: 40,
-        }"  :config="{ controlHover: false }">
-          <template #layers>
-            <Pie :dataKeys="['name', 'count']" :pie-style="{ innerRadius: 50, padAngle: 0.05, colors: ['#fcba03', '#2f578f', '#8d2f8f', '#32a852', '#db4f1d', '#1dd2db'] }" />
-          </template>
-          <template #widgets>
-            <Tooltip :config="{
-              name: {},
-              count: { label: 'value' },
-              words: { hide: true },
-            }" hideLine />
-          </template>
-        </Chart>
-      </template>
-    </Responsive>
-    <!-- end of visualization -->
+  <div class="row">
+    <div class="col-auto">
+      <select class="form-select" v-model="this.chart_type">
+        <option value="pie">Kołowy</option>
+        <option value="bar">Słupkowy</option>
+      </select>
+    </div>
   </div>
+  <!-- charts -->
+  <pie-chart
+    :data="this.data"
+    :tooltip_config="this.tooltip_config"
+    v-if="chart_type == 'pie'"
+  ></pie-chart>
+  <bar-chart
+    :data="this.data"
+    :tooltip_config="this.tooltip_config"
+    :direction="this.direction"
+    v-else
+  ></bar-chart>
 
+  <!-- tables -->
+  <vue-excel-xlsx
+    :data="this.data"
+    :columns="this.columns_categories"
+    :file-name="'Kategorie - Wszystko'"
+    :file-type="'xlsx'"
+    :sheet-name="'Kategorie - Wszystko'"
+  >
+    Pobierz kategorie
+  </vue-excel-xlsx>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -34,14 +39,32 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(category, index) in this.hate_speech_categories_count.sort((a, b) => b.count - a.count)" :key="index">
+      <tr
+        v-for="(category, index) in this.hate_speech_categories_count.sort(
+          (a, b) => b.count - a.count
+        )"
+        :key="index"
+      >
         <th scope="row">{{ index + 1 }}</th>
-        <td><a :href="'/stats/hate_category=' + category.name" target="_blank">{{ category.name }}</a></td>
+        <td>
+          <a :href="'/stats/hate_category=' + category.name" target="_blank">{{
+            category.name
+          }}</a>
+        </td>
         <td>{{ category.count }}</td>
       </tr>
     </tbody>
   </table>
 
+  <vue-excel-xlsx
+    :data="this.words"
+    :columns="this.columns_words"
+    :file-name="'Słowa - Wszystko'"
+    :file-type="'xlsx'"
+    :sheet-name="'Słowa - Wszystko'"
+  >
+    Pobierz słowa
+  </vue-excel-xlsx>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -52,21 +75,59 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(word, index) in this.words.sort((a, b) => b.count - a.count)" :key="index">
+      <tr
+        v-for="(word, index) in this.words.sort((a, b) => b.count - a.count)"
+        :key="index"
+        v-show="word.count > 0"
+      >
         <th scope="row">{{ index + 1 }}</th>
         <td>{{ word.word }}</td>
-        <td><a :href="'/stats/hate_category=' + word.category">{{ word.category }}</a></td>
+        <td>
+          <a :href="'/stats/hate_category=' + word.category">{{
+            word.category
+          }}</a>
+        </td>
         <td>{{ word.count }}</td>
       </tr>
     </tbody>
   </table>
 </template>
 <script>
-import { Chart, Responsive, Pie, Tooltip } from "vue3-charts";
-
+import PieChart from "./PieChart.vue";
+import BarChart from "./BarChart.vue";
 export default {
   props: { data: Array, words: Array, hate_speech_categories_count: Array },
-  components: { Chart, Responsive, Pie, Tooltip },
+  components: { PieChart, BarChart },
+  data() {
+    return {
+      chart_type: "pie",
+      direction: "vertical",
+      tooltip_config: {
+        name: { label: "kategoria" },
+        count: { label: "liczba wpisów" },
+      },
+      columns_categories: [
+        {
+          label: "Kategoria",
+          field: "name",
+        },
+        {
+          label: "Liczba wpisów",
+          field: "count",
+        },
+      ],
+      columns_words: [
+        {
+          label: "Słowo",
+          field: "word",
+        },
+        {
+          label: "Liczba wpisów",
+          field: "count",
+        },
+      ],
+    };
+  },
 };
 </script>
 <style>
