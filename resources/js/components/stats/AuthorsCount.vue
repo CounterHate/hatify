@@ -45,8 +45,8 @@
       <tr v-for="(author, index) in this.data" :key="index">
         <th scope="row">{{ index + 1 }}</th>
         <td>
-          <a :href="'/stats/author=' + author.author" target="_blank">{{
-            author.author
+          <a :href="'/stats/author=' + author.name" target="_blank">{{
+            author.name
           }}</a>
         </td>
         <td>{{ author.count }}</td>
