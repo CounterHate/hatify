@@ -12,13 +12,36 @@
       <select class="form-select" v-model="this.chart_type">
         <option value="pie">Kołowy</option>
         <option value="bar">Słupkowy</option>
+        <option value="line">Liniowy</option>
+        <option value="area">Obszarowy</option>
       </select>
     </div>
   </div>
 
   <!-- charts -->
-  <pie-chart :data="this.data" :tooltip_config="this.tooltip_config" v-if="chart_type == 'pie'"></pie-chart>
-  <bar-chart :data="this.data" :tooltip_config="this.tooltip_config" :direction="this.direction" v-else></bar-chart>
+  <pie-chart
+    :data="this.data"
+    :tooltip_config="this.tooltip_config"
+    v-if="chart_type == 'pie'"
+  ></pie-chart>
+  <bar-chart
+    :data="this.data"
+    :tooltip_config="this.tooltip_config"
+    :direction="this.vertical_direction"
+    v-if="chart_type == 'pie'"
+  ></bar-chart>
+  <area-chart
+    :data="this.data"
+    :direction="this.horizontal_direction"
+    v-if="chart_type == 'area'"
+  >
+  </area-chart>
+  <line-chart
+    :data="this.data"
+    :direction="this.horizontal_direction"
+    v-if="chart_type == 'line'"
+  >
+  </line-chart>
 
   <!-- tables -->
   <vue-excel-xlsx
@@ -92,17 +115,22 @@
 <script>
 import BarChart from "./BarChart.vue";
 import PieChart from "./PieChart.vue";
+import AreaChart from "./AreaChart.vue";
+import LineChart from "./LineChart.vue";
 
 export default {
   props: { data: Array, author: String, words: Array },
   components: {
     BarChart,
     PieChart,
+    LineChart,
+    AreaChart,
   },
   data() {
     return {
       chart_type: "pie",
-      direction: "vertical",
+      vertical_direction: "vertical",
+      horizontal_direction: "horizontal",
       tooltip_config: {
         name: { label: "kategoria" },
         count: { label: "liczba wpisów" },

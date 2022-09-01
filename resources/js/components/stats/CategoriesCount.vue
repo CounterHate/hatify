@@ -4,6 +4,8 @@
       <select class="form-select" v-model="this.chart_type">
         <option value="pie">Kołowy</option>
         <option value="bar">Słupkowy</option>
+        <option value="line">Liniowy</option>
+        <option value="area">Obszarowy</option>
       </select>
     </div>
   </div>
@@ -16,9 +18,21 @@
   <bar-chart
     :data="this.data"
     :tooltip_config="this.tooltip_config"
-    :direction="this.direction"
-    v-else
+    :direction="this.vertical_direction"
+    v-if="chart_type == 'bar'"
   ></bar-chart>
+  <area-chart
+    :data="this.data"
+    :direction="this.horizontal_direction"
+    v-if="chart_type == 'area'"
+  >
+  </area-chart>
+  <line-chart
+    :data="this.data"
+    :direction="this.horizontal_direction"
+    v-if="chart_type == 'line'"
+  >
+  </line-chart>
 
   <!-- tables -->
   <vue-excel-xlsx
@@ -78,7 +92,6 @@
       <tr
         v-for="(word, index) in this.words.sort((a, b) => b.count - a.count)"
         :key="index"
-        v-show="word.count > 0"
       >
         <th scope="row">{{ index + 1 }}</th>
         <td>{{ word.word }}</td>
@@ -95,13 +108,16 @@
 <script>
 import PieChart from "./PieChart.vue";
 import BarChart from "./BarChart.vue";
+import AreaChart from "./AreaChart.vue";
+import LineChart from "./LineChart.vue";
 export default {
   props: { data: Array, words: Array, hate_speech_categories_count: Array },
-  components: { PieChart, BarChart },
+  components: { PieChart, BarChart, AreaChart, LineChart },
   data() {
     return {
       chart_type: "pie",
-      direction: "vertical",
+      vertical_direction: "vertical",
+      horizontal_direction: "horizontal",
       tooltip_config: {
         name: { label: "kategoria" },
         count: { label: "liczba wpisów" },

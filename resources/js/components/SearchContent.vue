@@ -185,7 +185,9 @@ export default {
       sortOrder: null,
       sortOptions: [
         { value: 'ascending', text: 'Od najstarszych' },
-        { value: 'descending', text: 'Od najnowszych' }
+        { value: 'descending', text: 'Od najnowszych' },
+        { value: 'ascending_score', text: 'Od najmniejszej dokładności' },
+        { value: 'descending_score', text: 'Od największej dokładności' }
       ],
       size: 10,
       sizeOptions: [
@@ -223,6 +225,8 @@ export default {
       if (this.media_chosen == 'twitter') {
         if (this.sortOrder == 'ascending') this.tweets.sort((a, b) => a.posted_utime > b.posted_utime ? 1 : -1)
         if (this.sortOrder == 'descending') this.tweets.sort((a, b) => a.posted_utime < b.posted_utime ? 1 : -1);
+        if (this.sortOrder == 'ascending_score') this.tweets.sort((a, b) => a.score > b.score ? 1 : -1)
+        if (this.sortOrder == 'descending_score') this.tweets.sort((a, b) => a.score < b.score ? 1 : -1);
       }
     },
     async getData() {

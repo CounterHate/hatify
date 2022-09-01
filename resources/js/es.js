@@ -347,7 +347,7 @@ export async function getHateCategories(url, auth) {
     return hate_categories
 }
 
-export async function countTweetsFromCategory(url, auth, category) {
+export async function countTweetsFromCategory(url, auth, category, from_date = null, to_date = null) {
     // convert category array to string
     var hate_words_string = ""
     category.words.forEach(w => hate_words_string += (w + ', '))
@@ -375,6 +375,21 @@ export async function countTweetsFromCategory(url, auth, category) {
         }
     }
 
+    var gte;
+    var lte;
+
+    if (from_date) gte = new Date(from_date).getTime() / 1000;
+    if (to_date) lte = new Date(to_date).getTime() / 1000;
+
+    if (from_date || to_date) query.query.bool.must.push({
+        range: {
+            posted_utime: {
+                gte: gte,
+                lte: lte
+            }
+        }
+    })
+
     var result = 0
     await axios.post(url + "/_count", query, {
         auth: auth,
@@ -388,7 +403,7 @@ export async function countTweetsFromCategory(url, auth, category) {
 
 }
 
-export async function countTweetsWithWord(url, auth, word) {
+export async function countTweetsWithWord(url, auth, word, from_date = null, to_date = null) {
     var query = {
         query: {
             bool: {
@@ -413,6 +428,21 @@ export async function countTweetsWithWord(url, auth, word) {
         }
     }
 
+    var gte;
+    var lte;
+
+    if (from_date) gte = new Date(from_date).getTime() / 1000;
+    if (to_date) lte = new Date(to_date).getTime() / 1000;
+
+    if (from_date || to_date) query.query.bool.must.push({
+        range: {
+            posted_utime: {
+                gte: gte,
+                lte: lte
+            }
+        }
+    })
+
     var result = 0
     await axios.post(url + "/_count", query, {
         auth: auth,
@@ -425,7 +455,7 @@ export async function countTweetsWithWord(url, auth, word) {
     return result
 }
 
-export async function getAuthorsForCategory(url, auth, category) {
+export async function getAuthorsForCategory(url, auth, category, from_date = null, to_date = null) {
     var hate_words_string = ""
     category.words.forEach(w => hate_words_string += (w + ', '))
     var query = {
@@ -453,6 +483,21 @@ export async function getAuthorsForCategory(url, auth, category) {
         }
     }
 
+    var gte;
+    var lte;
+
+    if (from_date) gte = new Date(from_date).getTime() / 1000;
+    if (to_date) lte = new Date(to_date).getTime() / 1000;
+
+    if (from_date || to_date) query.query.bool.must.push({
+        range: {
+            posted_utime: {
+                gte: gte,
+                lte: lte
+            }
+        }
+    })
+
     var data = []
     await axios.post(url + "/_search", query, {
         auth: auth,
@@ -468,7 +513,7 @@ export async function getAuthorsForCategory(url, auth, category) {
     return data
 }
 
-export async function countAuthorTweetsForCategory(url, auth, author, category) {
+export async function countAuthorTweetsForCategory(url, auth, author, category, from_date = null, to_date = null) {
     var hate_words_string = ""
     category.words.forEach(w => hate_words_string += (w + ', '))
     var query = {
@@ -502,6 +547,21 @@ export async function countAuthorTweetsForCategory(url, auth, author, category) 
         }
     }
 
+    var gte;
+    var lte;
+
+    if (from_date) gte = new Date(from_date).getTime() / 1000;
+    if (to_date) lte = new Date(to_date).getTime() / 1000;
+
+    if (from_date || to_date) query.query.bool.must.push({
+        range: {
+            posted_utime: {
+                gte: gte,
+                lte: lte
+            }
+        }
+    })
+
     var result = 0
     await axios.post(url + "/_count", query, {
         auth: auth,
@@ -513,7 +573,7 @@ export async function countAuthorTweetsForCategory(url, auth, author, category) 
     return result
 }
 
-export async function countAuthorTweetsForWord(url, auth, author, word) {
+export async function countAuthorTweetsForWord(url, auth, author, word, from_date = null, to_date = null) {
     var query = {
         query: {
             bool: {
@@ -544,6 +604,21 @@ export async function countAuthorTweetsForWord(url, auth, author, word) {
             },
         }
     }
+
+    var gte;
+    var lte;
+
+    if (from_date) gte = new Date(from_date).getTime() / 1000;
+    if (to_date) lte = new Date(to_date).getTime() / 1000;
+
+    if (from_date || to_date) query.query.bool.must.push({
+        range: {
+            posted_utime: {
+                gte: gte,
+                lte: lte
+            }
+        }
+    })
 
     var result = 0
     await axios.post(url + "/_count", query, {
