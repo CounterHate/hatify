@@ -29,7 +29,7 @@
 </template>
 <script>
 import { getRandomTweets } from "../es.js";
-import Tweet from "./Tweet.vue";
+import Tweet from "./entities/Tweet.vue";
 
 export default {
   data() {

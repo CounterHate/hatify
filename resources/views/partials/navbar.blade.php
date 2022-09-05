@@ -11,9 +11,6 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/search/twitter ">Szukaj</a>
                 </li>
-                {{-- <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/userTweets/twitter ">Szukaj innych autora</a>
-                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/random">Anotacja</a>
                 </li>

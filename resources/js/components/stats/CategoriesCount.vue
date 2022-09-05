@@ -106,10 +106,10 @@
   </table>
 </template>
 <script>
-import PieChart from "./PieChart.vue";
-import BarChart from "./BarChart.vue";
-import AreaChart from "./AreaChart.vue";
-import LineChart from "./LineChart.vue";
+import PieChart from "./charts/PieChart.vue";
+import BarChart from "./charts/BarChart.vue";
+import AreaChart from "./charts/AreaChart.vue";
+import LineChart from "./charts/LineChart.vue";
 export default {
   props: { data: Array, words: Array, hate_speech_categories_count: Array },
   components: { PieChart, BarChart, AreaChart, LineChart },

@@ -113,10 +113,10 @@
   </table>
 </template>
 <script>
-import BarChart from "./BarChart.vue";
-import PieChart from "./PieChart.vue";
-import AreaChart from "./AreaChart.vue";
-import LineChart from "./LineChart.vue";
+import BarChart from "./charts/BarChart.vue";
+import PieChart from "./charts/PieChart.vue";
+import AreaChart from "./charts/AreaChart.vue";
+import LineChart from "./charts/LineChart.vue";
 
 export default {
   props: { data: Array, author: String, words: Array },

@@ -630,3 +630,46 @@ export async function countAuthorTweetsForWord(url, auth, author, word, from_dat
     })
     return result
 }
+
+export async function getCategoryGrowth(url, auth, category, from_date = null, to_date = null) {
+    var query = {
+        query: {
+            match: {
+                entity_value: category,
+            },
+        }
+    }
+
+    var gte;
+    var lte;
+
+    if (from_date) gte = new Date(from_date).getTime() / 1000;
+    if (to_date) lte = new Date(to_date).getTime() / 1000;
+
+    if (from_date || to_date) query.query.bool.must.push({
+        range: {
+            posted_utime: {
+                gte: gte,
+                lte: lte
+            }
+        }
+    })
+
+    var data = []
+    await axios.post(url + "/_search", query, {
+        auth: auth,
+    }).then((response) => {
+        response.data.hits.hits.sort(
+            (a, b) => a._source.date - b._source.date
+        )
+        response.data.hits.hits.forEach(d => {
+            var tmp = d._source
+            tmp.date = new Date(tmp.date * 1000).toLocaleDateString()
+            if (d._source.entity_value == category) data.push(tmp)
+        })
+    }).catch((error) => {
+        console.log(error)
+    })
+    return data
+
+}

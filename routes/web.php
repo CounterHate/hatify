@@ -75,15 +75,6 @@ Route::middleware(['auth'])->name('search')->prefix('/search')->group(function (
     });
 });
 
-Route::middleware(['auth'])->name('userTweets')->prefix('/userTweets')->group(function () {
-    Route::get('/{media}', function ($media) {
-        return view('userTweets', ['username' => null, 'media' => $media]);
-    });
-    Route::get('/{media}/{username}', function ($media, $username) {
-        return view('userTweets', ['username' => $username, 'media' => $media]);
-    });
-});
-
 Route::get('/tweetStats/{tweet_id}', function ($tweet_id) {
 
     $params = [
