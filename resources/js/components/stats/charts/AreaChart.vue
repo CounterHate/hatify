@@ -1,33 +1,14 @@
 <template>
-  <Chart
-    :size="{ width: this.windowWidth * 0.8, height: 420 }"
-    :data="data"
-    :margin="margin"
-    :direction="direction"
-    :axis="axis"
-  >
+  <Chart :size="{ width: this.windowWidth * 0.8, height: 420 }" :data="data" :margin="margin" :direction="direction"
+    :axis="axis">
     <template #layers>
       <Grid strokeDasharray="2,2" />
-      <Area
-        :dataKeys="['name', 'count']"
-        type="monotone"
-        :areaStyle="{ fill: 'url(#grad)' }"
-      />
-      <Line
-        :dataKeys="['name', 'count']"
-        type="monotone"
-        :lineStyle="{
+      <Area :dataKeys="['name', 'count']" type="monotone" :areaStyle="{ fill: 'url(#grad)' }" />
+        <Line :dataKeys="['name', 'count']" type="monotone" :lineStyle="{
           stroke: '#9f7aea',
-        }"
-      />
-      <Marker
-        v-if="marker"
-        :value="1000"
-        label="Mean."
-        color="green"
-        strokeWidth="2"
-        strokeDasharray="6 6"
-      />
+        }" />
+
+      <Marker v-if="marker" :value="1000" label="Mean." color="green" strokeWidth="2" strokeDasharray="6 6" />
       <defs>
         <linearGradient id="grad" gradientTransform="rotate(90)">
           <stop offset="0%" stop-color="#be90ff" stop-opacity="1" />
@@ -37,14 +18,11 @@
     </template>
 
     <template #widgets>
-      <Tooltip
-        borderColor="#48CAE4"
-        :config="{
-          pl: { color: '#9f7aea' },
-          avg: { hide: true },
-          inc: { hide: true },
-        }"
-      />
+      <Tooltip borderColor="#48CAE4" :config="{
+        pl: { color: '#9f7aea' },
+        avg: { hide: true },
+        inc: { hide: true },
+      }" />
     </template>
   </Chart>
 </template>

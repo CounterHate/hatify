@@ -28,7 +28,7 @@
     :data="this.data"
     :tooltip_config="this.tooltip_config"
     :direction="this.vertical_direction"
-    v-if="chart_type == 'pie'"
+    v-if="chart_type == 'bar'"
   ></bar-chart>
   <area-chart
     :data="this.data"
