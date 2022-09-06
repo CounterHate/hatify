@@ -678,3 +678,64 @@ export async function getCategoryGrowth(url, auth, category, from_date = null, t
     return data
 
 }
+
+export async function getPhrasesFromIndex(url, auth) {
+    var query = {
+        size: 10000
+    }
+
+    var data = []
+    await axios.post(url + "/_search", query, {
+        auth: auth,
+    }).then((response) => {
+        console.log(response)
+        response.data.hits.hits.forEach(d => {
+            var tmp = {
+                id: d._id,
+                phrase: d._source.phrase
+            }
+            data.push(tmp)
+        })
+    }).catch((error) => {
+        console.log(error)
+    })
+    return data
+}
+
+export async function checkStreamAlive(url, auth) {
+    var data = []
+    await axios.get(url + "/_doc/1", {
+        auth: auth,
+    }).then((response) => {
+        data = response.data._source
+    }).catch((error) => {
+        console.log(error)
+    })
+    return data
+}
+
+export async function updateStreamAlive(url, auth, is_alive) {
+    var query = {
+        is_alive: is_alive
+    }
+
+    await axios.put(url + "/_doc/1", query, {
+        auth: auth,
+    }).then((response) => {
+        console.log(response.data)
+    }).catch((error) => {
+        console.log(error)
+    })
+}
+
+export async function deletePhraseFromIndex(url, auth, id) {
+    await axios.delete(url + "/_doc/" + id, {
+        auth: auth,
+    }).then((response) => {
+        console.log(response.data)
+        return true
+    }).catch((error) => {
+        console.log(error)
+        return false
+    })
+}

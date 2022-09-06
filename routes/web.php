@@ -89,6 +89,9 @@ Route::get('/tweetStats/{tweet_id}', function ($tweet_id) {
     return $data;
 });
 
+Route::get('/admin', function () {
+    return view('admin');
+})->middleware(['auth'])->name('admin');
 
 
 

@@ -2,12 +2,6 @@
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                {{-- <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/index">Index</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/search">Szukaj</a>
-                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/search/twitter ">Szukaj</a>
                 </li>
@@ -23,10 +17,11 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/stats">Statystyki</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/admin">Panel admina</a>
+                </li>
             </ul>
-            {{-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-            </ul> --}}
             <span class="navbar-text">
                 @if (Route::has('login'))
                     <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
@@ -40,7 +35,6 @@
                                     {{ __('Log Out') }}
                                 </button>
                             </form>
-
                         @else
                             <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log
                                 in</a>
