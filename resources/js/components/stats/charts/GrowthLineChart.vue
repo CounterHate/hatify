@@ -12,22 +12,15 @@
     </template>
 
     <template #widgets>
-      <Tooltip
-        borderColor="#48CAE4"
-        :config="{
-          date: { color: '#0077b6' },
-          count: { label: 'averange', color: 'red' },
-          growth: { hide: true },
-        }"
-      />
+      <Tooltip borderColor="#48CAE4" :config="this.tooltip_config" />
     </template>
   </Chart>
 </template>
   <script>
-import { Chart, Grid, Line } from "vue3-charts";
+import { Chart, Grid, Line, Tooltip } from "vue3-charts";
 export default {
   props: { data: Array },
-  components: { Chart, Grid, Line },
+  components: { Chart, Grid, Line, Tooltip },
   data() {
     return {
       direction: "horizontal",
@@ -47,6 +40,13 @@ export default {
           type: "linear",
           ticks: 8,
         },
+      },
+      tooltip_config: {
+        date: { label: "Data" },
+        count: { label: "Liczba wpisów" },
+        growth: { label: "Przyrost" },
+        entity: { hide: true },
+        entity_value: { hide: true },
       },
     };
   },

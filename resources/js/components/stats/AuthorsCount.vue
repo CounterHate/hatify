@@ -15,34 +15,60 @@
         <option value="area">Obszarowy</option>
       </select>
     </div>
-
+    <div class="col-auto" v-if="this.mode == 'growth'">
+      <select class="form-select" v-model="this.growth_period">
+        <option value="13">Kwartał</option>
+        <option value="27">Pół roku</option>
+        <option value="54">Rok</option>
+      </select>
+    </div>
   </div>
 
   <!-- charts -->
   <div v-if="this.mode == 'numbers'">
-    <pie-chart :data="this.data.slice(0, 20)" :tooltip_config="this.tooltip_config" v-if="chart_type == 'pie'">
+    <pie-chart
+      :data="this.data.slice(0, 20)"
+      :tooltip_config="this.tooltip_config"
+      v-if="chart_type == 'pie'"
+    >
     </pie-chart>
-    <bar-chart :data="this.data.slice(0, 20)" :tooltip_config="this.tooltip_config" :direction="this.vertical_direction"
-      v-if="chart_type == 'bar'"></bar-chart>
-    <area-chart :data="this.data.slice(0, 20)" :direction="this.horizontal_direction" v-if="chart_type == 'area'">
+    <bar-chart
+      :data="this.data.slice(0, 20)"
+      :tooltip_config="this.tooltip_config"
+      :direction="this.vertical_direction"
+      v-if="chart_type == 'bar'"
+    ></bar-chart>
+    <area-chart
+      :data="this.data.slice(0, 20)"
+      :direction="this.horizontal_direction"
+      v-if="chart_type == 'area'"
+    >
     </area-chart>
-    <line-chart :data="this.data.slice(0, 20)" :direction="this.horizontal_direction" v-if="chart_type == 'line'">
+    <line-chart
+      :data="this.data.slice(0, 20)"
+      :direction="this.horizontal_direction"
+      v-if="chart_type == 'line'"
+    >
     </line-chart>
   </div>
   <div v-else>
-    <growth-line-chart :data="this.data_growth"></growth-line-chart>
+    <growth-line-chart
+      :data="this.data_growth.slice(-this.growth_period)"
+    ></growth-line-chart>
   </div>
 
-  <authors-table :data="this.data" :hate_speech_category="this.hate_speech_category"></authors-table>
+  <authors-table
+    :data="this.data"
+    :hate_speech_category="this.hate_speech_category"
+  ></authors-table>
 </template>
 <script>
 import BarChart from "./charts/BarChart.vue";
 import PieChart from "./charts/PieChart.vue";
 import AreaChart from "./charts/AreaChart.vue";
 import LineChart from "./charts/LineChart.vue";
-import GrowthLineChart from "./charts/GrowthLineChart.vue"
+import GrowthLineChart from "./charts/GrowthLineChart.vue";
 import AuthorsTable from "./tables/AuthorsTable.vue";
-
 
 export default {
   props: { data: Array, data_growth: Array, hate_speech_category: String },
@@ -52,7 +78,7 @@ export default {
     LineChart,
     AreaChart,
     AuthorsTable,
-    GrowthLineChart
+    GrowthLineChart,
   },
   data() {
     return {
@@ -64,6 +90,7 @@ export default {
         author: { label: "autor" },
         count: { label: "liczba wpisów" },
       },
+      growth_period: 13,
     };
   },
 };
