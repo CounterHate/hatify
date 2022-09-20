@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\StatsController;
 use App\Http\Controllers\Api\TopicController;
 use App\Http\Controllers\Api\TweetController;
 use Illuminate\Http\Request;
@@ -22,7 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('tweets', TweetController::class);
 Route::apiResource('topics', TopicController::class);
+Route::apiResource('stats', StatsController::class);
 
+Route::get('/searchStats', [StatsController::class, 'search']);
+Route::get('/todayStats', [StatsController::class, 'today']);
 Route::get('/tweetCount', [TweetController::class, 'tweetCount']);
 Route::get('/tweetToVerify', [TweetController::class, 'getTweetToVerify']);
 Route::get('/fbPostToVerify', [TweetController::class, 'getFbPostToVerify']);
