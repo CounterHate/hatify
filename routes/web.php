@@ -30,13 +30,13 @@ Route::get('/', function () {
     return redirect('/search/twitter');
 })->middleware(['auth']);
 
-Route::get('/aiCheck', function () {
-    return view('aiCheck', ['user' => Auth::user()]);
-})->middleware(['auth'])->name('/');
+// Route::get('/aiCheck', function () {
+//     return view('aiCheck', ['user' => Auth::user()]);
+// })->middleware(['auth'])->name('/');
 
-Route::get('/verify', function () {
-    return view('verify', ['user' => Auth::user()]);
-})->middleware(['auth'])->name('/verify');
+// Route::get('/verify', function () {
+//     return view('verify', ['user' => Auth::user()]);
+// })->middleware(['auth'])->name('/verify');
 
 
 Route::middleware(['auth'])->name('stats')->prefix('/stats')->group(function () {

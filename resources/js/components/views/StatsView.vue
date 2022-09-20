@@ -65,6 +65,7 @@ import {
   countAuthorTweetsForCategory,
   countAuthorTweetsForWord,
   getCategoryGrowth,
+  getCategoriesTotal,
 } from "../../es.js";
 
 export default {
@@ -87,7 +88,7 @@ export default {
       words: [],
       from_date: null,
       to_date: null,
-      counting: true,
+      counting: false,
       category_growth: null,
     };
   },
@@ -100,6 +101,7 @@ export default {
     countAuthorTweetsForCategory,
     countAuthorTweetsForWord,
     getCategoryGrowth,
+    getCategoriesTotal,
     async getData() {
       this.counting = true;
       if (this.hate_category) {
@@ -225,6 +227,31 @@ export default {
         });
       }
     },
+    async getQuickData() {
+      const today = new Date();
+      const short_date =
+        today.getDate() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getFullYear();
+      console.log(short_date);
+      await getCategoriesTotal(
+        this.url + "/" + this.stats_index,
+        this.auth,
+        null,
+        short_date
+      ).then((data) => {
+        this.hate_speech_categories_count = data;
+        // for (const [key, value] of Object.entries(data)) {
+        //   this.hate_speech_categories_count.push({
+        //     name: key.slice(6),
+        //     count: value,
+        //   });
+        // }
+        console.log("data: ", data);
+      });
+    },
   },
   async mounted() {
     await getHateCategories(
@@ -248,7 +275,8 @@ export default {
         });
       });
     });
-    await this.getData();
+    // await this.getData();
+    await this.getQuickData();
   },
 };
 </script>

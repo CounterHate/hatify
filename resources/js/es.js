@@ -393,8 +393,6 @@ export async function countTweetsFromCategory(url, auth, category = null, from_d
         }
     })
 
-    console.log(category.category)
-    console.log(query)
     var result = 0
     await axios.post(url + "/_count", query, {
         auth: auth,
@@ -739,4 +737,54 @@ export async function deletePhraseFromIndex(url, auth, id) {
         console.log(error)
         return false
     })
+}
+
+export async function getCategoriesTotal(url, auth, from_date = null, to_date = null) {
+    var query = {
+        "size": 10,
+        "query": {
+            "bool": {
+                'must': [{
+                    "match": {
+                        "entity_value": "total"
+                    }
+                }, {
+                    "match": {
+                        "total": true
+                    }
+                }],
+                "should": [{
+                    "match": {
+                        "short_date": to_date
+                    }
+                }]
+            }
+        }
+    }
+
+    if (from_date) {
+        query.size = 20
+        query.query.bool.must.push({ match: { short_date: from_date } })
+    }
+
+    console.log(query)
+
+    var data = []
+    await axios.post(url + "/_search", query, {
+        auth: auth,
+    }).then((response) => {
+        console.log(response.data)
+        response.data.hits.hits.forEach(d => {
+            if (d._source.entity_value in data) {
+                data.push({ name: d._source.entity_value, count: Math.abs(data[d._source.entity_value] - data._source.count) })
+            } else {
+                data.push({ name: d._source.entity_value, count: d._source.count })
+            }
+        })
+    }).catch((error) => {
+        console.log(error)
+    })
+
+    return data
+
 }
