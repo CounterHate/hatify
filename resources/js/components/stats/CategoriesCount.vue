@@ -69,41 +69,6 @@
       </tr>
     </tbody>
   </table>
-
-  <vue-excel-xlsx
-    :data="this.words"
-    :columns="this.columns_words"
-    :file-name="'Słowa - Wszystko'"
-    :file-type="'xlsx'"
-    :sheet-name="'Słowa - Wszystko'"
-  >
-    Pobierz słowa
-  </vue-excel-xlsx>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Słowo</th>
-        <th scope="col">Kategoria</th>
-        <th scope="col">Liczba wyników</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="(word, index) in this.words.sort((a, b) => b.count - a.count)"
-        :key="index"
-      >
-        <th scope="row">{{ index + 1 }}</th>
-        <td>{{ word.word }}</td>
-        <td>
-          <a :href="'/stats/hate_category=' + word.category">{{
-            word.category
-          }}</a>
-        </td>
-        <td>{{ word.count }}</td>
-      </tr>
-    </tbody>
-  </table>
 </template>
 <script>
 import PieChart from "./charts/PieChart.vue";

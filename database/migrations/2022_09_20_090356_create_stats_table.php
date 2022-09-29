@@ -17,7 +17,7 @@ class CreateStatsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('entity');
-            $table->string('entity_Value');
+            $table->string('entity_value');
             $table->date('short_date');
             $table->integer('count');
             $table->integer('growth');

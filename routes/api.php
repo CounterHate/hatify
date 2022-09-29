@@ -25,8 +25,9 @@ Route::apiResource('tweets', TweetController::class);
 Route::apiResource('topics', TopicController::class);
 Route::apiResource('stats', StatsController::class);
 
-Route::get('/searchStats', [StatsController::class, 'search']);
-Route::get('/todayStats', [StatsController::class, 'today']);
+Route::post('/searchStats', [StatsController::class, 'search']);
+Route::post('/countForPeriod', [StatsController::class, 'countForPeriod']);
+Route::post('/growthForPeriod', [StatsController::class, 'growthForPeriod']);
 Route::get('/tweetCount', [TweetController::class, 'tweetCount']);
 Route::get('/tweetToVerify', [TweetController::class, 'getTweetToVerify']);
 Route::get('/fbPostToVerify', [TweetController::class, 'getFbPostToVerify']);

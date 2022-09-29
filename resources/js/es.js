@@ -516,37 +516,38 @@ export async function getAuthorsForCategory(url, auth, category, from_date = nul
     return data
 }
 
-export async function countAuthorTweetsForCategory(url, auth, author, category, from_date = null, to_date = null) {
-    var hate_words_string = ""
-    category.words.forEach(w => hate_words_string += (w + ', '))
+export async function countAuthorTweetsForCategory(url, auth, category, from_date = null, to_date = null) {
+    var words_string = ""
+    category.words.forEach(w => words_string += (w + ', '))
     var query = {
-        query: {
-            bool: {
-                must: [{
-                        match: {
-                            lang: "pl",
-                        },
-
-                    }, {
-                        match: {
-                            is_retweet: false,
-                        },
-
-                    }, {
-                        match: {
-                            keywords: hate_words_string,
-                        },
-
+        "query": {
+            "bool": {
+                "must": [{
+                        "match": {
+                            "lang": "pl"
+                        }
                     },
                     {
-                        match: {
-                            author_username: author,
-                        },
-
+                        "match": {
+                            "is_retweet": false
+                        }
+                    },
+                    {
+                        "match": {
+                            "keywords": words_string
+                        }
                     }
-                ],
-
-            },
+                ]
+            }
+        },
+        "size": 0,
+        "aggs": {
+            "authors": {
+                "terms": {
+                    "field": "author_username.keyword",
+                    "size": 10000
+                }
+            }
         }
     }
 
@@ -565,15 +566,17 @@ export async function countAuthorTweetsForCategory(url, auth, author, category, 
         }
     })
 
-    var result = 0
-    await axios.post(url + "/_count", query, {
+    var data = []
+    await axios.post(url + "/_search", query, {
         auth: auth,
     }).then((response) => {
-        result = response.data.count
+        response.data.aggregations.authors.buckets.forEach((a) => {
+            data.push({ name: a.key, count: a.doc_count })
+        })
     }).catch((error) => {
         console.log(error)
     })
-    return result
+    return data
 }
 
 export async function countAuthorTweetsForWord(url, auth, author, word, from_date = null, to_date = null) {
@@ -739,52 +742,105 @@ export async function deletePhraseFromIndex(url, auth, id) {
     })
 }
 
-export async function getCategoriesTotal(url, auth, from_date = null, to_date = null) {
-    var query = {
-        "size": 10,
-        "query": {
-            "bool": {
-                'must': [{
-                    "match": {
-                        "entity_value": "total"
-                    }
-                }, {
-                    "match": {
-                        "total": true
-                    }
-                }],
-                "should": [{
-                    "match": {
-                        "short_date": to_date
-                    }
-                }]
-            }
-        }
-    }
+export async function searchStats(from_date = null, to_date = null, entity_value = null) {
 
+    var query = {}
+
+    // get from date
     if (from_date) {
-        query.size = 20
-        query.query.bool.must.push({ match: { short_date: from_date } })
+        const fd = new Date(from_date);
+
+        var day = fd.getDate()
+        if (day < 10) day = '0' + day
+
+        var month = (fd.getMonth() + 1)
+        if (month < 10) month = '0' + month
+
+        var year = fd.getFullYear()
+
+        const short_from_date = year + "-" + month + "-" + day;
+        query['from_date'] = short_from_date
     }
 
-    console.log(query)
+    // get to date
+    const td = new Date();
+    if (to_date) {
+        const td = new Date(from_date);
+    }
+
+    var day = td.getDate()
+    if (day < 10) day = '0' + day
+
+    var month = (td.getMonth() + 1)
+    if (month < 10) month = '0' + month
+
+    var year = td.getFullYear();
+
+    const short_to_date = year + "-" + month + "-" + day;
+    query['to_date'] = short_to_date
+
+    if (entity_value) {
+        query['entity_value'] = entity_value
+    }
+
 
     var data = []
-    await axios.post(url + "/_search", query, {
-        auth: auth,
-    }).then((response) => {
-        console.log(response.data)
-        response.data.hits.hits.forEach(d => {
-            if (d._source.entity_value in data) {
-                data.push({ name: d._source.entity_value, count: Math.abs(data[d._source.entity_value] - data._source.count) })
-            } else {
-                data.push({ name: d._source.entity_value, count: d._source.count })
-            }
-        })
+    await axios.post('/api/countForPeriod', query).then((response) => {
+        data = response.data
     }).catch((error) => {
         console.log(error)
     })
 
     return data
+}
 
+export async function getGrowth(from_date = null, to_date = null, entity_value = null) {
+
+    var query = {}
+
+    // get from date
+    if (from_date) {
+        const fd = new Date(from_date);
+
+        var day = fd.getDate()
+        if (day < 10) day = '0' + day
+
+        var month = (fd.getMonth() + 1)
+        if (month < 10) month = '0' + month
+
+        var year = fd.getFullYear()
+
+        const short_from_date = year + "-" + month + "-" + day;
+        query['from_date'] = short_from_date
+    }
+
+    // get to date
+    const td = new Date();
+    if (to_date) {
+        const td = new Date(from_date);
+    }
+
+    var day = td.getDate()
+    if (day < 10) day = '0' + day
+
+    var month = (td.getMonth() + 1)
+    if (month < 10) month = '0' + month
+
+    var year = td.getFullYear();
+
+    const short_to_date = year + "-" + month + "-" + day;
+    query['to_date'] = short_to_date
+
+    if (entity_value) {
+        query['entity_value'] = entity_value
+    }
+
+    var data = []
+    await axios.post('/api/growthForPeriod', query).then((response) => {
+        data = response.data
+    }).catch((error) => {
+        console.log(error)
+    })
+
+    return data
 }

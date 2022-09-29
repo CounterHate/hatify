@@ -9,5 +9,5 @@ class Stat extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['short_date', 'count', 'growth', 'entity', 'entity_value'];
+    protected $fillable = ['short_date', 'count', 'growth', 'entity', 'entity_value', 'author', 'hate_speech_category'];
 }

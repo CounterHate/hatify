@@ -17,7 +17,9 @@
       </div>
     </div>
     <div class="col">
-      <button class="btn btn-primary" @click="getData">Filtruj</button>
+      <button class="btn btn-primary" @click="searchForStatsInTimePeriod">
+        Filtruj
+      </button>
     </div>
   </div>
   <br />
@@ -65,7 +67,8 @@ import {
   countAuthorTweetsForCategory,
   countAuthorTweetsForWord,
   getCategoryGrowth,
-  getCategoriesTotal,
+  searchStats,
+  getGrowth,
 } from "../../es.js";
 
 export default {
@@ -79,6 +82,7 @@ export default {
         username: process.env.MIX_ES_USER,
         password: process.env.MIX_ES_PASS,
       },
+      current_category: null,
       stats_index: process.env.MIX_HATE_STATS_INDEX,
       hate_speech_categories: [],
       hate_speech_categories_count: [],
@@ -101,7 +105,8 @@ export default {
     countAuthorTweetsForCategory,
     countAuthorTweetsForWord,
     getCategoryGrowth,
-    getCategoriesTotal,
+    searchStats,
+    getGrowth,
     async getData() {
       this.counting = true;
       if (this.hate_category) {
@@ -227,30 +232,24 @@ export default {
         });
       }
     },
-    async getQuickData() {
-      const today = new Date();
-      const short_date =
-        today.getDate() +
-        "-" +
-        (today.getMonth() + 1) +
-        "-" +
-        today.getFullYear();
-      console.log(short_date);
-      await getCategoriesTotal(
-        this.url + "/" + this.stats_index,
-        this.auth,
-        null,
-        short_date
-      ).then((data) => {
-        this.hate_speech_categories_count = data;
-        // for (const [key, value] of Object.entries(data)) {
-        //   this.hate_speech_categories_count.push({
-        //     name: key.slice(6),
-        //     count: value,
-        //   });
-        // }
-        console.log("data: ", data);
-      });
+    async searchForStatsInTimePeriod() {
+      var entity_value = null;
+      if (this.hate_category) entity_value = this.hate_category;
+      await this.searchStats(this.from_date, this.to_date, entity_value).then(
+        (data) => {
+          this.hate_speech_categories_count = data;
+        }
+      );
+    },
+    async getGrowthInTimePeriod() {
+      var entity_value = null;
+      if (this.hate_category) entity_value = this.hate_category;
+      await this.getGrowth(this.from_date, this.to_date, entity_value).then(
+        (data) => {
+          this.category_growth = data;
+          // this.hate_speech_categories_count = data;
+        }
+      );
     },
   },
   async mounted() {
@@ -266,6 +265,9 @@ export default {
         });
       });
       this.hate_speech_categories.forEach((category) => {
+        if (category.category == this.hate_category) {
+          this.current_category = category;
+        }
         category.words.forEach((word) => {
           this.words.push({
             category: category.category,
@@ -276,7 +278,17 @@ export default {
       });
     });
     // await this.getData();
-    await this.getQuickData();
+    await this.searchForStatsInTimePeriod();
+    await this.getGrowthInTimePeriod();
+    await this.countAuthorTweetsForCategory(
+      this.url + "/" + this.tweets_index,
+      this.auth,
+      this.current_category,
+      this.from_date,
+      this.to_date
+    ).then((data) => {
+      this.hate_speech_category_authors_count = data;
+    });
   },
 };
 </script>

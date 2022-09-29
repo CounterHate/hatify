@@ -53,7 +53,7 @@
   </div>
   <div v-else>
     <growth-line-chart
-      :data="this.data_growth.slice(-this.growth_period)"
+      :data="this.week_stats.slice(-this.growth_period)"
     ></growth-line-chart>
   </div>
 
@@ -80,9 +80,20 @@ export default {
     AuthorsTable,
     GrowthLineChart,
   },
+  watch: {
+    data_growth(oldVal, newVal) {
+      var num_of_weeks = Math.floor(this.data_growth.length / 7);
+      for (var i = 0; i < num_of_weeks; i++) {
+        this.week_stats.push(
+          JSON.parse(JSON.stringify(this.data_growth))[i * 7]
+        );
+      }
+    },
+  },
   data() {
     return {
       chart_type: "pie",
+      week_stats: [],
       vertical_direction: "vertical",
       horizontal_direction: "horizontal",
       mode: "numbers",
