@@ -134,11 +134,17 @@ class StatsController extends Controller
 
     public function countForPeriod(Request $request)
     {
-
         $data = [];
 
         $to_date = $request->to_date;
-        $to_stats = Stat::where('short_date', $to_date)->get();
+
+        $to_stats = null;
+
+        if ($request->has('entity_value')) {
+            $to_stats = Stat::where(['short_date' => $to_date, 'entity_value' => $request->entity_value])->get();
+        } else {
+            $to_stats = Stat::where(['short_date' => $to_date, 'entity' => 'categories'])->get();
+        }
 
         if (!$request->has('from_date')) {
             foreach ($to_stats as $ts) {
@@ -149,7 +155,13 @@ class StatsController extends Controller
 
 
         $from_date = $request->from_date;
-        $from_stats = Stat::where('short_date', $from_date)->get();
+        $from_stats = null;
+
+        if ($request->has('entity_value')) {
+            $from_stats = Stat::where(['short_date' => $to_date, 'entity_value' => $request->entity_value])->get();
+        } else {
+            $from_stats = Stat::where(['short_date' => $to_date, 'entity' => 'categories'])->get();
+        }
 
 
         foreach ($to_stats as $ts) {
