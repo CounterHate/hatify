@@ -26,7 +26,7 @@
     <!-- form to pick data order -->
     <div class="col">
       <div class="form-check" style="padding-left: 0px">
-        <label>Ile wpisów zwrócić</label>
+        <label>Liczba wpisów do wyświetlenia</label>
         <select class="form-select" v-model="size">
           <option v-for="option in this.sizeOptions" :value="option.value"> {{ option.text }}</option>
         </select>
@@ -40,7 +40,7 @@
     <div class="col">
       <!-- form for text to search -->
       <div class="mb-3">
-        <label for="contentInput" class="form-label">Treść do wyszukiwania</label>
+        <label for="contentInput" class="form-label">Treść do wyszukiwania <i data-bs-toggle="tooltip" data-bs-placement="top" :title="this.tooltip_content_text" class="bi bi-info-circle"></i></label>
         <input type="text" class="form-control" id="contentInput" placeholder="Treść do wyszukania" v-model="content"
           v-on:keyup.enter="getData" />
       </div>
@@ -72,12 +72,12 @@
       <Datepicker v-model="this.to_date"></Datepicker>
     </div>
     <div class="col">
-      <label class="form-label">Dokładność {{ this.min_score }}</label>
+      <label class="form-label">Dokładność {{ this.min_score }} <i data-bs-toggle="tooltip" data-bs-placement="top" :title="this.tooltip_min_score_text" class="bi bi-info-circle"></i></label>
       <input type="range" class="form-range" v-model="this.min_score" min="0" max="100" step="0.01">
     </div>
   </div>
   <br />
-  <button type="submit" class="btn btn-success mb-3" @click="getData">Szukaj</button>
+  <button type="submit" class="btn btn-success mb-3" @click="getData">Filtruj</button>
 
   <!-- results -->
   <div class="d-flex justify-content-center" v-if="is_loading">
@@ -164,6 +164,8 @@ export default {
           field: "url",
         }
       ],
+      tooltip_content_text: "Wyszukuje treści podobnej do podanej. Przykładowo 'nienawidzę żydów' jest treścią podobną do 'nienawidzę ukrów i żydów'",
+      tooltip_min_score_text: "Jest to abstrakcyjna wartość, która pokazuje jak zbliżony jest dany wpis do podanych parametrów wyszukiwania. Im wyższa wartość tym bardziej odpowiada parametrom.",
       url: process.env.MIX_ES,
       tweets_index: process.env.MIX_TWEETS_INDEX,
       fb_posts_index: process.env.MIX_FBPOSTS_INDEX,
@@ -295,7 +297,8 @@ export default {
       if (value == null) return value;
       console.log(typeof value)
       return value.toString()
-    }
+    },
+
   },
 
   async mounted() {

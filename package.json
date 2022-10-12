@@ -31,6 +31,7 @@
     },
     "dependencies": {
         "@vuepic/vue-datepicker": "^3.4.0",
+        "html-to-image": "^1.10.8",
         "vue-excel-xlsx": "^1.2.2",
         "vue3-charts": "^1.1.31"
     }

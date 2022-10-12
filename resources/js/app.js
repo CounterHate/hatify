@@ -15,3 +15,8 @@ const app = createApp({ components: { RandomTweet, VerifyTweet, SearchContent, A
 
 app.use(VueExcelXlsx);
 app.mount('#app');
+
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})

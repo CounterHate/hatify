@@ -5,6 +5,7 @@
         direction="circular"
         :size="{ width, height: 500 }"
         :data="this.data"
+        :axis="this.axis"
         :margin="{
           left: Math.round((width - 360) / 2),
           top: 40,
@@ -12,6 +13,7 @@
           bottom: 40,
         }"
         :config="{ controlHover: false }"
+        id="chart"
       >
         <template #layers>
           <Pie
@@ -39,7 +41,6 @@
 </template>
 <script>
 import { Chart, Responsive, Pie, Tooltip } from "vue3-charts";
-
 export default {
   props: { data: Array, tooltip_config: Object },
   components: {
@@ -47,6 +48,23 @@ export default {
     Responsive,
     Pie,
     Tooltip,
+  },
+  data() {
+    return {
+      axis: {
+        primary: {
+          domain: ["dataMin", "dataMax"],
+          type: "band",
+        },
+        secondary: {
+          domain: ["dataMin", "dataMax"],
+          type: "linear",
+        },
+      },
+    };
+  },
+  mounted() {
+    document.getElementsByClassName("axis")[0].style.visibility = "hidden";
   },
 };
 </script>

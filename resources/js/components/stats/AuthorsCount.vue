@@ -22,30 +22,40 @@
         <option value="54">Rok</option>
       </select>
     </div>
+    <div class="col-auto">
+      <div class="form-check" style="padding-left: 0px">
+        <select class="form-select" v-model="chart_limit">
+          <option v-for="option in this.chart_limit_options" :value="option.value" :key="option"> {{ option.text }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" @click="saveChart">Zapisz wykres</button>
+    </div>
   </div>
 
   <!-- charts -->
   <div v-if="this.mode == 'numbers'">
     <pie-chart
-      :data="this.data.slice(0, 20)"
+      :data="this.data.slice(0, this.chart_limit)"
       :tooltip_config="this.tooltip_config"
       v-if="chart_type == 'pie'"
     >
     </pie-chart>
     <bar-chart
-      :data="this.data.slice(0, 20)"
+      :data="this.data.slice(0, this.chart_limit)"
       :tooltip_config="this.tooltip_config"
       :direction="this.vertical_direction"
       v-if="chart_type == 'bar'"
     ></bar-chart>
     <area-chart
-      :data="this.data.slice(0, 20)"
+      :data="this.data.slice(0, this.chart_limit)"
       :direction="this.horizontal_direction"
       v-if="chart_type == 'area'"
     >
     </area-chart>
     <line-chart
-      :data="this.data.slice(0, 20)"
+      :data="this.data.slice(0, this.chart_limit)"
       :direction="this.horizontal_direction"
       v-if="chart_type == 'line'"
     >
@@ -69,6 +79,8 @@ import AreaChart from "./charts/AreaChart.vue";
 import LineChart from "./charts/LineChart.vue";
 import GrowthLineChart from "./charts/GrowthLineChart.vue";
 import AuthorsTable from "./tables/AuthorsTable.vue";
+import * as htmlToImage from "html-to-image";
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 
 export default {
   props: { data: Array, data_growth: Array, hate_speech_category: String },
@@ -102,8 +114,30 @@ export default {
         count: { label: "liczba wpisów" },
       },
       growth_period: 13,
+      chart_limit: 10,
+      chart_limit_options: [
+        { value: '10', text: '10' },
+        { value: '20', text: '20' },
+        { value: '30', text: '30' },
+        { value: '40', text: '40' },
+        { value: '50', text: '50' },
+        { value: '100', text: '100' },
+            ]
     };
   },
+  methods: {
+    saveChart() {
+      console.log("elo");
+      htmlToImage
+        .toJpeg(document.getElementById("chart"), { quality: 0.95, backgroundColor: '#FFFFFF' })
+        .then(function (dataUrl) {
+          var link = document.createElement("a");
+          link.download = "my-image-name.jpeg";
+          link.href = dataUrl;
+          link.click();
+        });
+    },
+  }
 };
 </script>
 <style>
