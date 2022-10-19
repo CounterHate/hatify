@@ -11,11 +11,16 @@
       </h5>
       <h6 class="card-subtitle mb-2 text-muted">
         <div v-if="data.posted_utime">
-          {{ new Date(+data.posted_utime) }}
+          {{ new Date(+data.posted_utime).toLocaleDateString('pl-Pl', options) }}
         </div>
         <div v-else>{{ new Date(parseInt(data.date)) }}</div>
       </h6>
-      <span class="badge rounded-pill bg-success" v-for="kw in this.data.keywords" :key="kw">{{ kw }}</span>
+      <span
+        class="badge rounded-pill bg-success"
+        v-for="kw in this.data.keywords"
+        :key="kw"
+        >{{ kw }}</span
+      >
       <p>{{ data.content }}</p>
       <div v-if="this.public_metrics">
         <div class="row">
@@ -37,36 +42,65 @@
       <div class="row">
         <!-- show tweet button -->
         <div class="col-auto padded">
-          <button class="btn btn-primary" @click="getStats">Statystyki tweeta</button>
+          <button class="btn btn-primary" @click="getStats">
+            Statystyki tweeta
+          </button>
         </div>
         <div class="col-auto padded">
-          <a :href="
-            'https://twitter.com/' +
-            data.author_username +
-            '/status/' +
-            data.tweet_id
-          " class="btn btn-primary" target="_blank">Zobacz tweet</a>
+          <a
+            :href="
+              'https://twitter.com/' +
+              data.author_username +
+              '/status/' +
+              data.tweet_id
+            "
+            class="btn btn-primary"
+            target="_blank"
+            >Zobacz tweet</a
+          >
         </div>
         <div class="col-auto padded">
-          <a :href="
-            '/stats/author=' + data.author_username
-          " class="btn btn-primary" target="_blank">Zobacz statystyki użytkownika</a>
+          <a
+            :href="'/stats/author=' + data.author_username"
+            class="btn btn-primary"
+            target="_blank"
+            >Zobacz statystyki użytkownika</a
+          >
         </div>
         <!-- show tweets with similar content button -->
-        <div class="col-auto padded" v-if="this.verification_view || this.anotation_view">
-          <a :href="'/search/twitter/data_id=' + data.tweet_id" class="btn btn-primary" target="_blank">Zobacz
-            podobne</a>
+        <div
+          class="col-auto padded"
+          v-if="this.verification_view || this.anotation_view"
+        >
+          <a
+            :href="'/search/twitter/data_id=' + data.tweet_id"
+            class="btn btn-primary"
+            target="_blank"
+            >Zobacz podobne</a
+          >
         </div>
         <!-- show other tweets from this author button -->
-        <div class="col-auto padded" v-if="this.verification_view || this.anotation_view">
-          <a :href="'/search/twitter/author_username=' + data.author_username" class="btn btn-primary"
-            target="_blank">Zobacz inne
-            tweety tego użytkownika</a>
+        <div
+          class="col-auto padded"
+          v-if="this.verification_view || this.anotation_view"
+        >
+          <a
+            :href="'/search/twitter/author_username=' + data.author_username"
+            class="btn btn-primary"
+            target="_blank"
+            >Zobacz inne tweety tego użytkownika</a
+          >
         </div>
       </div>
 
-      <topic-select :show="show_topics" @process_tweet_hate_speech="processIsHateSpeech"></topic-select>
-      <not-sure-select :show="show_reasons" @process_not_sure="processNotSure"></not-sure-select>
+      <topic-select
+        :show="show_topics"
+        @process_tweet_hate_speech="processIsHateSpeech"
+      ></topic-select>
+      <not-sure-select
+        :show="show_reasons"
+        @process_not_sure="processNotSure"
+      ></not-sure-select>
     </div>
   </div>
 </template>
@@ -93,6 +127,12 @@ export default {
   data() {
     return {
       public_metrics: null,
+      date_options: {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      },
     };
   },
   watch: {
@@ -120,8 +160,8 @@ export default {
           console.log(response.data.data.public_metrics);
           this.public_metrics = response.data.data.public_metrics;
         })
-        .catch((error) => { });
-    }
+        .catch((error) => {});
+    },
   },
 };
 </script>

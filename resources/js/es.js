@@ -122,6 +122,8 @@ export async function getRandomTweets(size, url, auth, username_to_anotation) {
             }
         })
 
+        // console.log('elo', query)
+        // console.log('elo', url + "/_search")
         var data;
         await axios
             .post(url + "/_search", query, {
@@ -131,7 +133,7 @@ export async function getRandomTweets(size, url, auth, username_to_anotation) {
                 var tweets = [];
                 response.data.hits.hits.forEach(t => {
                     tweets.push(t._source);
-                    // console.log(t._source.tweet_id)
+                    // console.log('elo', t._source)
                 });
                 data = tweets
             })
@@ -259,10 +261,13 @@ export async function getTweets(url, auth, size = 10, content = null, author_use
     })
 
     var tweets = []
+    var total_count = 0
 
     await axios.post(url + "/_search", query, {
         auth: auth,
     }).then((response) => {
+        // console.log('elo', response.data)
+        total_count = response.data.hits.total
         response.data.hits.hits.forEach(t => {
             var new_tweet = t._source;
             new_tweet.score = t._score;
@@ -272,7 +277,7 @@ export async function getTweets(url, auth, size = 10, content = null, author_use
     }).catch((error) => {
         console.log(error)
     })
-    return tweets
+    return {total: total_count, tweets: tweets}
 }
 
 export async function getTweet(url, auth, tweet_id) {

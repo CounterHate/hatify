@@ -113,10 +113,12 @@ export default {
           this.tweet,
           false
         );
+        this.fb_post = null;
+        this.fb_comment = null;
         // getting new tweet
         await getRandomTweets(
           1,
-          this.url,
+          this.url + "/" + this.tweets_index,
           this.auth,
           this.username_to_anotation
         ).then((result) => (this.tweet = result[0]));
@@ -195,6 +197,7 @@ export default {
 
     async handleSkipTweetPressed() {
       if (this.twitter_mode) {
+
         this.fb_post = null;
         this.fb_comment = null;
         await getRandomTweets(
@@ -203,6 +206,7 @@ export default {
           this.auth,
           this.username_to_anotation
         ).then((result) => (this.tweet = result[0]));
+
       } else if (this.facebook_mode) {
         // randomize between post and comment
         var indices = ["fb_posts", "fb_comments"];
@@ -268,7 +272,7 @@ export default {
 
         await getRandomTweets(
           1,
-          this.url,
+          this.url + "/" + this.tweets_index,
           this.auth,
           this.username_to_anotation
         ).then((result) => (this.tweet = result[0]));
