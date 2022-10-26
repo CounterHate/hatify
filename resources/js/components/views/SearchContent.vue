@@ -4,7 +4,7 @@
     <!-- form to pick data order -->
     <div class="col">
       <div class="form-check" style="padding-left: 0px">
-        <label>Sortuj</label>
+        <label>Wybierz medium</label>
         <select class="form-select" v-model="media_chosen">
           <option v-for="option in this.mediaOptions" :value="option.value">
             {{ option.text }}
@@ -133,7 +133,7 @@
     </div>
   </div>
   <div v-if="this.no_results == true">
-    Brak wyników dla treści "{{ this.content }}"
+    Brak wyników dla treści "{{ this.content }}". Spróbuj zmienić parametry szukania i wyszukać ponownie
   </div>
 
   <!-- render tweets -->
@@ -142,17 +142,19 @@
       Znaleziono {{ this.total_count }} wpisów. Wyświetlono
       {{ this.size < this.total_count ? this.size : this.total_count }}
     </p>
-    <vue-excel-xlsx
+
+
+    <div class="row" style="margin-top: 8px">
+      <div class="col-auto">    <vue-excel-xlsx
       :data="this.tweets"
       :columns="columns"
       :file-name="'tweets'"
       :file-type="'xlsx'"
       :sheet-name="'wyniki'"
+      class="btn btn-success"
     >
-      Download
-    </vue-excel-xlsx>
-
-    <div class="row" style="margin-top: 8px">
+      Pobierz
+    </vue-excel-xlsx></div>
       <div class="col-auto">
         <button class="btn btn-primary" @click="this.previousPage">
           <i class="bi bi-arrow-left"></i>
@@ -214,37 +216,37 @@ export default {
     return {
       columns: [
         {
-          label: "is_hate_speech",
+          label: "Czy jest mową nienawiści",
           field: "is_hate_speech",
         },
         {
-          label: "is_retweet",
+          label: "Czy to retweet",
           field: "is_retweet",
         },
         {
-          label: "author_username",
+          label: "Login autora",
           field: "author_username",
         },
         {
-          label: "author_name",
+          label: "Autor",
           field: "author_name",
         },
         {
-          label: "content",
+          label: "Treść",
           field: "content",
         },
         {
-          label: "posted_utime",
+          label: "Data wysłania",
           field: "posted_utime",
           dataFormat: this.dateFormat,
         },
         {
-          label: "keywords",
+          label: "Słowa kluczowe",
           field: "keywords",
           dataFormat: this.keywordsFormat,
         },
         {
-          label: "url",
+          label: "Link",
           field: "url",
         },
       ],
