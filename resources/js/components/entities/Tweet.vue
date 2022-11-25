@@ -11,16 +11,32 @@
       </h5>
       <h6 class="card-subtitle mb-2 text-muted">
         <div v-if="data.posted_utime">
-          {{ new Date(+data.posted_utime).toLocaleDateString('pl-Pl', options) }}
+          {{
+            new Date(+data.posted_utime).toLocaleDateString("pl-Pl")
+          }}
         </div>
         <div v-else>{{ new Date(parseInt(data.date)) }}</div>
       </h6>
-      <span
-        class="badge rounded-pill bg-success"
-        v-for="kw in this.data.keywords"
-        :key="kw"
-        >{{ kw }}</span
-      >
+      <div v-if="this.data.hate_category && this.data.hate_category.length > 0">
+        kategorie:
+        <span
+          class="badge rounded-pill bg-primary"
+          v-for="hc in this.data.hate_category"
+          :key="hc"
+          >{{ hc }}</span
+        >
+      </div>
+      <div v-if="this.data.keywords && this.data.keywords.length > 0">
+        Słowa kluczowe:
+        <span
+          class="badge rounded-pill bg-success"
+          v-for="kw in this.data.keywords"
+          :key="kw"
+          >{{ kw }}</span
+        >
+      </div>
+
+      <hr />
       <p>{{ data.content }}</p>
       <div v-if="this.public_metrics">
         <div class="row">

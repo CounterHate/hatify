@@ -145,66 +145,6 @@ export async function getRandomTweets(size, url, auth, username_to_anotation) {
     }
 }
 
-// probably can remove, need to double check
-export async function getUserFbData(url, auth, author_id) {
-    var query = {
-        size: 10000,
-        query: {
-            match: {
-                author_id: author_id,
-            }
-        }
-    };
-
-    var fb_data = [];
-    await axios.post(url + "/_search", query, {
-        auth: auth,
-    }).then((response) => {
-        console.log(response.data)
-        response.data.hits.hits.forEach(d => {
-            fb_data.push(d._source)
-        })
-    }).catch((error) => {
-        console.log(error)
-    })
-    return fb_data
-}
-
-// probably can remove, need to double check
-export async function getUserTweets(url, auth, author_username) {
-    var query = {
-        size: 10000,
-        query: {
-            bool: {
-                must: [{
-                        match: {
-                            lang: "pl",
-                        },
-                    },
-                    {
-                        match: {
-                            author_username: author_username,
-                        },
-                    },
-                ],
-
-            },
-        }
-    };
-    var tweets = []
-    await axios.post(url + "/_search", query, {
-        auth: auth,
-    }).then((response) => {
-        console.log(response.data)
-        response.data.hits.hits.forEach(t => {
-            tweets.push(t._source)
-        })
-    }).catch((error) => {
-        console.log(error)
-    })
-    return tweets
-}
-
 export async function updateInIndex(url, auth, data, is_hate_speech) {
     data.is_hate_speech = is_hate_speech;
     console.log(data)
@@ -277,7 +217,7 @@ export async function getTweets(url, auth, size = 10, content = null, author_use
     }).catch((error) => {
         console.log(error)
     })
-    return {total: total_count, tweets: tweets}
+    return { total: total_count, tweets: tweets }
 }
 
 export async function getTweet(url, auth, tweet_id) {
@@ -320,20 +260,6 @@ export async function getFbData(url, auth, size = 10, content = null, author_id 
         console.log(error)
     })
     return fb_data
-}
-
-export async function getFbRecord(url, type, auth, record_id) {
-    let data;
-
-    await axios.get(url + "/" + type + "/" + record_id, {
-        auth: auth,
-    }).then((response) => {
-        data = response.data._source
-    }).catch((error) => {
-        console.log(error)
-        data = null;
-    })
-    return data
 }
 
 export async function getHateCategories(url, auth) {
@@ -848,4 +774,96 @@ export async function getGrowth(from_date = null, to_date = null, entity_value =
     })
 
     return data
+}
+
+export async function getDataForQuery(url, auth, params) {
+    let query = {
+        "size": 10000,
+        "query": {
+            "bool": {
+                "must": [{
+                        "match": {
+                            "lang": "pl"
+                        }
+                    },
+                    {
+                        "match": {
+                            "is_retweet": false
+                        }
+                    }
+                ],
+            }
+        },
+        "aggs": {
+            "authors": {
+                "terms": {
+                    "field": "author_username.keyword",
+                    "size": 10000
+                }
+            },
+            "words": {
+                "terms": {
+                    "field": "keywords.keyword",
+                    "size": 10000
+                }
+            },
+            "dates": {
+                "terms": {
+                    "field": "date.keyword",
+                    "size": 10000
+                }
+            },
+            "categories": {
+                "terms": {
+                    "field": "hate_category.keyword",
+                    "size": 10000
+                }
+            }
+        }
+    }
+
+    if (params.lte || params.gte) {
+        // setHours(0,0,0,0)
+        let gte, lte
+        if (params.gte) {
+            gte = new Date(params.gte);
+            gte = new Date(gte.getFullYear(), gte.getMonth(), gte.getDate()).getTime() / 1000;
+        }
+        if (params.lte) {
+            lte = new Date(params.lte);
+            lte = new Date(lte.getFullYear(), lte.getMonth(), lte.getDate() + 1).getTime() / 1000;
+        }
+        query.query.bool.filter = { range: { posted_utime: { lte: lte, gte: gte } } }
+    }
+    if (params.content) query.query.bool.must.push({ match: { content: params.content } })
+    if (params.author_username) query.query.bool.must.push({ match: { author_username: params.author_username } })
+    if (params.min_score) query.min_score = params.min_score
+    if (params.hate_categories.length > 0) {
+        let categories_string = ""
+        params.hate_categories.forEach((el, index) => {
+            if (index < params.hate_categories.length - 1) categories_string += (el + ", ")
+            else categories_string += el
+        });
+        query.query.bool.must.push({ match: { hate_category: categories_string } })
+    }
+
+    let tweets = []
+    let total_count = 0
+    let stats = {}
+
+    await axios.post(url, query, {
+        auth: auth,
+    }).then((response) => {
+        total_count = response.data.hits.total
+        stats = response.data.aggregations
+        response.data.hits.hits.forEach(t => {
+            var new_tweet = t._source;
+            new_tweet.score = t._score;
+            new_tweet.url = "https://twitter.com/" + new_tweet.author_username + "/status/" + new_tweet.tweet_id
+            tweets.push(t._source)
+        })
+    }).catch((error) => {
+        console.log(error)
+    })
+    return { total: total_count, tweets: tweets, stats: stats }
 }

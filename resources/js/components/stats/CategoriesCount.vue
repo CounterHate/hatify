@@ -3,7 +3,8 @@
     <div class="col-auto">
       <select class="form-select" v-model="this.chart_type">
         <option value="pie">Kołowy</option>
-        <option value="bar">Słupkowy</option>
+        <option value="bar-horizontal">Paskowy</option>
+        <option value="bar-vertical">Słupkowy</option>
         <option value="line">Liniowy</option>
         <option value="area">Obszarowy</option>
       </select>
@@ -19,7 +20,13 @@
     :data="this.data"
     :tooltip_config="this.tooltip_config"
     :direction="this.vertical_direction"
-    v-if="chart_type == 'bar'"
+    v-if="chart_type == 'bar-horizontal'"
+  ></bar-chart>
+  <bar-chart
+    :data="this.data"
+    :tooltip_config="this.tooltip_config"
+    :direction="this.horizontal_direction"
+    v-if="chart_type == 'bar-vertical'"
   ></bar-chart>
   <area-chart
     :data="this.data"

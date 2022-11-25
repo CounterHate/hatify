@@ -2,108 +2,58 @@
   <!-- select row -->
   <div class="row">
     <!-- form to pick data order -->
-    <div class="col">
-      <div class="form-check" style="padding-left: 0px">
-        <label>Wybierz medium</label>
-        <select class="form-select" v-model="media_chosen">
-          <option v-for="option in this.mediaOptions" :value="option.value">
-            {{ option.text }}
-          </option>
-        </select>
-      </div>
-    </div>
+    <search-select-input
+      :options="this.mediaOptions"
+      v-model="media_chosen"
+      label="Wybierz medium"
+    ></search-select-input>
 
     <!-- form to pick data order -->
-    <div class="col">
-      <div class="form-check" style="padding-left: 0px">
-        <label>Sortuj</label>
-        <select class="form-select" v-model="sortOrder" @change="sortData">
-          <option v-for="option in this.sortOptions" :value="option.value">
-            {{ option.text }}
-          </option>
-        </select>
-      </div>
-    </div>
+    <search-select-input
+      :options="this.sortOptions"
+      v-model="sortOrder"
+      label="Wybierz kolejność"
+      @change="sortData"
+    ></search-select-input>
 
     <!-- form to pick data order -->
-    <div class="col">
-      <div class="form-check" style="padding-left: 0px">
-        <label>Liczba wpisów do wyświetlenia</label>
-        <select class="form-select" v-model="size">
-          <option v-for="option in this.sizeOptions" :value="option.value">
-            {{ option.text }}
-          </option>
-        </select>
-      </div>
-    </div>
+    <search-select-input
+      :options="this.sizeOptions"
+      v-model="size"
+      label="Wybierz liczbę wyświetlanych wyników"
+    ></search-select-input>
   </div>
 
   <!-- text input row -->
   <div class="row" style="margin-top: 8px">
-    <div class="col">
-      <!-- form for text to search -->
-      <div class="mb-3">
-        <label for="contentInput" class="form-label"
-          >Treść do wyszukiwania
-          <i
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            :title="this.tooltip_content_text"
-            class="bi bi-info-circle"
-          ></i
-        ></label>
-        <input
-          type="text"
-          class="form-control"
-          id="contentInput"
-          placeholder="Treść do wyszukania"
-          v-model="content"
-          v-on:keyup.enter="getData"
-        />
-      </div>
-    </div>
-    <div class="col">
-      <!-- form for account to search -->
-      <div class="mb-3" v-if="this.media_chosen == 'twitter'">
-        <label for="authorInput" class="form-label"
-          >Konto do wyszukiwania</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="authorInput"
-          placeholder="konto do wyszukiwania"
-          v-model="author_username"
-          v-on:keyup.enter="getData"
-        />
-      </div>
-      <div class="mb-3" v-if="this.media_chosen == 'facebook'">
-        <label for="authorInput" class="form-label"
-          >Id konta do wyszukiwania</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="authorInput"
-          placeholder="Id konta do wyszukiwania"
-          v-model="author_username"
-          v-on:keyup.enter="getData"
-        />
-      </div>
-    </div>
+    <search-text-input
+      label="Treść"
+      v-model="params.content"
+      :tooltip_text="this.tooltip_content_text"
+      placeholder="Treść do wyszukania"
+      v-on:keyup.enter="getDataWithStats"
+    ></search-text-input>
+
+    <search-text-input
+      label="Konto do wyszukiwania"
+      v-model="params.author_username"
+      :tooltip_text="null"
+      placeholder="konto do wyszukiwania"
+      v-on:keyup.enter="getDataWithStats"
+    ></search-text-input>
   </div>
   <div class="row">
     <div class="col">
       <label>Od</label>
-      <Datepicker v-model="this.from_date"></Datepicker>
+      <Datepicker v-model="this.params.gte"></Datepicker>
     </div>
     <div class="col">
       <label>Do</label>
-      <Datepicker v-model="this.to_date"></Datepicker>
+      <Datepicker v-model="this.params.lte"></Datepicker>
     </div>
     <div class="col">
       <label class="form-label"
-        >Dokładność {{ this.min_score }}
+        >Dokładność {{ this.params.min_score }}
         <i
           data-bs-toggle="tooltip"
           data-bs-placement="top"
@@ -114,7 +64,7 @@
       <input
         type="range"
         class="form-range"
-        v-model="this.min_score"
+        v-model="this.params.min_score"
         min="0"
         max="100"
         step="0.01"
@@ -122,7 +72,20 @@
     </div>
   </div>
   <br />
-  <button type="submit" class="btn btn-success mb-3" @click="getData">
+  <div class="row" style="margin-top: 8px">
+    <VueMultiselect
+      v-model="params.hate_categories"
+      :options="hate_categories_options"
+      :multiple="true"
+      :searchable="true"
+      placeholder="Kategorie"
+      :clear-on-select="false"
+      :close-on-select="false"
+      style="margin-bottom: 8px"
+    >
+    </VueMultiselect>
+  </div>
+  <button type="submit" class="btn btn-success mb-3" @click="getDataWithStats">
     Filtruj
   </button>
 
@@ -133,70 +96,129 @@
     </div>
   </div>
   <div v-if="this.no_results == true">
-    Brak wyników dla treści "{{ this.content }}". Spróbuj zmienić parametry szukania i wyszukać ponownie
+    Brak wyników dla wybranych opcji. Spróbuj zmienić parametry szukania i
+    wyszukać ponownie
   </div>
 
   <!-- render tweets -->
-  <div v-if="this.media_chosen == 'twitter'">
-    <p>
-      Znaleziono {{ this.total_count }} wpisów. Wyświetlono
-      {{ this.size < this.total_count ? this.size : this.total_count }}
-    </p>
-
-
-    <div class="row" style="margin-top: 8px">
-      <div class="col-auto">    <vue-excel-xlsx
-      :data="this.tweets"
-      :columns="columns"
-      :file-name="'tweets'"
-      :file-type="'xlsx'"
-      :sheet-name="'wyniki'"
-      class="btn btn-success"
+  <div v-if="this.stats_mode">
+    <button
+      class="btn btn-primary"
+      @click="this.stats_mode = false"
+      style="margin-bottom: 8px"
     >
-      Pobierz
-    </vue-excel-xlsx></div>
-      <div class="col-auto">
-        <button class="btn btn-primary" @click="this.previousPage">
-          <i class="bi bi-arrow-left"></i>
-        </button>
+      Pokaz wpisy
+    </button>
+    <div class="row">
+      <div class="col">
+        <stats-table-vue
+          :data="this.stats.words.buckets"
+          stats_category="słowa"
+        ></stats-table-vue>
       </div>
-      <div class="col-auto">
-        {{ this.size * this.result_page_number }} -
-        {{ this.size * (this.result_page_number + 1) < this.tweets.length ? this.size * (this.result_page_number + 1) : this.tweets.length}}
-      </div>
-      <div class="col-auto">
-        <button class="btn btn-primary" @click="this.nextPage">
-          <i class="bi bi-arrow-right"></i>
-        </button>
+      <div class="col">
+        <stats-table-vue
+          :data="this.stats.dates.buckets"
+          stats_category="dni"
+        ></stats-table-vue>
       </div>
     </div>
-    <tweet
-      v-for="(t, index) in this.tweets.slice(this.size * this.result_page_number, this.size * (this.result_page_number + 1) < this.tweets.length ? this.size * (this.result_page_number + 1) : this.tweets.length)"
-      :key="index"
-      :data="t"
-    ></tweet>
+    <div class="row">
+      <div class="col">
+        <stats-table-vue
+          :data="this.stats.categories.buckets"
+          stats_category="kategorie"
+        ></stats-table-vue>
+      </div>
+      <div class="col">
+        <stats-table-vue
+          :data="this.stats.authors.buckets"
+          stats_category="autorzy"
+        ></stats-table-vue>
+      </div>
+    </div>
   </div>
   <div v-else>
-    <!-- render fb posts and comments -->
-    <div v-if="this.fb_posts.length > 0">
-      <fb-post
-        v-for="p in this.fb_posts"
-        :key="p"
-        :data="p"
-        :anotation_view="false"
-        :verification_view="false"
-      >
-      </fb-post>
+    <div v-if="this.media_chosen == 'twitter'">
+      <p>
+        Znaleziono {{ this.total_count }} wpisów. Wyświetlono
+        {{ this.size < this.total_count ? this.size : this.total_count }}
+      </p>
+
+      <div class="row" style="margin-top: 8px">
+        <div class="col-auto">
+          <vue-excel-xlsx
+            :data="this.tweets"
+            :columns="columns"
+            :file-name="'tweets'"
+            :file-type="'xlsx'"
+            :sheet-name="'wyniki'"
+            class="btn btn-success"
+          >
+            Pobierz
+          </vue-excel-xlsx>
+        </div>
+
+        <!-- pagination -->
+        <div class="col-auto">
+          <button class="btn btn-primary" @click="this.previousPage">
+            <i class="bi bi-arrow-left"></i>
+          </button>
+        </div>
+        <div class="col-auto">
+          {{ this.size * this.result_page_number }} -
+          {{
+            this.size * (this.result_page_number + 1) < this.tweets.length
+              ? this.size * (this.result_page_number + 1)
+              : this.tweets.length
+          }}
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary" @click="this.nextPage">
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+        <!-- end of pagination -->
+        <div class="col-auto">
+          <button class="btn btn-primary" @click="this.stats_mode = true">
+            Pokaz statystyki
+          </button>
+        </div>
+      </div>
+
+      <tweet
+        v-for="(t, index) in this.tweets.slice(
+          this.size * this.result_page_number,
+          this.size * (this.result_page_number + 1) < this.tweets.length
+            ? this.size * (this.result_page_number + 1)
+            : this.tweets.length
+        )"
+        :key="index"
+        :data="t"
+      ></tweet>
     </div>
-    <div v-if="this.fb_comments.length > 0">
-      <fb-comment
-        v-for="c in this.fb_comments"
-        :key="c"
-        :data="c"
-        :anotation_view="false"
-        :verification_view="false"
-      >
-      </fb-comment>
+    <div v-else>
+      <!-- render fb posts and comments -->
+      <div v-if="this.fb_posts.length > 0">
+        <fb-post
+          v-for="p in this.fb_posts"
+          :key="p"
+          :data="p"
+          :anotation_view="false"
+          :verification_view="false"
+        >
+        </fb-post>
+      </div>
+      <div v-if="this.fb_comments.length > 0">
+        <fb-comment
+          v-for="c in this.fb_comments"
+          :key="c"
+          :data="c"
+          :anotation_view="false"
+          :verification_view="false"
+        >
+        </fb-comment>
+      </div>
     </div>
   </div>
 </template>
@@ -204,14 +226,26 @@
 import Tweet from "../entities/Tweet.vue";
 import FbPost from "../entities/FbPost.vue";
 import FbComment from "../entities/FbComment.vue";
-import { getTweets, getTweet, getFbData, getFbRecord } from "../../es.js";
-
+import { getDataForQuery } from "../../es.js";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import VueMultiselect from "vue-multiselect";
+import SearchSelectInput from "./widgets/SearchSelectInput";
+import SearchTextInput from "./widgets/SearchTextInput";
+import StatsTableVue from "./widgets/StatsTable.vue";
 
 export default {
   props: { data_id: String, media: String, author: String },
-  components: { Tweet, FbPost, FbComment, Datepicker },
+  components: {
+    Tweet,
+    FbPost,
+    FbComment,
+    Datepicker,
+    VueMultiselect,
+    SearchSelectInput,
+    SearchTextInput,
+    StatsTableVue,
+  },
   data() {
     return {
       columns: [
@@ -262,16 +296,21 @@ export default {
         username: process.env.MIX_ES_USER,
         password: process.env.MIX_ES_PASS,
       },
-      min_score: 0,
+      params: {
+        author_username: null,
+        gte: null,
+        lte: null,
+        hate_categories: [],
+        content: null,
+        min_score: 0,
+      },
+      stats_mode: false,
       result_page_number: 0,
-      from_date: null,
-      to_date: null,
       total_count: 0,
       tweets: [],
       fb_posts: [],
       fb_comments: [],
-      content: null,
-      author_username: null,
+      stats: [],
       is_loading: false,
       no_results: false,
       sortOrder: null,
@@ -296,11 +335,20 @@ export default {
         { value: "twitter", text: "twitter" },
         { value: "facebook", text: "facebook" },
       ],
+      hate_categories_options: [
+        "Osoby należące do mniejszości etnicznych lub narodowych w Polsce",
+        "Osoby z doświadczeniem migracji",
+        "Osoby o innym kolorze skóry",
+        "Osoby LGBTQ+",
+        "antysemityzm",
+        "Romowie",
+        "Osoby należące do mniejszości religijnych w Polsce",
+        "Kobiety",
+      ],
     };
   },
   methods: {
-    getTweets,
-    getFbData,
+    getDataForQuery,
     sortData() {
       if (this.media_chosen == "facebook") {
         if (this.sortOrder == "ascending") {
@@ -328,120 +376,78 @@ export default {
           this.tweets.sort((a, b) => (a.score < b.score ? 1 : -1));
       }
     },
-    async getData() {
-      if (this.media_chosen == "twitter") {
-        this.is_loading = true;
-        await getTweets(
-          this.url + "/" + this.tweets_index,
-          this.auth,
-          10000,
-          this.content,
-          this.author_username,
-          this.from_date,
-          this.to_date,
-          this.min_score
-        )
-          .then((data) => {
-            this.tweets = data.tweets;
-            this.total_count = data.total;
-            this.sortData(data, this.sortOrder, this.media_chosen);
-            if (this.tweets.length == 0) {
-              this.no_results = true;
-            } else {
-              this.no_results = false;
-            }
-            this.is_loading = false;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-
-      if (this.media_chosen == "facebook") {
-        console.log("getting fb posts");
-        await getFbData(
-          this.url + "/" + this.fb_posts_index,
-          this.auth,
-          this.size,
-          this.content,
-          this.author_username
-        ).then((data) => {
-          this.fb_posts = data;
-        });
-
-        console.log("getting fb comments");
-        await getFbData(
-          this.url + "/" + this.fb_comments_index,
-          this.auth,
-          this.size,
-          this.content,
-          this.author_username
-        ).then((data) => {
-          this.fb_comments = data;
-        });
-
-        if (this.fb_posts.length == 0 && this.fb_comments.length == 0) {
+    async getDataWithStats() {
+      this.getDataForQuery(
+        this.url + "/" + this.tweets_index + "/_search",
+        this.auth,
+        this.params
+      ).then((data) => {
+        this.tweets = data.tweets;
+        this.total_count = data.total;
+        this.stats = data.stats;
+        this.sortData(data, this.sortOrder, this.media_chosen);
+        if (this.tweets.length == 0) {
           this.no_results = true;
         } else {
           this.no_results = false;
         }
-      }
+        this.is_loading = false;
+      });
     },
     dateFormat(value) {
       return new Date(+value);
     },
     keywordsFormat(value) {
       if (value == null) return value;
-      console.log(typeof value);
       return value.toString();
     },
     nextPage() {
-      if (this.result_page_number * (this.size +1) < this.tweets.length) this.result_page_number++
+      if (this.result_page_number * (this.size + 1) < this.tweets.length)
+        this.result_page_number++;
     },
     previousPage() {
-      if (this.result_page_number > 0) this.result_page_number--
-    }
+      if (this.result_page_number > 0) this.result_page_number--;
+    },
   },
 
   async mounted() {
     this.media_chosen = this.media;
-    this.author_username = this.author;
-    if (this.data_id) {
-      if (this.media_chosen == "twitter") {
-        await getTweet(
-          this.url + "/" + this.tweets_index,
-          this.auth,
-          this.data_id
-        ).then((data) => {
-          this.content = data.content;
-        });
-      }
+    this.params.author_username = this.author;
+    // if (this.data_id) {
+    //   if (this.media_chosen == "twitter") {
+    //     await getTweet(
+    //       this.url + "/" + this.tweets_index,
+    //       this.auth,
+    //       this.data_id
+    //     ).then((data) => {
+    //       this.content = data.content;
+    //     });
+    //   }
 
-      if (this.media_chosen == "facebook") {
-        await getFbRecord(
-          this.url + "/" + this.fb_posts_index,
-          "fb_post",
-          this.auth,
-          this.data_id
-        ).then((data) => {
-          if (data) this.content = data.content;
-        });
+    //   if (this.media_chosen == "facebook") {
+    //     await getFbRecord(
+    //       this.url + "/" + this.fb_posts_index,
+    //       "fb_post",
+    //       this.auth,
+    //       this.data_id
+    //     ).then((data) => {
+    //       if (data) this.content = data.content;
+    //     });
 
-        if (this.content == null) {
-          await getFbRecord(
-            this.url + "/" + this.fb_comments_index,
-            "fb_comment",
-            this.auth,
-            this.data_id
-          ).then((data) => {
-            if (data) this.content = data.content;
-          });
-        }
-      }
-    }
-    await this.getData();
+    //     if (this.content == null) {
+    //       await getFbRecord(
+    //         this.url + "/" + this.fb_comments_index,
+    //         "fb_comment",
+    //         this.auth,
+    //         this.data_id
+    //       ).then((data) => {
+    //         if (data) this.content = data.content;
+    //       });
+    //     }
+    //   }
+    // }
+    await this.getDataWithStats();
   },
 };
 </script>
-<style>
-</style>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
