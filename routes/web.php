@@ -73,6 +73,18 @@ Route::middleware(['auth'])->name('search')->prefix('/search')->group(function (
     Route::get('/{media}/author_username={author_username}', function ($media, $author_username) {
         return view('search', ['author_username' => $author_username, 'media' => $media]);
     });
+
+    Route::get('/{media}/content={content}', function ($media, $content) {
+        return view('search', ['content' => $content, 'media' => $media]);
+    });
+
+    Route::get('/{media}/declination={declination}', function ($media, $declination) {
+        return view('search', ['declination' => $declination, 'media' => $media]);
+    });
+
+    Route::get('/{media}/category={category}', function ($media, $category) {
+        return view('search', ['category' => $category, 'media' => $media]);
+    });
 });
 
 Route::get('/tweetStats/{tweet_id}', function ($tweet_id) {

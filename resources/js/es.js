@@ -859,6 +859,7 @@ export async function getDataForQuery(url, auth, params) {
     await axios.post(url, query, {
         auth: auth,
     }).then((response) => {
+        // console.log(response)
         total_count = response.data.hits.total
         stats = response.data.aggregations
         response.data.hits.hits.forEach(t => {

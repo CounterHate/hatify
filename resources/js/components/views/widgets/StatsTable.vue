@@ -38,6 +38,9 @@
       <tr v-for="(key, index) in this.data.slice(0, this.size)" :key="index">
         <th scope="row">{{ index + 1 }}</th>
         <td v-if="this.stats_category == 'autorzy'"><a :href="'/search/twitter/author_username=' + key.key" target="_blank">{{ key.key }}</a></td>
+        <td v-else-if="this.stats_category == 'słowa' && !this.declination_mode"><a :href="'/search/twitter/content=' + key.key" target="_blank">{{ key.key }}</a></td>
+        <td v-else-if="this.stats_category == 'słowa' && this.declination_mode"><a :href="'/search/twitter/declination=' + key.key" target="_blank">{{ key.key }}</a></td>
+        <td v-else-if="this.stats_category == 'kategorie'"><a :href="'/search/twitter/category=' + key.key" target="_blank">{{ key.key }}</a></td>
         <td v-else>{{ key.key }}</td>
         <td>{{ key.doc_count }}</td>
       </tr>

@@ -261,7 +261,7 @@ import SearchTextInput from "./widgets/SearchTextInput";
 import StatsTableVue from "./widgets/StatsTable.vue";
 
 export default {
-  props: { data_id: String, media: String, author: String },
+  props: { data_id: String, media: String, author: String, category: String, content: String, declination: String },
   components: {
     Tweet,
     FbPost,
@@ -491,8 +491,13 @@ export default {
   async mounted() {
     this.media_chosen = this.media;
     this.params.author_username = this.author;
+    if (this.category) this.params.hate_categories = [this.category]
+    if (this.declination) this.keywords_selected = [this.declination]
+    this.params.content = this.content
     await this.getDeclinationsFromEs();
+    if (this.declination) await new Promise(r => setTimeout(r, 1000));
     await this.getDataWithStats();
+
   },
 };
 </script>
