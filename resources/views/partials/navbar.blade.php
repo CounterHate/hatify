@@ -14,9 +14,9 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/aiCheck">hAItify</a>
                 </li> --}}
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/stats">Statystyki</a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/admin">Panel admina</a>
                 </li>

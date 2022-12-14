@@ -51,7 +51,7 @@
       <label>Do</label>
       <Datepicker v-model="this.params.lte"></Datepicker>
     </div>
-    <div class="col">
+    <!-- <div class="col">
       <label class="form-label"
         >Dokładność {{ this.params.min_score }}
         <i
@@ -69,21 +69,37 @@
         max="100"
         step="0.01"
       />
-    </div>
+    </div> -->
   </div>
   <br />
   <div class="row" style="margin-top: 8px">
-    <VueMultiselect
-      v-model="params.hate_categories"
-      :options="hate_categories_options"
-      :multiple="true"
-      :searchable="true"
-      placeholder="Kategorie"
-      :clear-on-select="false"
-      :close-on-select="false"
-      style="margin-bottom: 8px"
-    >
-    </VueMultiselect>
+    <div class="col">
+      <VueMultiselect
+        v-model="params.hate_categories"
+        :options="hate_categories_options"
+        :multiple="true"
+        :searchable="true"
+        placeholder="Kategorie"
+        :clear-on-select="false"
+        :close-on-select="false"
+        style="margin-bottom: 8px"
+      >
+      </VueMultiselect>
+    </div>
+
+    <div class="col">
+      <VueMultiselect
+        v-model="keywords_selected"
+        :options="keywords"
+        :multiple="true"
+        :searchable="true"
+        placeholder="Słowa kluczowe"
+        :clear-on-select="false"
+        :close-on-select="false"
+        style="margin-bottom: 8px"
+      >
+      </VueMultiselect>
+    </div>
   </div>
   <button type="submit" class="btn btn-success mb-3" @click="getDataWithStats">
     Filtruj
@@ -109,11 +125,21 @@
     >
       Pokaz wpisy
     </button>
-    <div class="row">
+    <div class="row" v-if="this.stats != 0">
       <div class="col">
         <stats-table-vue
+          v-if="this.declinations_stats_mode == false"
           :data="this.stats.words.buckets"
           stats_category="słowa"
+          :declination_mode="this.declinations_stats_mode"
+          @count-declinations="calcDeclinations"
+        ></stats-table-vue>
+        <stats-table-vue
+          v-else
+          :data="this.declinations_stats"
+          stats_category="słowa"
+          :declination_mode="this.declinations_stats_mode"
+          @detailed-count="this.declinations_stats_mode = false"
         ></stats-table-vue>
       </div>
       <div class="col">
@@ -123,7 +149,7 @@
         ></stats-table-vue>
       </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="this.stats.length != 0">
       <div class="col">
         <stats-table-vue
           :data="this.stats.categories.buckets"
@@ -226,7 +252,7 @@
 import Tweet from "../entities/Tweet.vue";
 import FbPost from "../entities/FbPost.vue";
 import FbComment from "../entities/FbComment.vue";
-import { getDataForQuery } from "../../es.js";
+import { getDataForQuery, getDeclinations } from "../../es.js";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import VueMultiselect from "vue-multiselect";
@@ -292,21 +318,29 @@ export default {
       tweets_index: process.env.MIX_TWEETS_INDEX,
       fb_posts_index: process.env.MIX_FBPOSTS_INDEX,
       fb_comments_index: process.env.MIX_FBCOMMENTS_INDEX,
+      declinations_index: process.env.MIX_DECLINATIONS_INDEX,
       auth: {
         username: process.env.MIX_ES_USER,
         password: process.env.MIX_ES_PASS,
       },
       params: {
-        author_username: null,
+        author_username: "",
         gte: null,
         lte: null,
         hate_categories: [],
-        content: null,
+        content: "",
         min_score: 0,
+        declinations: "",
       },
-      stats_mode: false,
+      declinations_stats: [],
+      declinations_count_dict: {},
+      declinations_stats_mode: false,
+      stats_mode: true,
       result_page_number: 0,
       total_count: 0,
+      declinations: {},
+      keywords: [],
+      keywords_selected: [],
       tweets: [],
       fb_posts: [],
       fb_comments: [],
@@ -344,11 +378,14 @@ export default {
         "Romowie",
         "Osoby należące do mniejszości religijnych w Polsce",
         "Kobiety",
+        "Osoby starsze",
+        "Osoby z niepełnosprawnościami",
       ],
     };
   },
   methods: {
     getDataForQuery,
+    getDeclinations,
     sortData() {
       if (this.media_chosen == "facebook") {
         if (this.sortOrder == "ascending") {
@@ -376,7 +413,27 @@ export default {
           this.tweets.sort((a, b) => (a.score < b.score ? 1 : -1));
       }
     },
+    async getDeclinationsFromEs() {
+      this.getDeclinations(
+        this.url + "/" + this.declinations_index + "/_search",
+        this.auth
+      )
+        .then((data) => {
+          this.declinations = data.declinations;
+          this.keywords = data.keywords;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async getDataWithStats() {
+      this.is_loading = true;
+      if (this.keywords_selected.length > 0) {
+        this.params.declinations = "";
+        this.keywords_selected.forEach((kw) => {
+          this.params.declinations += this.declinations[kw] + ",";
+        });
+      }
       this.getDataForQuery(
         this.url + "/" + this.tweets_index + "/_search",
         this.auth,
@@ -392,6 +449,7 @@ export default {
           this.no_results = false;
         }
         this.is_loading = false;
+        this.buildDeclinationCountDict()
       });
     },
     dateFormat(value) {
@@ -408,44 +466,32 @@ export default {
     previousPage() {
       if (this.result_page_number > 0) this.result_page_number--;
     },
+    calcDeclinations() {
+      this.declinations_stats = []
+      this.keywords.forEach(kw => {
+        let decl_count = 0
+        let checked_words = []
+        let words = this.declinations[kw].split(', ')
+        words.forEach(w => {
+          if (!checked_words.includes(w)) {
+            checked_words.push(w)
+            if (w in this.declinations_count_dict) decl_count += this.declinations_count_dict[w]
+          }
+        })
+        if (decl_count > 0) this.declinations_stats.push({key: kw, doc_count: decl_count})
+      })
+      this.declinations_stats.sort((a,b) => (a.doc_count < b.doc_count) ? 1 : ((b.doc_count < a.doc_count) ? -1 : 0))
+      this.declinations_stats_mode = true
+    },
+    buildDeclinationCountDict() {
+      this.stats.words.buckets.forEach(b => this.declinations_count_dict[b.key] = b.doc_count)
+    }
   },
 
   async mounted() {
     this.media_chosen = this.media;
     this.params.author_username = this.author;
-    // if (this.data_id) {
-    //   if (this.media_chosen == "twitter") {
-    //     await getTweet(
-    //       this.url + "/" + this.tweets_index,
-    //       this.auth,
-    //       this.data_id
-    //     ).then((data) => {
-    //       this.content = data.content;
-    //     });
-    //   }
-
-    //   if (this.media_chosen == "facebook") {
-    //     await getFbRecord(
-    //       this.url + "/" + this.fb_posts_index,
-    //       "fb_post",
-    //       this.auth,
-    //       this.data_id
-    //     ).then((data) => {
-    //       if (data) this.content = data.content;
-    //     });
-
-    //     if (this.content == null) {
-    //       await getFbRecord(
-    //         this.url + "/" + this.fb_comments_index,
-    //         "fb_comment",
-    //         this.auth,
-    //         this.data_id
-    //       ).then((data) => {
-    //         if (data) this.content = data.content;
-    //       });
-    //     }
-    //   }
-    // }
+    await this.getDeclinationsFromEs();
     await this.getDataWithStats();
   },
 };

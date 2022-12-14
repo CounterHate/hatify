@@ -17,6 +17,13 @@
         <option value="100">100</option>
       </select>
     </div>
+    <div class="col-auto">
+      <button class="btn btn-primary">Pokaz wykres</button>
+    </div>
+    <div class="col-auto" v-if="this.stats_category == 'słowa'">
+      <button class="btn btn-primary" @click="countDeclination" v-if="this.declination_mode == false">Deklinacja</button>
+      <button class="btn btn-primary" @click="detailedCount" v-else>Szczegółowo</button>
+    </div>
   </div>
   <table class="table table-striped">
     <thead>
@@ -30,7 +37,8 @@
     <tbody>
       <tr v-for="(key, index) in this.data.slice(0, this.size)" :key="index">
         <th scope="row">{{ index + 1 }}</th>
-        <td>{{ key.key }}</td>
+        <td v-if="this.stats_category == 'autorzy'"><a :href="'/search/twitter/author_username=' + key.key" target="_blank">{{ key.key }}</a></td>
+        <td v-else>{{ key.key }}</td>
         <td>{{ key.doc_count }}</td>
       </tr>
     </tbody>
@@ -41,7 +49,12 @@ export default {
   props: {
     data: Array,
     stats_category: String,
+    declination_mode: {
+      type: Boolean,
+      default: false
+    }
   },
+  emits: ['count-declinations', 'detailed-count'],
   data() {
     return {
       size: 10,
@@ -57,6 +70,14 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    detailedCount() {
+      this.$emit('detailed-count')
+    },
+    countDeclination() {
+      this.$emit('count-declinations')
+    }
   },
   mounted() {
     this.columns[0] = this.stats_category;
