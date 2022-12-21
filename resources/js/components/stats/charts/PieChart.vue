@@ -1,23 +1,17 @@
 <template >
   <Responsive>
-    <template #main="{ width }">
+    <template #main="{  }">
       <Chart
         direction="circular"
-        :size="{ width, height: 500 }"
+        :size="{ width: 800, height: 500 }"
         :data="this.data"
         :axis="this.axis"
-        :margin="{
-          left: Math.round((width - 360) / 2),
-          top: 40,
-          right: 0,
-          bottom: 40,
-        }"
         :config="{ controlHover: false }"
         id="chart"
       >
         <template #layers>
           <Pie
-            :dataKeys="['author', 'count']"
+            :dataKeys="this.data_keys"
             :pie-style="{
               innerRadius: 50,
               padAngle: 0.05,
@@ -42,7 +36,12 @@
 <script>
 import { Chart, Responsive, Pie, Tooltip } from "vue3-charts";
 export default {
-  props: { data: Array, tooltip_config: Object },
+  props: {
+    data: Array,
+    tooltip_config: Object,
+    data_keys: { default: ["author", "count"], type: Array },
+    tooltip_config: Object,
+  },
   components: {
     Chart,
     Responsive,
@@ -64,6 +63,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.tooltip_config)
     document.getElementsByClassName("axis")[0].style.visibility = "hidden";
   },
 };

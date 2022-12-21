@@ -3,14 +3,14 @@
   <div class="row">
     <!-- form to pick data order -->
     <search-select-input
-      :options="this.mediaOptions"
+      :options="this.media_options"
       v-model="media_chosen"
       label="Wybierz medium"
     ></search-select-input>
 
     <!-- form to pick data order -->
     <search-select-input
-      :options="this.sortOptions"
+      :options="this.sort_options"
       v-model="sortOrder"
       label="Wybierz kolejność"
       @change="sortData"
@@ -18,7 +18,7 @@
 
     <!-- form to pick data order -->
     <search-select-input
-      :options="this.sizeOptions"
+      :options="this.size_options"
       v-model="size"
       label="Wybierz liczbę wyświetlanych wyników"
     ></search-select-input>
@@ -74,6 +74,7 @@
   <br />
   <div class="row" style="margin-top: 8px">
     <div class="col">
+      <label>Kategorie</label>
       <VueMultiselect
         v-model="params.hate_categories"
         :options="hate_categories_options"
@@ -88,6 +89,7 @@
     </div>
 
     <div class="col">
+      <label>Słowa kluczowe</label>
       <VueMultiselect
         v-model="keywords_selected"
         :options="keywords"
@@ -127,40 +129,33 @@
     </button>
     <div class="row" v-if="this.stats != 0">
       <div class="col">
-        <stats-table-vue
-          v-if="this.declinations_stats_mode == false"
-          :data="this.stats.words.buckets"
-          stats_category="słowa"
+        <words-stats
+          :data="this.wordsStats"
           :declination_mode="this.declinations_stats_mode"
           @count-declinations="calcDeclinations"
-        ></stats-table-vue>
-        <stats-table-vue
-          v-else
-          :data="this.declinations_stats"
-          stats_category="słowa"
+          v-if="!this.declinations_stats_mode"
+        >
+        </words-stats>
+        <words-stats
+          :data="this.wordsStats"
           :declination_mode="this.declinations_stats_mode"
           @detailed-count="this.declinations_stats_mode = false"
-        ></stats-table-vue>
+          v-else
+        >
+        </words-stats>
       </div>
       <div class="col">
-        <stats-table-vue
-          :data="this.stats.dates.buckets"
-          stats_category="dni"
-        ></stats-table-vue>
+        <days-stats :data="this.stats.dates.buckets"></days-stats>
       </div>
     </div>
     <div class="row" v-if="this.stats.length != 0">
       <div class="col">
-        <stats-table-vue
+        <categories-stats
           :data="this.stats.categories.buckets"
-          stats_category="kategorie"
-        ></stats-table-vue>
+        ></categories-stats>
       </div>
       <div class="col">
-        <stats-table-vue
-          :data="this.stats.authors.buckets"
-          stats_category="autorzy"
-        ></stats-table-vue>
+        <authors-stats :data="this.stats.authors.buckets"></authors-stats>
       </div>
     </div>
   </div>
@@ -253,15 +248,31 @@ import Tweet from "../entities/Tweet.vue";
 import FbPost from "../entities/FbPost.vue";
 import FbComment from "../entities/FbComment.vue";
 import { getDataForQuery, getDeclinations } from "../../es.js";
+import {
+  hco,
+  size_options,
+  media_options,
+  sort_options,
+  columns,
+} from "../../const.js";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import VueMultiselect from "vue-multiselect";
 import SearchSelectInput from "./widgets/SearchSelectInput";
 import SearchTextInput from "./widgets/SearchTextInput";
-import StatsTableVue from "./widgets/StatsTable.vue";
-
+import WordsStats from "./widgets/WordsStats.vue";
+import DaysStats from "./widgets/DaysStats.vue";
+import CategoriesStats from "./widgets/CategoriesStats.vue";
+import AuthorsStats from "./widgets/AuthorsStats.vue";
 export default {
-  props: { data_id: String, media: String, author: String, category: String, content: String, declination: String },
+  props: {
+    data_id: String,
+    media: String,
+    author: String,
+    category: String,
+    content: String,
+    declination: String,
+  },
   components: {
     Tweet,
     FbPost,
@@ -270,46 +281,14 @@ export default {
     VueMultiselect,
     SearchSelectInput,
     SearchTextInput,
-    StatsTableVue,
+    WordsStats,
+    DaysStats,
+    CategoriesStats,
+    AuthorsStats,
   },
   data() {
     return {
-      columns: [
-        {
-          label: "Czy jest mową nienawiści",
-          field: "is_hate_speech",
-        },
-        {
-          label: "Czy to retweet",
-          field: "is_retweet",
-        },
-        {
-          label: "Login autora",
-          field: "author_username",
-        },
-        {
-          label: "Autor",
-          field: "author_name",
-        },
-        {
-          label: "Treść",
-          field: "content",
-        },
-        {
-          label: "Data wysłania",
-          field: "posted_utime",
-          dataFormat: this.dateFormat,
-        },
-        {
-          label: "Słowa kluczowe",
-          field: "keywords",
-          dataFormat: this.keywordsFormat,
-        },
-        {
-          label: "Link",
-          field: "url",
-        },
-      ],
+      columns: columns,
       tooltip_content_text:
         "Wyszukuje treści podobnej do podanej. Przykładowo 'nienawidzę żydów' jest treścią podobną do 'nienawidzę ukrów i żydów'",
       tooltip_min_score_text:
@@ -348,40 +327,20 @@ export default {
       is_loading: false,
       no_results: false,
       sortOrder: null,
-      sortOptions: [
-        { value: "ascending", text: "Od najstarszych" },
-        { value: "descending", text: "Od najnowszych" },
-        { value: "ascending_score", text: "Od najmniejszej dokładności" },
-        { value: "descending_score", text: "Od największej dokładności" },
-      ],
+      sort_options: sort_options,
       size: 10,
-      sizeOptions: [
-        { value: "10", text: "10" },
-        { value: "50", text: "50" },
-        { value: "100", text: "100" },
-        { value: "500", text: "500" },
-        { value: "1000", text: "1000" },
-        { value: "5000", text: "5000" },
-        { value: "10000", text: "10000" },
-      ],
+      size_options: size_options,
       media_chosen: "twitter",
-      mediaOptions: [
-        { value: "twitter", text: "twitter" },
-        { value: "facebook", text: "facebook" },
-      ],
-      hate_categories_options: [
-        "Osoby należące do mniejszości etnicznych lub narodowych w Polsce",
-        "Osoby z doświadczeniem migracji",
-        "Osoby o innym kolorze skóry",
-        "Osoby LGBTQ+",
-        "antysemityzm",
-        "Romowie",
-        "Osoby należące do mniejszości religijnych w Polsce",
-        "Kobiety",
-        "Osoby starsze",
-        "Osoby z niepełnosprawnościami",
-      ],
+      media_options: media_options,
+      hate_categories_options: hco,
     };
+  },
+  computed: {
+    wordsStats() {
+      return this.declinations_stats_mode
+        ? this.declinations_stats
+        : this.stats.words.buckets;
+    },
   },
   methods: {
     getDataForQuery,
@@ -429,10 +388,7 @@ export default {
     async getDataWithStats() {
       this.is_loading = true;
       if (this.keywords_selected.length > 0) {
-        this.params.declinations = "";
-        this.keywords_selected.forEach((kw) => {
-          this.params.declinations += this.declinations[kw] + ",";
-        });
+        this.params.declinations = this.keywords_selected.toString();
       }
       this.getDataForQuery(
         this.url + "/" + this.tweets_index + "/_search",
@@ -443,21 +399,14 @@ export default {
         this.total_count = data.total;
         this.stats = data.stats;
         this.sortData(data, this.sortOrder, this.media_chosen);
-        if (this.tweets.length == 0) {
-          this.no_results = true;
-        } else {
-          this.no_results = false;
-        }
+        this.tweets.length == 0
+          ? (this.no_results = true)
+          : (this.no_results = false);
         this.is_loading = false;
-        this.buildDeclinationCountDict()
+        this.stats.words.buckets.forEach(
+          (b) => (this.declinations_count_dict[b.key] = b.doc_count)
+        );
       });
-    },
-    dateFormat(value) {
-      return new Date(+value);
-    },
-    keywordsFormat(value) {
-      if (value == null) return value;
-      return value.toString();
     },
     nextPage() {
       if (this.result_page_number * (this.size + 1) < this.tweets.length)
@@ -467,37 +416,37 @@ export default {
       if (this.result_page_number > 0) this.result_page_number--;
     },
     calcDeclinations() {
-      this.declinations_stats = []
-      this.keywords.forEach(kw => {
-        let decl_count = 0
-        let checked_words = []
-        let words = this.declinations[kw].split(', ')
-        words.forEach(w => {
+      this.declinations_stats = [];
+      this.keywords.forEach((kw) => {
+        let decl_count = 0;
+        let checked_words = [];
+        let words = this.declinations[kw].split(", ");
+        words.forEach((w) => {
           if (!checked_words.includes(w)) {
-            checked_words.push(w)
-            if (w in this.declinations_count_dict) decl_count += this.declinations_count_dict[w]
+            checked_words.push(w);
+            if (w in this.declinations_count_dict)
+              decl_count += this.declinations_count_dict[w];
           }
-        })
-        if (decl_count > 0) this.declinations_stats.push({key: kw, doc_count: decl_count})
-      })
-      this.declinations_stats.sort((a,b) => (a.doc_count < b.doc_count) ? 1 : ((b.doc_count < a.doc_count) ? -1 : 0))
-      this.declinations_stats_mode = true
+        });
+        if (decl_count > 0)
+          this.declinations_stats.push({ key: kw, doc_count: decl_count });
+      });
+      this.declinations_stats.sort((a, b) =>
+        a.doc_count < b.doc_count ? 1 : b.doc_count < a.doc_count ? -1 : 0
+      );
+      this.declinations_stats_mode = true;
     },
-    buildDeclinationCountDict() {
-      this.stats.words.buckets.forEach(b => this.declinations_count_dict[b.key] = b.doc_count)
-    }
   },
 
   async mounted() {
     this.media_chosen = this.media;
     this.params.author_username = this.author;
-    if (this.category) this.params.hate_categories = [this.category]
-    if (this.declination) this.keywords_selected = [this.declination]
-    this.params.content = this.content
+    if (this.category) this.params.hate_categories = [this.category];
+    if (this.declination) this.keywords_selected = [this.declination];
+    this.params.content = this.content;
     await this.getDeclinationsFromEs();
-    if (this.declination) await new Promise(r => setTimeout(r, 1000));
+    if (this.declination) await new Promise((r) => setTimeout(r, 1000));
     await this.getDataWithStats();
-
   },
 };
 </script>
