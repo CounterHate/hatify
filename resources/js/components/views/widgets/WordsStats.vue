@@ -78,14 +78,45 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Wykres</h5>
+          <div class="row">
+            <div class="col">Wykres</div>
+            <div class="col-auto">
+              <select
+                class="form-select"
+                v-model="this.chart_direction"
+              >
+                <option value="circular" selected>Kołowy</option>
+                <option value="vertical">Paskowy</option>
+                <option value="horizontal">Kolumnowy</option>
+              </select>
+            </div>
+            <div class="col">Liczba wyników</div>
+            <div class="col-auto">
+              <select
+                class="form-select"
+                v-model="this.chart_size"
+              >
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50" v-if="this.chart_direction != 'circular'">50</option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="modal-body">
           <pie-chart
-            :data="this.data ? this.data.slice(0, this.size) : []"
+            v-if="this.chart_direction == 'circular'"
+            :data="this.data ? this.data.slice(0, this.chart_size) : []"
             :tooltip_config="this.words_tooltip_config"
             :data_keys="['key', 'doc_count']"
           ></pie-chart>
+          <bar-chart
+            v-else
+            :data="this.data ? this.data.slice(0, this.chart_size) : []"
+            :tooltip_config="this.words_tooltip_config"
+            :data_keys="['key', 'doc_count']"
+            :direction="this.chart_direction"
+          ></bar-chart>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -98,6 +129,7 @@
 </template>
     <script>
 import PieChart from "../../stats/charts/PieChart.vue";
+import BarChart from "../../stats/charts/BarChart.vue";
 
 export default {
   props: {
@@ -107,12 +139,19 @@ export default {
       default: false,
     },
   },
-  components: { PieChart },
+  components: { PieChart, BarChart },
   emits: ["count-declinations", "detailed-count"],
+  watch: {
+    chart_direction(newVal) {
+      if (newVal == 'circular') this.chart_size = 10
+    }
+  },
   data() {
     return {
       size: 10,
+      chart_size: 10,
       columns: [null, "liczba wyników"],
+      chart_direction: "circular",
       stats_category: "Słowa",
       export_columns: [
         {

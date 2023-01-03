@@ -1,37 +1,43 @@
 <template >
-  <Responsive>
-    <template #main="{  }">
-      <Chart
-        direction="circular"
-        :size="{ width: 800, height: 500 }"
-        :data="this.data"
-        :axis="this.axis"
-        :config="{ controlHover: false }"
-        id="chart"
-      >
-        <template #layers>
-          <Pie
-            :dataKeys="this.data_keys"
-            :pie-style="{
-              innerRadius: 50,
-              padAngle: 0.05,
-              colors: [
-                '#fcba03',
-                '#2f578f',
-                '#8d2f8f',
-                '#32a852',
-                '#db4f1d',
-                '#1dd2db',
-              ],
-            }"
-          />
+  <div class="row">
+    <div class="col-auto">
+      <div class="row" v-for="(result, index) in this.data" :key="index" style="padding: 4px;">
+        <span
+          class="badge"
+          :style="{'background-color': this.colors[index]}"
+          >{{ result.key }}</span
+        >
+      </div>
+    </div>
+    <div class="col-auto">
+      <Responsive>
+        <template #main="{}">
+          <Chart
+            direction="circular"
+            :size="{ width: 600, height: 500 }"
+            :data="this.data"
+            :axis="this.axis"
+            :config="{ controlHover: false }"
+            id="chart"
+          >
+            <template #layers>
+              <Pie
+                :dataKeys="this.data_keys"
+                :pie-style="{
+                  innerRadius: 50,
+                  padAngle: 0.05,
+                  colors: this.colors,
+                }"
+              />
+            </template>
+            <template #widgets>
+              <Tooltip :config="this.tooltip_config" hideLine />
+            </template>
+          </Chart>
         </template>
-        <template #widgets>
-          <Tooltip :config="this.tooltip_config" hideLine />
-        </template>
-      </Chart>
-    </template>
-  </Responsive>
+      </Responsive>
+    </div>
+  </div>
 </template>
 <script>
 import { Chart, Responsive, Pie, Tooltip } from "vue3-charts";
@@ -50,6 +56,28 @@ export default {
   },
   data() {
     return {
+      colors: [
+        "#696969",
+        "#2e8b57",
+        "#8b0000",
+        "#808000",
+        "#000080",
+        "#ff0000",
+        "#ffa500",
+        "#7fff00",
+        "#ba55d3",
+        "#e9967a",
+        "#00ffff",
+        "#0000ff",
+        "#ff00ff",
+        "#1e90ff",
+        "#eee8aa",
+        "#ffff54",
+        "#dda0dd",
+        "#ff1493",
+        "#98fb98",
+        "#87cefa",
+      ],
       axis: {
         primary: {
           domain: ["dataMin", "dataMax"],
@@ -63,7 +91,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.tooltip_config)
     document.getElementsByClassName("axis")[0].style.visibility = "hidden";
   },
 };

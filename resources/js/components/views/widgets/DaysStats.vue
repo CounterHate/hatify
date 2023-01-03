@@ -63,15 +63,33 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Wykres</h5>
-        </div>
+          <div class="row">
+            <div class="col">Wykres</div>
+            <div class="col">Liczba wyników</div>
+            <div class="col-auto">
+              <select
+                class="form-select"
+                v-model="this.chart_size"
+              >
+                <option value="7" selected>7</option>
+                <option value="14">14</option>
+                <option value="21">21</option>
+              </select>
+            </div>
+          </div>        </div>
         <div class="modal-body">
-          <bar-chart
+          <!-- <bar-chart
             :data="this.data ? this.data.slice(0, this.size) : []"
             :tooltip_config="this.words_tooltip_config"
             :data_keys="['key', 'doc_count']"
             direction="horizontal"
-          ></bar-chart>
+          ></bar-chart> -->
+          <line-chart
+            :data="this.data_sorted ? this.data_sorted.slice(-this.chart_size) : []"
+            :tooltip_config="this.days_tooltip_config"
+            :data_keys="['key', 'doc_count']"
+          >
+          </line-chart>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -84,15 +102,18 @@
 </template>
     <script>
 import BarChart from "../../stats/charts/BarChart.vue";
+import LineChart from "../../stats/charts/LineChart.vue"
 
 export default {
   props: {
     data: Array,
+    data_sorted: Array
   },
-  components: { BarChart },
+  components: { BarChart, LineChart },
   data() {
     return {
       size: 10,
+      chart_size: 7,
       columns: [null, "liczba wyników"],
       stats_category: "dni",
       export_columns: [

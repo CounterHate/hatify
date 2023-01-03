@@ -145,7 +145,10 @@
         </words-stats>
       </div>
       <div class="col">
-        <days-stats :data="this.stats.dates.buckets"></days-stats>
+        <days-stats
+          :data="this.stats.dates.buckets"
+          :data_sorted="this.dates_sorted"
+        ></days-stats>
       </div>
     </div>
     <div class="row" v-if="this.stats.length != 0">
@@ -324,6 +327,7 @@ export default {
       fb_posts: [],
       fb_comments: [],
       stats: [],
+      dates_sorted: [],
       is_loading: false,
       no_results: false,
       sortOrder: null,
@@ -345,6 +349,12 @@ export default {
   methods: {
     getDataForQuery,
     getDeclinations,
+    sortDates() {
+      this.dates_sorted = [...this.stats.dates.buckets];
+      this.dates_sorted.sort((a, b) =>
+        this.getDateFromString(a.key) > this.getDateFromString(b.key) ? 1 : -1
+      );
+    },
     sortData() {
       if (this.media_chosen == "facebook") {
         if (this.sortOrder == "ascending") {
@@ -406,6 +416,7 @@ export default {
         this.stats.words.buckets.forEach(
           (b) => (this.declinations_count_dict[b.key] = b.doc_count)
         );
+        this.sortDates();
       });
     },
     nextPage() {
@@ -436,6 +447,14 @@ export default {
       );
       this.declinations_stats_mode = true;
     },
+    getDateFromString(date) {
+      var parts = date.split("-");
+      let year = parts[2];
+      let month = parts[1] < 10 ? "0" + parts[1] : parts[1];
+      let day = parts[0] < 10 ? "0" + parts[0] : parts[0];
+      let date_string = year + "-" + month + "-" + day;
+      return new Date(date_string).getTime();
+    },
   },
 
   async mounted() {
@@ -451,3 +470,4 @@ export default {
 };
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
