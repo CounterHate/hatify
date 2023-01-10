@@ -25,7 +25,7 @@
                 :dataKeys="this.data_keys"
                 :pie-style="{
                   innerRadius: 50,
-                  padAngle: 0.05,
+                  padAngle: 0.01,
                   colors: this.colors,
                 }"
               />
