@@ -60,7 +60,7 @@
     role="dialog"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <div class="row">
@@ -74,6 +74,18 @@
                 <option value="7" selected>7</option>
                 <option value="14">14</option>
                 <option value="21">21</option>
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="90">90</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+                <option value="180">180</option>
+                <option value="210">210</option>
+                <option value="240">240</option>
+                <option value="270">270</option>
+                <option value="300">300</option>
+                <option value="330">330</option>
+                <option value="360">360</option>
               </select>
             </div>
           </div>        </div>
