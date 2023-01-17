@@ -33,22 +33,26 @@
   <br />
   <br />
   <br />
+  <br />
+
+  <div class="table-responsive scrollable">
 
   <table class="table" v-show="this.phrases.length > 0">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Słowo</th>
-        <th scope="col"></th>
+        <th scope="col" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
+        <th scope="col" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Słowo</th>
+        <th scope="col" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(phrase, index) in this.phrases" :key="index">
-        <th scope="row">{{ index + 1 }}</th>
-        <td>{{ phrase.phrase }}</td>
+        <th scope="row" class="mb-0 text-xs">{{ index + 1 }}</th>
+        <td><span class="mb-0 text-xs">{{ phrase.phrase }}</span></td>
         <td>
           <button
             class="btn btn-danger btn-sm"
+            style="margin-bottom: 0px"
             @click="deletePhrase(phrase.id, index)"
           >
             Usuń
@@ -57,6 +61,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 </template>
 <script>
 import {
@@ -124,4 +129,8 @@ export default {
 };
 </script>
 <style>
+        .scrollable {
+  max-height: 800px;
+  overflow: auto;
+}
 </style>
