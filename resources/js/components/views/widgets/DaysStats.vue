@@ -6,6 +6,7 @@
         :columns="this.export_columns"
         :file-name="this.stats_category"
         :file-type="'xlsx'"
+        class="btn btn-success"
       >
         Pobierz
       </vue-excel-xlsx>
@@ -27,31 +28,45 @@
       </button>
     </div>
   </div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col" v-for="column in this.columns" :key="column">
-          {{ column }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(key, index) in this.data.slice(0, this.size)" :key="index">
-        <th scope="row">{{ index + 1 }}</th>
-        <td v-if="this.stats_category == 'autorzy'">
-          <a
-            :href="'/search/twitter/author_username=' + key.key"
-            target="_blank"
-            >{{ key.key }}</a
+  <div class="table-responsive scrollable" style="margin-bottom: 16px">
+    <table class="table table-striped align-items-center mb-0">
+      <thead>
+        <tr>
+          <th
+            scope="col"
+            class="
+              text-uppercase text-secondary text-xxs
+              font-weight-bolder
+              opacity-7
+            "
           >
-        </td>
-        <td>{{ key.key }}</td>
-        <td>{{ key.doc_count }}</td>
-      </tr>
-    </tbody>
-  </table>
-
+            #
+          </th>
+          <th
+            scope="col"
+            class="
+              text-uppercase text-secondary text-xxs
+              font-weight-bolder
+              opacity-7
+            "
+            v-for="column in this.columns"
+            :key="column"
+          >
+            {{ column }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(key, index) in this.data.slice(0, this.size)" :key="index">
+          <th scope="row" class="mb-0 text-xs">{{ index + 1 }}</th>
+          <td>
+            <span class="mb-0 text-xs">{{ key.key }}</span>
+          </td>
+          <td class="mb-0 text-xs">{{ key.doc_count }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <!-- Modal days -->
   <div
     class="modal fade"
@@ -67,10 +82,7 @@
             <div class="col">Wykres</div>
             <div class="col">Liczba wyników</div>
             <div class="col-auto">
-              <select
-                class="form-select"
-                v-model="this.chart_size"
-              >
+              <select class="form-select" v-model="this.chart_size">
                 <option value="7" selected>7</option>
                 <option value="14">14</option>
                 <option value="21">21</option>
@@ -88,16 +100,13 @@
                 <option value="360">360</option>
               </select>
             </div>
-          </div>        </div>
+          </div>
+        </div>
         <div class="modal-body">
-          <!-- <bar-chart
-            :data="this.data ? this.data.slice(0, this.size) : []"
-            :tooltip_config="this.words_tooltip_config"
-            :data_keys="['key', 'doc_count']"
-            direction="horizontal"
-          ></bar-chart> -->
           <line-chart
-            :data="this.data_sorted ? this.data_sorted.slice(-this.chart_size) : []"
+            :data="
+              this.data_sorted ? this.data_sorted.slice(-this.chart_size) : []
+            "
             :tooltip_config="this.days_tooltip_config"
             :data_keys="['key', 'doc_count']"
           >
@@ -114,12 +123,12 @@
 </template>
     <script>
 import BarChart from "../../stats/charts/BarChart.vue";
-import LineChart from "../../stats/charts/LineChart.vue"
+import LineChart from "../../stats/charts/LineChart.vue";
 
 export default {
   props: {
     data: Array,
-    data_sorted: Array
+    data_sorted: Array,
   },
   components: { BarChart, LineChart },
   data() {
@@ -151,4 +160,8 @@ export default {
 };
 </script>
     <style>
+.scrollable {
+  max-height: 457px;
+  overflow: auto;
+}
 </style>

@@ -117,8 +117,8 @@
 
   <!-- results -->
   <div class="d-flex justify-content-center" v-if="is_loading">
-    <div class="spinner-border" role="status">
-      <span class="sr-only"></span>
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
   </div>
   <div v-if="this.no_results == true">
@@ -129,6 +129,7 @@
   <!-- render tweets -->
   <div v-if="this.stats_mode">
     <button
+      v-if="!this.is_loading"
       class="btn btn-primary"
       @click="this.stats_mode = false"
       style="margin-bottom: 8px"
@@ -203,15 +204,14 @@
           </button>
         </div>
         <div class="col-auto">
-          <span class="align-middle">middle</span>
-          <!-- <span style="vertical-align: middle;">
+          <span style="vertical-align: middle">
             {{ this.size * this.result_page_number }} -
             {{
               this.size * (this.result_page_number + 1) < this.tweets.length
                 ? this.size * (this.result_page_number + 1)
                 : this.tweets.length
             }}
-          </span> -->
+          </span>
         </div>
         <div class="col-auto">
           <button

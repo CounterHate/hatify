@@ -6,6 +6,7 @@
         :columns="this.export_columns"
         :file-name="this.stats_category"
         :file-type="'xlsx'"
+        class="btn btn-success"
       >
         Pobierz
       </vue-excel-xlsx>
@@ -27,29 +28,31 @@
       </button>
     </div>
   </div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col" v-for="column in this.columns" :key="column">
-          {{ column }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(key, index) in this.data.slice(0, this.size)" :key="index">
-        <th scope="row">{{ index + 1 }}</th>
-        <td>
-          <a
-            :href="'/search/twitter/author_username=' + key.key"
-            target="_blank"
-            >{{ key.key }}</a
-          >
-        </td>
-        <td>{{ key.doc_count }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive scrollable">
+    <table class="table table-striped align-items-center mb-0">
+      <thead>
+        <tr>
+          <th scope="col" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
+          <th scope="col" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" v-for="column in this.columns" :key="column">
+            {{ column }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(key, index) in this.data.slice(0, this.size)" :key="index">
+          <th scope="row" class="mb-0 text-xs">{{ index + 1 }}</th>
+          <td>
+            <a
+              :href="'/search/twitter/author_username=' + key.key"
+              target="_blank"
+              ><span class="mb-0 text-xs">{{ key.key }}</span></a
+            >
+          </td>
+          <td class="mb-0 text-xs">{{ key.doc_count }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <!-- Modal authors -->
   <div
@@ -65,10 +68,7 @@
           <div class="row">
             <div class="col">Wykres</div>
             <div class="col-auto">
-              <select
-                class="form-select"
-                v-model="this.chart_direction"
-              >
+              <select class="form-select" v-model="this.chart_direction">
                 <option value="vertical" selected>Paskowy</option>
                 <option value="horizontal">Kolumnowy</option>
                 <option value="circular">Kołowy</option>
@@ -76,10 +76,7 @@
             </div>
             <div class="col">Liczba wyników</div>
             <div class="col-auto">
-              <select
-                class="form-select"
-                v-model="this.chart_size"
-              >
+              <select class="form-select" v-model="this.chart_size">
                 <option value="10" selected>10</option>
                 <option value="20">20</option>
                 <option value="50">50</option>
@@ -150,4 +147,8 @@ export default {
 };
 </script>
     <style>
+        .scrollable {
+  max-height: 457px;
+  overflow: auto;
+}
 </style>
