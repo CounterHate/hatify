@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\StatsController;
 use App\Http\Controllers\Api\TopicController;
 use App\Http\Controllers\Api\TweetController;
 use Illuminate\Http\Request;
@@ -25,9 +24,6 @@ Route::apiResource('tweets', TweetController::class);
 Route::apiResource('topics', TopicController::class);
 Route::apiResource('stats', StatsController::class);
 
-Route::post('/searchStats', [StatsController::class, 'search']);
-Route::post('/countForPeriod', [StatsController::class, 'countForPeriod']);
-Route::post('/growthForPeriod', [StatsController::class, 'growthForPeriod']);
 Route::get('/tweetCount', [TweetController::class, 'tweetCount']);
 Route::get('/tweetToVerify', [TweetController::class, 'getTweetToVerify']);
 Route::get('/fbPostToVerify', [TweetController::class, 'getFbPostToVerify']);

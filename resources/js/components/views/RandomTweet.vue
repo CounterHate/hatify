@@ -8,13 +8,13 @@
 
       <div class="form-check" style="margin-top: 16px">
         <input class="form-check-input" type="radio" @click="changeMode('twitter')" name="modeRadio" checked />
-        <label class="form-check-label"> Twitter </label>
+        <label class="form-check-label  text-white"> Twitter </label>
       </div>
       <div class="form-check">
         <input class="form-check-input" type="radio" @click="changeMode('facebook')" name="modeRadio" />
-        <label class="form-check-label"> Facebook </label>
+        <label class="form-check-label  text-white"> Facebook </label>
       </div>
-      <label class="form-label">Konto do anotowania</label>
+      <label class="form-label text-white">Konto do anotowania</label>
       <div class="row">
         <div class="col">
           <input type="text" class="form-control" v-model="username_to_anotation" />

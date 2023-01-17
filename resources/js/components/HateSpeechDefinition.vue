@@ -1,10 +1,15 @@
 <template>
-    <h4>Czym jest mowa nienawiści</h4>
-    Mowa nienawiści to wszelkie formy nienawistnych wypowiedzi kierowanych do
+    <br />
+    <h4 class="text-white">Czym jest mowa nienawiści</h4>
+    <div class="text-white">
+        Mowa nienawiści to wszelkie formy nienawistnych wypowiedzi kierowanych do
     ludzi ze względu na ich daną (przyrodzoną, niezbywalną) cechę ( kolor skóry,
     język, religię lub wyznanie, pochodzenie etniczne czy narodowe, wiek,
     niepełnosprawność, płeć, społeczno-kulturowa tożsamość płciowa i orientacja
     psychoseksualna ).
+    </div>
+
+    <br />
     <br />
     <br />
     <h5>
@@ -47,7 +52,7 @@
         </code>
         </li>
     </ul>
-    <div class="alert alert-primary" role="alert">
+    <div class="alert alert-primary text-white" role="alert">
         Wystarczy spełnienie jednego z wymienionych warunków, aby wypowiedź mogła zostać uznana za mowę nienawiści
     </div>
     <ul>

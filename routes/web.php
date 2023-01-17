@@ -38,23 +38,6 @@ Route::get('/', function () {
 //     return view('verify', ['user' => Auth::user()]);
 // })->middleware(['auth'])->name('/verify');
 
-
-Route::middleware(['auth'])->name('stats')->prefix('/stats')->group(function () {
-    Route::get('/', function () {
-        return view('stats', ['users' => User::all()]);
-    })->middleware(['auth'])->name('/stats');
-
-    Route::get('/author={author}', function ($author) {
-        return view('stats', ['users' => User::all(), 'author' => $author]);
-    })->middleware(['auth'])->name('/stats');
-
-    Route::get('/hate_category={hate_category}', function ($hate_category) {
-        return view('stats', ['users' => User::all(), 'hate_category' => $hate_category]);
-    })->middleware(['auth'])->name('/stats');
-});
-
-
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

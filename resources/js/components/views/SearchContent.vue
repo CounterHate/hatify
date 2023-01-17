@@ -1,57 +1,59 @@
 <template>
-  <!-- select row -->
-  <div class="row">
-    <!-- form to pick data order -->
-    <search-select-input
-      :options="this.media_options"
-      v-model="media_chosen"
-      label="Wybierz medium"
-    ></search-select-input>
+  <div class="card card-frame" style="margin-bottom: 16px">
+    <div class="card-body">
+      <!-- select row -->
+      <div class="row">
+        <!-- form to pick data order -->
+        <search-select-input
+          :options="this.media_options"
+          v-model="media_chosen"
+          label="Wybierz medium"
+        ></search-select-input>
 
-    <!-- form to pick data order -->
-    <search-select-input
-      :options="this.sort_options"
-      v-model="sortOrder"
-      label="Wybierz kolejność"
-      @change="sortData"
-    ></search-select-input>
+        <!-- form to pick data order -->
+        <search-select-input
+          :options="this.sort_options"
+          v-model="sortOrder"
+          label="Wybierz kolejność"
+          @change="sortData"
+        ></search-select-input>
 
-    <!-- form to pick data order -->
-    <search-select-input
-      :options="this.size_options"
-      v-model="size"
-      label="Wybierz liczbę wyświetlanych wyników"
-    ></search-select-input>
-  </div>
+        <!-- form to pick data order -->
+        <search-select-input
+          :options="this.size_options"
+          v-model="size"
+          label="Wybierz liczbę wyświetlanych wyników"
+        ></search-select-input>
+      </div>
 
-  <!-- text input row -->
-  <div class="row" style="margin-top: 8px">
-    <search-text-input
-      label="Treść"
-      v-model="params.content"
-      :tooltip_text="this.tooltip_content_text"
-      placeholder="Treść do wyszukania"
-      v-on:keyup.enter="getDataWithStats"
-    ></search-text-input>
+      <!-- text input row -->
+      <div class="row" style="margin-top: 8px">
+        <search-text-input
+          label="Treść"
+          v-model="params.content"
+          :tooltip_text="this.tooltip_content_text"
+          placeholder="Treść do wyszukania"
+          v-on:keyup.enter="getDataWithStats"
+        ></search-text-input>
 
-    <search-text-input
-      label="Konto do wyszukiwania"
-      v-model="params.author_username"
-      :tooltip_text="null"
-      placeholder="konto do wyszukiwania"
-      v-on:keyup.enter="getDataWithStats"
-    ></search-text-input>
-  </div>
-  <div class="row">
-    <div class="col">
-      <label>Od</label>
-      <Datepicker v-model="this.params.gte"></Datepicker>
-    </div>
-    <div class="col">
-      <label>Do</label>
-      <Datepicker v-model="this.params.lte"></Datepicker>
-    </div>
-    <!-- <div class="col">
+        <search-text-input
+          label="Konto do wyszukiwania"
+          v-model="params.author_username"
+          :tooltip_text="null"
+          placeholder="konto do wyszukiwania"
+          v-on:keyup.enter="getDataWithStats"
+        ></search-text-input>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label>Od</label>
+          <Datepicker v-model="this.params.gte"></Datepicker>
+        </div>
+        <div class="col">
+          <label>Do</label>
+          <Datepicker v-model="this.params.lte"></Datepicker>
+        </div>
+        <!-- <div class="col">
       <label class="form-label"
         >Dokładność {{ this.params.min_score }}
         <i
@@ -70,42 +72,48 @@
         step="0.01"
       />
     </div> -->
-  </div>
-  <br />
-  <div class="row" style="margin-top: 8px">
-    <div class="col">
-      <label>Kategorie</label>
-      <VueMultiselect
-        v-model="params.hate_categories"
-        :options="hate_categories_options"
-        :multiple="true"
-        :searchable="true"
-        placeholder="Kategorie"
-        :clear-on-select="false"
-        :close-on-select="false"
-        style="margin-bottom: 8px"
-      >
-      </VueMultiselect>
-    </div>
+      </div>
+      <br />
+      <div class="row" style="margin-top: 8px">
+        <div class="col">
+          <label>Kategorie</label>
+          <VueMultiselect
+            v-model="params.hate_categories"
+            :options="hate_categories_options"
+            :multiple="true"
+            :searchable="true"
+            placeholder="Kategorie"
+            :clear-on-select="false"
+            :close-on-select="false"
+            style="margin-bottom: 8px"
+          >
+          </VueMultiselect>
+        </div>
 
-    <div class="col">
-      <label>Słowa kluczowe</label>
-      <VueMultiselect
-        v-model="keywords_selected"
-        :options="keywords"
-        :multiple="true"
-        :searchable="true"
-        placeholder="Słowa kluczowe"
-        :clear-on-select="false"
-        :close-on-select="false"
-        style="margin-bottom: 8px"
+        <div class="col">
+          <label>Słowa kluczowe</label>
+          <VueMultiselect
+            v-model="keywords_selected"
+            :options="keywords"
+            :multiple="true"
+            :searchable="true"
+            placeholder="Słowa kluczowe"
+            :clear-on-select="false"
+            :close-on-select="false"
+            style="margin-bottom: 8px"
+          >
+          </VueMultiselect>
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-success mb-3"
+        @click="getDataWithStats"
       >
-      </VueMultiselect>
+        Filtruj
+      </button>
     </div>
   </div>
-  <button type="submit" class="btn btn-success mb-3" @click="getDataWithStats">
-    Filtruj
-  </button>
 
   <!-- results -->
   <div class="d-flex justify-content-center" v-if="is_loading">
@@ -169,7 +177,7 @@
         {{ this.size < this.total_count ? this.size : this.total_count }}
       </p>
 
-      <div class="row" style="margin-top: 8px">
+      <div class="row">
         <div class="col-auto">
           <vue-excel-xlsx
             :data="this.tweets"
@@ -178,6 +186,7 @@
             :file-type="'xlsx'"
             :sheet-name="'wyniki'"
             class="btn btn-success"
+            style="margin: 0px"
           >
             Pobierz
           </vue-excel-xlsx>
@@ -185,26 +194,41 @@
 
         <!-- pagination -->
         <div class="col-auto">
-          <button class="btn btn-primary" @click="this.previousPage">
+          <button
+            class="btn btn-primary"
+            style="margin: 0px"
+            @click="this.previousPage"
+          >
             <i class="bi bi-arrow-left"></i>
           </button>
         </div>
         <div class="col-auto">
-          {{ this.size * this.result_page_number }} -
-          {{
-            this.size * (this.result_page_number + 1) < this.tweets.length
-              ? this.size * (this.result_page_number + 1)
-              : this.tweets.length
-          }}
+          <span class="align-middle">middle</span>
+          <!-- <span style="vertical-align: middle;">
+            {{ this.size * this.result_page_number }} -
+            {{
+              this.size * (this.result_page_number + 1) < this.tweets.length
+                ? this.size * (this.result_page_number + 1)
+                : this.tweets.length
+            }}
+          </span> -->
         </div>
         <div class="col-auto">
-          <button class="btn btn-primary" @click="this.nextPage">
+          <button
+            class="btn btn-primary"
+            style="margin: 0px"
+            @click="this.nextPage"
+          >
             <i class="bi bi-arrow-right"></i>
           </button>
         </div>
         <!-- end of pagination -->
         <div class="col-auto">
-          <button class="btn btn-primary" @click="this.stats_mode = true">
+          <button
+            class="btn btn-primary"
+            style="margin: 0px"
+            @click="this.stats_mode = true"
+          >
             Pokaz statystyki
           </button>
         </div>
