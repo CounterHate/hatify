@@ -419,6 +419,19 @@ export default {
           console.log(error);
         });
     },
+    removeRussiaFromWords() {
+      this.stats.words.buckets.forEach((el) => {
+        console.log(this.declinations['rusek'])
+        console.log(el.key)
+        if (this.declinations["rusek"].includes(el.key)) {
+          this.stats.words.buckets.splice(
+            this.stats.words.buckets.indexOf(el),
+            1
+          );
+        }
+      });
+      delete this.declinations["rusek"];
+    },
     async getDataWithStats() {
       this.is_loading = true;
       if (this.keywords_selected.length > 0) {
@@ -432,6 +445,7 @@ export default {
         this.tweets = data.tweets;
         this.total_count = data.total;
         this.stats = data.stats;
+        this.removeRussiaFromWords();
         this.sortData(data, this.sortOrder, this.media_chosen);
         this.tweets.length == 0
           ? (this.no_results = true)
@@ -453,18 +467,20 @@ export default {
     calcDeclinations() {
       this.declinations_stats = [];
       this.keywords.forEach((kw) => {
-        let decl_count = 0;
-        let checked_words = [];
-        let words = this.declinations[kw].split(", ");
-        words.forEach((w) => {
-          if (!checked_words.includes(w)) {
-            checked_words.push(w);
-            if (w in this.declinations_count_dict)
-              decl_count += this.declinations_count_dict[w];
-          }
-        });
-        if (decl_count > 0)
-          this.declinations_stats.push({ key: kw, doc_count: decl_count });
+        if (Object.keys(this.declinations).includes(kw)) {
+          let decl_count = 0;
+          let checked_words = [];
+          let words = this.declinations[kw].split(", ");
+          words.forEach((w) => {
+            if (!checked_words.includes(w)) {
+              checked_words.push(w);
+              if (w in this.declinations_count_dict)
+                decl_count += this.declinations_count_dict[w];
+            }
+          });
+          if (decl_count > 0)
+            this.declinations_stats.push({ key: kw, doc_count: decl_count });
+        }
       });
       this.declinations_stats.sort((a, b) =>
         a.doc_count < b.doc_count ? 1 : b.doc_count < a.doc_count ? -1 : 0

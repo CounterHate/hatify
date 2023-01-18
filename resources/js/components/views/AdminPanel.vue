@@ -35,7 +35,7 @@
   <br />
   <br />
 
-  <div class="table-responsive scrollable">
+  <div class="table-responsive scrollable-phrases">
 
   <table class="table" v-show="this.phrases.length > 0">
     <thead>
@@ -129,7 +129,7 @@ export default {
 };
 </script>
 <style>
-        .scrollable {
+        .scrollable-phrases {
   max-height: 800px;
   overflow: auto;
 }

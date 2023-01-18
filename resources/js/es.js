@@ -330,8 +330,10 @@ export async function getDeclinations(url, auth) {
         auth: auth,
     }).then((response) => {
         response.data.hits.hits.forEach(d => {
-            keywords.push(d._source.keyword)
-            declinations[d._source.keyword] = d._source.words
+            // if (d._source.keyword != 'rusek') {
+                keywords.push(d._source.keyword)
+                declinations[d._source.keyword] = d._source.words
+            // }
         })
     }).catch((error) => {
         console.log(error)
