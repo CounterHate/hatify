@@ -17,7 +17,7 @@
         data-toggle="modal"
         data-target="#modalCategories"
       >
-        Pokaz wykres
+        Pokaż wykres
       </button>
     </div>
   </div>

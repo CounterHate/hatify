@@ -10,10 +10,10 @@
         <input class="form-check-input" type="radio" @click="changeMode('twitter')" name="modeRadio" checked />
         <label class="form-check-label  text-white"> Twitter </label>
       </div>
-      <div class="form-check">
+      <!-- <div class="form-check">
         <input class="form-check-input" type="radio" @click="changeMode('facebook')" name="modeRadio" />
         <label class="form-check-label  text-white"> Facebook </label>
-      </div>
+      </div> -->
       <label class="form-label text-white">Konto do anotowania</label>
       <div class="row">
         <div class="col">

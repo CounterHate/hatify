@@ -24,7 +24,7 @@
         data-target="#modalWords"
         v-if="this.stats_category == 'słowa'"
       >
-        Pokaz wykres
+        Pokaż wykres
       </button>
       <button
         class="btn btn-primary"
@@ -32,7 +32,7 @@
         data-target="#modalDays"
         v-if="this.stats_category == 'dni'"
       >
-        Pokaz wykres
+        Pokaż wykres
       </button>
       <button
         class="btn btn-primary"
@@ -40,7 +40,7 @@
         data-target="#modalCategories"
         v-if="this.stats_category == 'kategorie'"
       >
-        Pokaz wykres
+        Pokaż wykres
       </button>
       <button
         class="btn btn-primary"
@@ -48,7 +48,7 @@
         data-target="#modalAuthors"
         v-if="this.stats_category == 'autorzy'"
       >
-        Pokaz wykres
+        Pokaż wykres
       </button>
     </div>
     <div class="col-auto" v-if="this.stats_category == 'słowa'">

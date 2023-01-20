@@ -24,7 +24,7 @@
         data-toggle="modal"
         data-target="#modalAuthors"
       >
-        Pokaz wykres
+        Pokaż wykres
       </button>
     </div>
   </div>

@@ -2,7 +2,7 @@
   <br />
   <div class="card">
     <div class="card-body">
-      <p>Dokładność {{ data.score }}</p>
+      <!-- <p>Dokładność {{ data.score }}</p> -->
       <h5 class="card-title" v-if="data.author_username">
         {{ data.author_username }}
       </h5>

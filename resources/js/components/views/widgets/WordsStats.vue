@@ -24,7 +24,7 @@
         data-toggle="modal"
         data-target="#modalWords"
       >
-        Pokaz wykres
+        Pokaż wykres
       </button>
     </div>
     <div class="col-auto">

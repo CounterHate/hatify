@@ -48,7 +48,7 @@
         </div>
         <script src="{{ mix('js/app.js') }}"></script>
     </main>
-    @include('partials.settingsBar')
+    {{-- @include('partials.settingsBar') --}}
     <!--   Core JS Files   -->
     <script src="./assets/js/core/popper.min.js"></script>
     <script src="./assets/js/core/bootstrap.min.js"></script>

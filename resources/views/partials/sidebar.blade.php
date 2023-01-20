@@ -52,7 +52,7 @@ id="sidenav-main">
                         @csrf
 
                         <button type="submit" class="btn btn-link" style="padding: 0px; margin: 0px">
-                            {{ __('Log Out') }}
+                            {{ __('Wyloguj') }}
                         </button>
                     </form>
                 @else

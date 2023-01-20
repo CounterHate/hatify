@@ -134,7 +134,7 @@
       @click="this.stats_mode = false"
       style="margin-bottom: 8px"
     >
-      Pokaz wpisy
+      Pokaż wpisy
     </button>
     <div class="row" v-if="this.stats != 0">
       <div class="col">
@@ -229,7 +229,7 @@
             style="margin: 0px"
             @click="this.stats_mode = true"
           >
-            Pokaz statystyki
+            Pokaż statystyki
           </button>
         </div>
       </div>
@@ -319,7 +319,7 @@ export default {
       tooltip_content_text:
         "Wyszukuje treści podobnej do podanej. Przykładowo 'nienawidzę żydów' jest treścią podobną do 'nienawidzę ukrów i żydów'",
       tooltip_min_score_text:
-        "Jest to abstrakcyjna wartość, która pokazuje jak zbliżony jest dany wpis do podanych parametrów wyszukiwania. Im wyższa wartość tym bardziej odpowiada parametrom.",
+        "Jest to abstrakcyjna wartość, która Pokażuje jak zbliżony jest dany wpis do podanych parametrów wyszukiwania. Im wyższa wartość tym bardziej odpowiada parametrom.",
       url: process.env.MIX_ES,
       tweets_index: process.env.MIX_TWEETS_INDEX,
       fb_posts_index: process.env.MIX_FBPOSTS_INDEX,
@@ -421,8 +421,6 @@ export default {
     },
     removeRussiaFromWords() {
       this.stats.words.buckets.forEach((el) => {
-        console.log(this.declinations['rusek'])
-        console.log(el.key)
         if (this.declinations["rusek"].includes(el.key)) {
           this.stats.words.buckets.splice(
             this.stats.words.buckets.indexOf(el),

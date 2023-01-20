@@ -23,7 +23,7 @@ export const size_options = [
 
 export const media_options = [
     { value: "twitter", text: "twitter" },
-    { value: "facebook", text: "facebook" },
+    // { value: "facebook", text: "facebook" },
 ];
 
 export const sort_options = [
