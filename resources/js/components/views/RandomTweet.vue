@@ -20,7 +20,7 @@
           <input type="text" class="form-control" v-model="username_to_anotation" />
         </div>
         <div class="col-auto">
-          <button class="btn btn-primary" @click="handleSkipTweetPressed">
+          <button class="btn btn-success" @click="handleSkipTweetPressed">
             Szukaj
           </button>
         </div>

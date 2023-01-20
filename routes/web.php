@@ -24,7 +24,7 @@ use function React\Promise\Stream\first;
 
 Route::get('/random', function () {
     return view('random', ['user' => Auth::user()]);
-})->middleware(['auth'])->name('/random');
+})->middleware(['auth'])->name('random');
 
 Route::get('/', function () {
     return redirect('/search/twitter');
