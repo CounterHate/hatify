@@ -8,7 +8,7 @@ use Atymic\Twitter\Facade\Twitter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Models\Permission;
+// use Spatie\Permission\Models\Permission;
 
 use function React\Promise\Stream\first;
 
@@ -79,9 +79,9 @@ Route::get('/admin', function () {
     return view('admin');
 })->middleware(['auth'])->name('admin');
 
-Route::get('/permissions', function () {
-    return view('permissions', ['users' => User::get(), 'permissions' => Permission::get()]);
-})->middleware(['auth'])->name('permissions');
+// Route::get('/permissions', function () {
+//     return view('permissions', ['users' => User::get(), 'permissions' => Permission::get()]);
+// })->middleware(['auth'])->name('permissions');
 
 
 
