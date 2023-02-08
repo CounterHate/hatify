@@ -25,7 +25,7 @@
                 <span class="nav-link-text ms-1">Szukaj</span>
                 </a>
             </li>
-            @can('anotate')
+            {{-- @can('anotate') --}}
                 <li class="nav-item">
                     @if (Route::currentRouteName() == 'random')
                         <a class="nav-link active" href="/random">
@@ -39,8 +39,8 @@
                     <span class="nav-link-text ms-1">Anotuj</span>
                     </a>
                 </li>
-            @endcan
-            @can('admin')
+            {{-- @endcan --}}
+            {{-- @can('admin') --}}
                 <li class="nav-item">
                     @if (Route::currentRouteName() == 'admin')
                         <a class="nav-link active" href="/admin">
@@ -67,7 +67,7 @@
                     <span class="nav-link-text ms-1">Uprawnienia</span>
                     </a>
                 </li>
-            @endcan
+            {{-- @endcan --}}
             @auth
                 <li class="nav-item">
                     <div class="nav-link">
