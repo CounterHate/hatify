@@ -8,6 +8,7 @@ use Atymic\Twitter\Facade\Twitter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 
 use function React\Promise\Stream\first;
 
@@ -21,28 +22,18 @@ use function React\Promise\Stream\first;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function () {
+    return view('home', ['user' => Auth::user()]);
+})->name('home');
+
 
 Route::get('/random', function () {
     return view('random', ['user' => Auth::user()]);
 })->middleware(['auth'])->name('random');
 
-Route::get('/', function () {
-    return redirect('/search/twitter');
-})->middleware(['auth']);
-
-// Route::get('/aiCheck', function () {
-//     return view('aiCheck', ['user' => Auth::user()]);
-// })->middleware(['auth'])->name('/');
-
-// Route::get('/verify', function () {
-//     return view('verify', ['user' => Auth::user()]);
-// })->middleware(['auth'])->name('/verify');
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
-
-
 
 Route::middleware(['auth'])->name('search')->prefix('/search')->group(function () {
     Route::get('/{media}', function ($media) {
@@ -87,6 +78,10 @@ Route::get('/tweetStats/{tweet_id}', function ($tweet_id) {
 Route::get('/admin', function () {
     return view('admin');
 })->middleware(['auth'])->name('admin');
+
+Route::get('/permissions', function () {
+    return view('permissions', ['users' => User::get(), 'permissions' => Permission::get()]);
+})->middleware(['auth'])->name('permissions');
 
 
 

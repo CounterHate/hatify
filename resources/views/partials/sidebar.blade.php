@@ -3,8 +3,10 @@
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand m-0" href="/search/twitter" target="_blank">
-            <span class="ms-1 font-weight-bold">Counter Hate</span>
+        <a class="navbar-brand m-0" href="/" target="_blank">
+            <img src="{{ asset('images/logo hor.png') }}" width="60%">
+            {{-- <span class="ms-1 font-weight-bold">Counter Hate</span> --}}
+
         </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -13,8 +15,8 @@
             <li class="nav-item">
                 @if (Route::currentRouteName() == 'search')
                     <a class="nav-link active" href="/search/twitter">
-                @else
-                    <a class="nav-link" href="/search/twitter">
+                    @else
+                        <a class="nav-link" href="/search/twitter">
                 @endif
                 <div
                     class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -23,60 +25,90 @@
                 <span class="nav-link-text ms-1">Szukaj</span>
                 </a>
             </li>
-            <li class="nav-item">
-                @if (Route::currentRouteName() == 'random')
-                <a class="nav-link active" href="/random">
-                @else
-                <a class="nav-link " href="/random">
-                @endif
+            @can('anotate')
+                <li class="nav-item">
+                    @if (Route::currentRouteName() == 'random')
+                        <a class="nav-link active" href="/random">
+                        @else
+                            <a class="nav-link " href="/random">
+                    @endif
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Anotuj</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                @if (Route::currentRouteName() == 'admin')
-                    <a class="nav-link active" href="/admin">
-                @else
-                    <a class="nav-link " href="/admin">
-                @endif
+                    </a>
+                </li>
+            @endcan
+            @can('admin')
+                <li class="nav-item">
+                    @if (Route::currentRouteName() == 'admin')
+                        <a class="nav-link active" href="/admin">
+                        @else
+                            <a class="nav-link " href="/admin">
+                    @endif
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Admin</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="/admin">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    @if (Route::currentRouteName() == 'permissions')
+                        <a class="nav-link active" href="/permissions">
+                        @else
+                            <a class="nav-link " href="/permissions">
+                    @endif
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
                     </div>
-                    @if (Route::has('login'))
-                        @auth
+                    <span class="nav-link-text ms-1">Uprawnienia</span>
+                    </a>
+                </li>
+            @endcan
+            @auth
+                <li class="nav-item">
+                    <div class="nav-link">
 
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
+                        </div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
 
-                                <button type="submit" class="btn btn-link" style="padding: 0px; margin: 0px">
-                                    {{ __('Wyloguj') }}
-                                </button>
-                            </form>
-                        @else
-                            <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log
-                                in</a>
+                            <button type="submit" class="btn btn-link" style="padding: 0px; margin: 0px">
+                                {{ __('Wyloguj') }}
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            @endauth
+            @guest
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('login') }}">
 
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}"
-                                    class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                            @endif
-                        @endauth
-                    @endif
-                </a>
-            </li>
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Logowanie</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link" href="{{ route('register') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-collection text-info text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Rejestracja</span>
+                    </a>
+                </li>
+            @endguest
         </ul>
     </div>
 </aside>

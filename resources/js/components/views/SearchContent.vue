@@ -443,7 +443,7 @@ export default {
         this.tweets = data.tweets;
         this.total_count = data.total;
         this.stats = data.stats;
-        this.removeRussiaFromWords();
+        // this.removeRussiaFromWords();
         this.sortData(data, this.sortOrder, this.media_chosen);
         this.tweets.length == 0
           ? (this.no_results = true)
@@ -465,6 +465,7 @@ export default {
     calcDeclinations() {
       this.declinations_stats = [];
       this.keywords.forEach((kw) => {
+        // print("kw:",kw)
         if (Object.keys(this.declinations).includes(kw)) {
           let decl_count = 0;
           let checked_words = [];
