@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-auto">
+    <div class="col-auto" v-if="this.can_download == 'true'">
       <vue-excel-xlsx
         :data="this.data"
         :columns="this.export_columns"
@@ -155,6 +155,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    can_download: String
   },
   components: { PieChart, BarChart },
   emits: ["count-declinations", "detailed-count"],

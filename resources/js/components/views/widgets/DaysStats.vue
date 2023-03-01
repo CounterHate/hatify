@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-auto">
+    <div class="col-auto" v-if="this.can_download == 'true'">
       <vue-excel-xlsx
         :data="this.data"
         :columns="this.export_columns"
@@ -129,6 +129,7 @@ export default {
   props: {
     data: Array,
     data_sorted: Array,
+    can_download: String
   },
   components: { BarChart, LineChart },
   data() {

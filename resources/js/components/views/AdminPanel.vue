@@ -7,16 +7,22 @@
   <br />
   <br />
   <span class="text-white">Stream status</span>
-  <span class="badge badge-pill bg-success" style="margin-left: 8px" v-if="this.stream_alive == true"
+  <span
+    class="badge badge-pill bg-success"
+    style="margin-left: 8px"
+    v-if="this.stream_alive == true"
     >Aktywny</span
   >
-  <span class="badge badge-pill bg-danger" style="margin-left: 8px" v-if="this.stream_alive == false"
+  <span
+    class="badge badge-pill bg-danger"
+    style="margin-left: 8px"
+    v-if="this.stream_alive == false"
     >Wyłączony</span
   >
   <button
     class="btn btn-primary btn-sm"
     style="margin-bottom: 0px; margin-left: 16px"
-    v-if="this.stream_alive == false"
+    v-if="this.stream_alive == false && this.can_start_stream == 'true'"
     @click="toggleStream"
   >
     Uruchom
@@ -36,31 +42,46 @@
   <br />
 
   <div class="table-responsive scrollable-phrases">
-
-  <table class="table" v-show="this.phrases.length > 0">
-    <thead>
-      <tr>
-        <th scope="col" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
-        <th scope="col" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Słowo</th>
-        <th scope="col" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(phrase, index) in this.phrases" :key="index">
-        <th scope="row" class="mb-0 text-xs">{{ index + 1 }}</th>
-        <td><span class="mb-0 text-xs">{{ phrase.phrase }}</span></td>
-        <td>
-          <button
-            class="btn btn-danger btn-sm"
-            style="margin-bottom: 0px"
-            @click="deletePhrase(phrase.id, index)"
+    <table class="table" v-show="this.phrases.length > 0">
+      <thead>
+        <tr>
+          <th
+            scope="col"
+            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
           >
-            Usuń
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+            #
+          </th>
+          <th
+            scope="col"
+            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+          >
+            Słowo
+          </th>
+          <th
+            scope="col"
+            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+          ></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(phrase, index) in this.phrases" :key="index">
+          <th scope="row" class="mb-0 text-xs">{{ index + 1 }}</th>
+          <td>
+            <span class="mb-0 text-xs">{{ phrase.phrase }}</span>
+          </td>
+          <td>
+            <button
+              v-if="this.can_remove_keywords == 'true'"
+              class="btn btn-danger btn-sm"
+              style="margin-bottom: 0px"
+              @click="deletePhrase(phrase.id, index)"
+            >
+              Usuń
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 <script>
@@ -71,6 +92,10 @@ import {
   deletePhraseFromIndex,
 } from "../../es.js";
 export default {
+  props: {
+    can_start_stream: String,
+    can_remove_keywords: String,
+  },
   data() {
     return {
       url: process.env.MIX_ES,
@@ -129,7 +154,7 @@ export default {
 };
 </script>
 <style>
-        .scrollable-phrases {
+.scrollable-phrases {
   max-height: 800px;
   overflow: auto;
 }

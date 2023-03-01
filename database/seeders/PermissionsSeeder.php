@@ -15,11 +15,11 @@ class PermissionsSeeder extends Seeder
     public function run()
     {
         Permission::create(['name' => 'anotate']);
-        Permission::create(['name' => 'remove keywords']);
-        Permission::create(['name' => 'start stream']);
+        Permission::create(['name' => 'remove_keywords']);
+        Permission::create(['name' => 'start_stream']);
         Permission::create(['name' => 'download']);
-        Permission::create(['name' => 'search keywords']);
-        Permission::create(['name' => 'see authors']);
+        Permission::create(['name' => 'search_keywords']);
+        Permission::create(['name' => 'see_authors']);
         Permission::create(['name' => 'admin']);
     }
 }

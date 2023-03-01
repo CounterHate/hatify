@@ -90,7 +90,7 @@
           </VueMultiselect>
         </div>
 
-        <div class="col">
+        <div class="col" v-if="this.can_search_keywords == 'true'">
           <label>Słowa kluczowe</label>
           <VueMultiselect
             v-model="keywords_selected"
@@ -142,6 +142,7 @@
           :data="this.wordsStats"
           :declination_mode="this.declinations_stats_mode"
           @count-declinations="calcDeclinations"
+          :can_download="this.can_download"
           v-if="!this.declinations_stats_mode"
         >
         </words-stats>
@@ -149,6 +150,7 @@
           :data="this.wordsStats"
           :declination_mode="this.declinations_stats_mode"
           @detailed-count="this.declinations_stats_mode = false"
+          :can_download="this.can_download"
           v-else
         >
         </words-stats>
@@ -157,6 +159,7 @@
         <days-stats
           :data="this.stats.dates.buckets"
           :data_sorted="this.dates_sorted"
+          :can_download="this.can_download"
         ></days-stats>
       </div>
     </div>
@@ -164,10 +167,14 @@
       <div class="col">
         <categories-stats
           :data="this.stats.categories.buckets"
+          :can_download="this.can_download"
         ></categories-stats>
       </div>
-      <div class="col">
-        <authors-stats :data="this.stats.authors.buckets"></authors-stats>
+      <div class="col" v-if="this.see_authors == 'true'">
+        <authors-stats
+          :data="this.stats.authors.buckets"
+          :can_download="this.can_download"
+        ></authors-stats>
       </div>
     </div>
   </div>
@@ -179,7 +186,7 @@
       </p>
 
       <div class="row">
-        <div class="col-auto">
+        <div class="col-auto" v-if="this.can_download == 'true'">
           <vue-excel-xlsx
             :data="this.tweets"
             :columns="columns"
@@ -299,6 +306,9 @@ export default {
     category: String,
     content: String,
     declination: String,
+    see_authors: String,
+    can_download: String,
+    can_search_keywords: String,
   },
   components: {
     Tweet,

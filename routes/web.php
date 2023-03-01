@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissionsController;
 use App\Models\Topic;
 use App\Models\Tweet;
 use App\Models\User;
@@ -8,7 +9,7 @@ use Atymic\Twitter\Facade\Twitter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-// use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Permission;
 
 use function React\Promise\Stream\first;
 
@@ -22,14 +23,15 @@ use function React\Promise\Stream\first;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/', function () {
     return view('home', ['user' => Auth::user()]);
 })->name('home');
 
 
-Route::get('/random', function () {
-    return view('random', ['user' => Auth::user()]);
-})->middleware(['auth'])->name('random');
+Route::get('/anotate', function () {
+    return view('anotate', ['user' => Auth::user()]);
+})->middleware(['auth', 'can:anotate'])->name('anotate');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -77,11 +79,14 @@ Route::get('/tweetStats/{tweet_id}', function ($tweet_id) {
 
 Route::get('/admin', function () {
     return view('admin');
-})->middleware(['auth'])->name('admin');
+})->middleware(['auth', 'can:admin'])->name('admin');
 
-// Route::get('/permissions', function () {
-//     return view('permissions', ['users' => User::get(), 'permissions' => Permission::get()]);
-// })->middleware(['auth'])->name('permissions');
+Route::middleware(['auth', 'can:admin'])->prefix('/permissions')->group(function () {
+    Route::get('/', [PermissionsController::class, 'index']);
+    Route::get('/edit/{user}', [PermissionsController::class, 'edit']);
+    Route::post('/update/{user}', [PermissionsController::class, 'update']);
+});
+
 
 
 
