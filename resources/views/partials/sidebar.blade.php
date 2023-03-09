@@ -40,7 +40,7 @@
                     </a>
                 </li>
             @endcan
-            @can('admin')
+            {{-- @can('admin') --}}
                 <li class="nav-item">
                     @if (Route::currentRouteName() == 'admin')
                         <a class="nav-link active" href="/admin">
@@ -67,7 +67,7 @@
                     <span class="nav-link-text ms-1">Uprawnienia</span>
                     </a>
                 </li>
-            @endcan
+            {{-- @endcan --}}
             @auth
                 <li class="nav-item">
                     <div class="nav-link">
