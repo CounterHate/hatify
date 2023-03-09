@@ -81,7 +81,7 @@ Route::get('/admin', function () {
     return view('admin');
 })->middleware(['auth', 'can:admin'])->name('admin');
 
-Route::middleware(['auth'])->prefix('/permissions')->group(function () {
+Route::middleware(['auth', 'can:admin'])->prefix('/permissions')->group(function () {
     Route::get('/', [PermissionsController::class, 'index']);
     Route::get('/edit/{user}', [PermissionsController::class, 'edit']);
     Route::post('/update/{user}', [PermissionsController::class, 'update']);
