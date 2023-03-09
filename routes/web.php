@@ -37,7 +37,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::middleware(['auth'])->name('search')->prefix('/search')->group(function () {
+Route::name('search')->prefix('/search')->group(function () {
     Route::get('/{media}', function ($media) {
         return view('search', ['data_id' => null, 'media' => $media]);
     });
@@ -81,7 +81,7 @@ Route::get('/admin', function () {
     return view('admin');
 })->middleware(['auth', 'can:admin'])->name('admin');
 
-Route::middleware(['auth', 'can:admin'])->prefix('/permissions')->group(function () {
+Route::middleware(['auth'])->prefix('/permissions')->group(function () {
     Route::get('/', [PermissionsController::class, 'index']);
     Route::get('/edit/{user}', [PermissionsController::class, 'edit']);
     Route::post('/update/{user}', [PermissionsController::class, 'update']);
