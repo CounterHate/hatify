@@ -37,7 +37,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::name('search')->prefix('/search')->group(function () {
+Route::prefix('/search')->group(function () {
     Route::get('/{media}', function ($media) {
         return view('search', ['data_id' => null, 'media' => $media]);
     });
