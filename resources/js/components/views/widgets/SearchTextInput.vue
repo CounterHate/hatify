@@ -16,7 +16,7 @@
         type="text"
         class="form-control"
         id="contentInput"
-        placeholder="Treść do wyszukania"
+        :placeholder="placeholder"
         v-model="this.modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
       />

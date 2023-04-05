@@ -29,7 +29,7 @@
       <!-- text input row -->
       <div class="row" style="margin-top: 8px">
         <search-text-input
-          label="Treść"
+          label="Zawiera treść"
           v-model="params.content"
           :tooltip_text="this.tooltip_content_text"
           placeholder="Treść do wyszukania"
@@ -37,14 +37,23 @@
         ></search-text-input>
 
         <search-text-input
-          label="Konto do wyszukiwania"
-          v-model="params.author_username"
-          :tooltip_text="null"
-          placeholder="konto do wyszukiwania"
+          label="Nie zawiera treści"
+          v-model="params.contentMustNot"
+          :tooltip_text="this.tooltip_content_text"
+          placeholder="Nie zawiera treści"
           v-on:keyup.enter="getDataWithStats"
         ></search-text-input>
       </div>
       <div class="row">
+        <div class="col">
+          <search-text-input
+            label="Konta do wyszukiwania"
+            v-model="params.author_username"
+            :tooltip_text="null"
+            placeholder="konta do wyszukiwania"
+            v-on:keyup.enter="getDataWithStats"
+          ></search-text-input>
+        </div>
         <div class="col">
           <label>Od</label>
           <Datepicker v-model="this.params.gte"></Datepicker>
@@ -73,7 +82,6 @@
       />
     </div> -->
       </div>
-      <br />
       <div class="row" style="margin-top: 8px">
         <div class="col">
           <label>Kategorie</label>
@@ -91,13 +99,27 @@
         </div>
 
         <div class="col" v-if="this.can_search_keywords == 'true'">
-          <label>Słowa kluczowe</label>
+          <label>Zawiera słowa kluczowe</label>
           <VueMultiselect
             v-model="keywords_selected"
             :options="keywords"
             :multiple="true"
             :searchable="true"
-            placeholder="Słowa kluczowe"
+            placeholder="Zawiera słowa kluczowe"
+            :clear-on-select="false"
+            :close-on-select="false"
+            style="margin-bottom: 8px"
+          >
+          </VueMultiselect>
+        </div>
+        <div class="col" v-if="this.can_search_keywords == 'true'">
+          <label>Nie zawiera słów kluczowych</label>
+          <VueMultiselect
+            v-model="keywords_selected_must_not"
+            :options="keywords"
+            :multiple="true"
+            :searchable="true"
+            placeholder="Nie zawiera słów kluczowych"
             :clear-on-select="false"
             :close-on-select="false"
             style="margin-bottom: 8px"
@@ -170,7 +192,7 @@
           :can_download="this.can_download"
         ></categories-stats>
       </div>
-      <div class="col" v-if="this.see_authors == 'true'">
+      <div class="col" v-if="this.can_see_authors == 'true'">
         <authors-stats
           :data="this.stats.authors.buckets"
           :can_download="this.can_download"
@@ -281,7 +303,11 @@
 import Tweet from "../entities/Tweet.vue";
 import FbPost from "../entities/FbPost.vue";
 import FbComment from "../entities/FbComment.vue";
-import { getDataForQuery, getDeclinations } from "../../es.js";
+import {
+  getDataForQuery,
+  getDeclinations,
+  getHateCategories,
+} from "../../es.js";
 import {
   hco,
   size_options,
@@ -306,7 +332,7 @@ export default {
     category: String,
     content: String,
     declination: String,
-    see_authors: String,
+    can_see_authors: String,
     can_download: String,
     can_search_keywords: String,
   },
@@ -345,8 +371,10 @@ export default {
         lte: null,
         hate_categories: [],
         content: "",
+        contentMustNot: "",
         min_score: 0,
         declinations: "",
+        declinationsMustNot: "",
       },
       declinations_stats: [],
       declinations_count_dict: {},
@@ -357,6 +385,7 @@ export default {
       declinations: {},
       keywords: [],
       keywords_selected: [],
+      keywords_selected_must_not: [],
       tweets: [],
       fb_posts: [],
       fb_comments: [],
@@ -370,7 +399,8 @@ export default {
       size_options: size_options,
       media_chosen: "twitter",
       media_options: media_options,
-      hate_categories_options: hco,
+      hate_categories_options: [],
+      hate_categories_with_words: {},
     };
   },
   computed: {
@@ -383,6 +413,7 @@ export default {
   methods: {
     getDataForQuery,
     getDeclinations,
+    getHateCategories,
     sortDates() {
       this.dates_sorted = [...this.stats.dates.buckets];
       this.dates_sorted.sort((a, b) =>
@@ -445,6 +476,15 @@ export default {
       if (this.keywords_selected.length > 0) {
         this.params.declinations = this.keywords_selected.toString();
       }
+      if (this.keywords_selected_must_not.length > 0) {
+        this.params.declinationsMustNot =
+          this.keywords_selected_must_not.toString();
+      }
+      if (this.params.hate_categories.length > 0) {
+        this.params.hate_categories.forEach((hc) => {
+          this.params.content += (this.hate_categories_with_words[hc].toString() + ', ')
+        });
+      }
       this.getDataForQuery(
         this.url + "/" + this.tweets_index + "/_search",
         this.auth,
@@ -504,6 +544,18 @@ export default {
       let date_string = year + "-" + month + "-" + day;
       return new Date(date_string).getTime();
     },
+
+    async getCategoriesForForm() {
+      this.getHateCategories(
+        this.url + "/hate_categories/_search",
+        this.auth
+      ).then((data) => {
+        data.forEach((d) => {
+          this.hate_categories_options.push(d.category);
+          this.hate_categories_with_words[d.category] = d.words;
+        });
+      });
+    },
   },
 
   async mounted() {
@@ -512,6 +564,7 @@ export default {
     if (this.category) this.params.hate_categories = [this.category];
     if (this.declination) this.keywords_selected = [this.declination];
     this.params.content = this.content;
+    await this.getCategoriesForForm();
     await this.getDeclinationsFromEs();
     if (this.declination) await new Promise((r) => setTimeout(r, 1000));
     await this.getDataWithStats();

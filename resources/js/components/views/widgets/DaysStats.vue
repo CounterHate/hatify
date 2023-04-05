@@ -34,21 +34,13 @@
         <tr>
           <th
             scope="col"
-            class="
-              text-uppercase text-secondary text-xxs
-              font-weight-bolder
-              opacity-7
-            "
+            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
           >
             #
           </th>
           <th
             scope="col"
-            class="
-              text-uppercase text-secondary text-xxs
-              font-weight-bolder
-              opacity-7
-            "
+            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
             v-for="column in this.columns"
             :key="column"
           >
@@ -102,7 +94,7 @@
             </div>
           </div>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="daysGraphToImage">
           <line-chart
             :data="
               this.data_sorted ? this.data_sorted.slice(-this.chart_size) : []
@@ -113,6 +105,9 @@
           </line-chart>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-success" @click="downloadGraph">
+            Pobierz
+          </button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Zamknij
           </button>
@@ -124,12 +119,13 @@
     <script>
 import BarChart from "../../stats/charts/BarChart.vue";
 import LineChart from "../../stats/charts/LineChart.vue";
+import html2canvas from "html2canvas";
 
 export default {
   props: {
     data: Array,
     data_sorted: Array,
-    can_download: String
+    can_download: String,
   },
   components: { BarChart, LineChart },
   data() {
@@ -153,6 +149,18 @@ export default {
         doc_count: { label: "liczba wpisów" },
       },
     };
+  },
+  methods: {
+    downloadGraph() {
+      html2canvas(document.getElementById("daysGraphToImage")).then((canvas) => {
+        var anchorTag = document.createElement("a");
+        document.body.appendChild(anchorTag);
+        anchorTag.download = "dni.jpg";
+        anchorTag.href = canvas.toDataURL();
+        anchorTag.target = "_blank";
+        anchorTag.click();
+      });
+    },
   },
   mounted() {
     this.columns[0] = this.stats_category;

@@ -239,6 +239,7 @@ export async function getDataForQuery(url, auth, params) {
                         }
                     }
                 ],
+                "must_not": []
             }
         },
         "aggs": {
@@ -282,25 +283,34 @@ export async function getDataForQuery(url, auth, params) {
         }
         query.query.bool.filter = { range: { posted_utime: { lte: lte, gte: gte } } }
     }
+    // must containt
     if (params.content != "" && params.declinations != "") query.query.bool.must.push({ match: { content: params.content + ', ' + params.declinations } })
     else if (params.content == "" && params.declinations != "") query.query.bool.must.push({ match: { content: params.declinations } })
     else if (params.content != "" && params.declinations == "") query.query.bool.must.push({ match: { content: params.content } })
+
+    // must not contain
+    if (params.contentMustNot != "" && params.declinationsMustNot != "") query.query.bool.must_not.push({ match: { content: params.contentMustNot + ', ' + params.declinationsMustNot } })
+    else if (params.contentMustNot == "" && params.declinationsMustNot != "") query.query.bool.must_not.push({ match: { content: params.declinationsMustNot } })
+    else if (params.contentMustNot != "" && params.declinationsMustNot == "") query.query.bool.must_not.push({ match: { content: params.contentMustNot } })
+
     if (params.author_username) query.query.bool.must.push({ match: { author_username: params.author_username } })
     if (params.min_score) query.min_score = params.min_score
-    if (params.hate_categories.length > 0) {
-        let categories_string = ""
-        params.hate_categories.forEach((el, index) => {
-            if (index < params.hate_categories.length - 1) categories_string += (el + ", ")
-            else categories_string += el
-        });
-        query.query.bool.must.push({ match: { hate_category: categories_string } })
-    }
+    // if (params.hate_categories.length > 0) {
+    //     let categories_string = ""
+    //     params.hate_categories.forEach((el, index) => {
+    //         if (index < params.hate_categories.length - 1) categories_string += (el + ", ")
+    //         else categories_string += el
+    //     });
+    //     query.query.bool.must.push({ match: { hate_category: categories_string } })
+    // }
+    // if (params.contentMustNot != "") query.query.bool.must_not.push({ match: { content: params.contentMustNot } })
+
 
     let tweets = []
     let total_count = 0
     let stats = {}
 
-    // console.log(query)
+    console.log(query)
 
     await axios.post(url, query, {
         auth: auth,
@@ -331,12 +341,27 @@ export async function getDeclinations(url, auth) {
     }).then((response) => {
         response.data.hits.hits.forEach(d => {
             // if (d._source.keyword != 'rusek') {
-                keywords.push(d._source.keyword)
-                declinations[d._source.keyword] = d._source.words
-            // }
+            keywords.push(d._source.keyword)
+            declinations[d._source.keyword] = d._source.words
+                // }
         })
     }).catch((error) => {
         console.log(error)
     })
     return { declinations: declinations, keywords: keywords }
+}
+
+export async function getHateCategories(url, auth) {
+    let query = {
+        size: 10000
+    }
+    let categories = []
+    await axios.post(url, query, { auth: auth }).then((response) => {
+        response.data.hits.hits.forEach(hc => {
+            categories.push(hc._source)
+        })
+    }).catch((error) => {
+        console.log(error);
+    })
+    return categories
 }

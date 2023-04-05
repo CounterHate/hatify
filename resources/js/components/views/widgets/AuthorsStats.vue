@@ -84,7 +84,7 @@
             </div>
           </div>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="authorsGraphToImage">
           <pie-chart
             v-if="this.chart_direction == 'circular'"
             :data="this.data ? this.data.slice(0, this.chart_size) : []"
@@ -100,6 +100,9 @@
           ></bar-chart>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-success" @click="downloadGraph">
+            Pobierz
+          </button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Zamknij
           </button>
@@ -111,6 +114,7 @@
     <script>
 import PieChart from "../../stats/charts/PieChart.vue";
 import BarChart from "../../stats/charts/BarChart.vue";
+import html2canvas from 'html2canvas';
 
 export default {
   props: {
@@ -140,6 +144,18 @@ export default {
         doc_count: { label: "liczba wpisów" },
       },
     };
+  },
+  methods: {
+    downloadGraph() {
+      html2canvas(document.getElementById("authorsGraphToImage")).then((canvas) => {
+        var anchorTag = document.createElement("a");
+        document.body.appendChild(anchorTag);
+        anchorTag.download = "autorzy.jpg";
+        anchorTag.href = canvas.toDataURL();
+        anchorTag.target = "_blank";
+        anchorTag.click();
+      });
+    },
   },
   mounted() {
     this.columns[0] = this.stats_category;

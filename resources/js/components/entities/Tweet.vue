@@ -17,7 +17,7 @@
         </div>
         <div v-else>{{ new Date(parseInt(data.date)) }}</div>
       </h6>
-      <div v-if="this.data.hate_category && this.data.hate_category.length > 0">
+      <!-- <div v-if="this.data.hate_category && this.data.hate_category.length > 0">
         kategorie:
         <span
           class="badge rounded-pill bg-primary"
@@ -25,7 +25,7 @@
           :key="hc"
           >{{ hc }}</span
         >
-      </div>
+      </div> -->
       <div v-if="this.data.keywords && this.data.keywords.length > 0">
         Słowa kluczowe:
         <span
