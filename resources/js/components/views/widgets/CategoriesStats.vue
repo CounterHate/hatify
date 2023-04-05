@@ -28,7 +28,7 @@
       </button>
     </div>
   </div>
-  <div class="table-responsive">
+  <div class="table-responsive scrollable">
     <table class="table table-striped align-items-center mb-0">
       <thead>
         <tr>
@@ -166,4 +166,8 @@ export default {
 };
 </script>
     <style>
+.scrollable {
+  max-height: 457px;
+  overflow: auto;
+}
 </style>
