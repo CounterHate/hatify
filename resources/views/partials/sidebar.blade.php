@@ -10,7 +10,7 @@
         </a>
     </div>
     <hr class="horizontal dark mt-0">
-    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main" style="height: 700px">
         <ul class="navbar-nav">
             <li class="nav-item">
                 @if (Route::currentRouteName() == 'search')
@@ -148,6 +148,8 @@
         </ul>
         <div class="card card-plain shadow-none" id="sidenavCard">
             <div class="p-3 card-body text-center w-100 pt-0"><img class="w-50 mx-auto" src="/assets/img/EU.jpg">
+                <h6 class="mb-0 text-dark up">System został sfinansowany ze środków programu Unii Europejskiej "Prawa, równość i obywatelstwo (2014-2020).”
+                </h6>
             </div>
         </div>
     </div>
