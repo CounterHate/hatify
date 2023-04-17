@@ -116,9 +116,9 @@
 
             Autorzy systemu:
             <ul>
-                <li><a href="https://geremek.pl/">Fundacja Geremka</a></li>
+                <li><a href="https://geremek.pl/" target="_blank">Fundacja Geremka</a></li>
 
-                <li><a href="https://hfhr.pl/">Helsińska Fundacja Praw Człowieka</a></li>
+                <li><a href="https://hfhr.pl/" target="_blank">Helsińska Fundacja Praw Człowieka</a></li>
 
                 <li>SecureLex Sp. z o.o.</li>
             </ul>
