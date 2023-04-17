@@ -165,7 +165,7 @@ export default {
       size: 10,
       chart_size: 10,
       columns: [null, "liczba wyników"],
-      chart_direction: "circular",
+      chart_direction: "horizontal",
       stats_category: "Słowa",
       export_columns: [
         {
