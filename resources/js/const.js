@@ -34,14 +34,14 @@ export const sort_options = [
 ]
 
 export const columns = [
-    {
-      label: "Czy jest mową nienawiści",
-      field: "is_hate_speech",
-    },
-    {
-      label: "Czy to retweet",
-      field: "is_retweet",
-    },
+    // {
+    //   label: "Czy jest mową nienawiści",
+    //   field: "is_hate_speech",
+    // },
+    // {
+    //   label: "Czy to retweet",
+    //   field: "is_retweet",
+    // },
     {
       label: "Login autora",
       field: "author_username",
@@ -62,7 +62,7 @@ export const columns = [
     {
       label: "Słowa kluczowe",
       field: "keywords",
-      dataFormat: keywordsFormat,
+      // dataFormat: keywordsFormat,
     },
     {
       label: "Link",

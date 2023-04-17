@@ -39,7 +39,7 @@
         <search-text-input
           label="Nie zawiera treści"
           v-model="params.contentMustNot"
-          :tooltip_text="this.tooltip_content_text"
+          :tooltip_text="this.tooltip_non_content_text"
           placeholder="Nie zawiera treści"
           v-on:keyup.enter="getDataWithStats"
         ></search-text-input>
@@ -49,17 +49,33 @@
           <search-text-input
             label="Konta do wyszukiwania"
             v-model="params.author_username"
-            :tooltip_text="null"
+            :tooltip_text="this.tooltip_authors"
             placeholder="konta do wyszukiwania"
             v-on:keyup.enter="getDataWithStats"
           ></search-text-input>
         </div>
         <div class="col">
-          <label>Od</label>
+          <label
+            >Od
+            <i
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              :title="this.tooltip_time"
+              class="bi bi-info-circle"
+            ></i
+          ></label>
           <Datepicker v-model="this.params.gte"></Datepicker>
         </div>
         <div class="col">
-          <label>Do</label>
+          <label
+            >Do
+            <i
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              :title="this.tooltip_time"
+              class="bi bi-info-circle"
+            ></i
+          ></label>
           <Datepicker v-model="this.params.lte"></Datepicker>
         </div>
         <!-- <div class="col">
@@ -84,7 +100,15 @@
       </div>
       <div class="row" style="margin-top: 8px">
         <div class="col">
-          <label>Kategorie</label>
+          <label
+            >Kategorie
+            <i
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              :title="this.tooltip_categories"
+              class="bi bi-info-circle"
+            ></i
+          ></label>
           <VueMultiselect
             v-model="params.hate_categories"
             :options="hate_categories_options"
@@ -99,7 +123,15 @@
         </div>
 
         <div class="col" v-if="this.can_search_keywords == 'true'">
-          <label>Zawiera słowa kluczowe</label>
+          <label
+            >Zawiera słowa kluczowe
+            <i
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              :title="this.tooltip_keywords"
+              class="bi bi-info-circle"
+            ></i
+          ></label>
           <VueMultiselect
             v-model="keywords_selected"
             :options="keywords"
@@ -113,7 +145,15 @@
           </VueMultiselect>
         </div>
         <div class="col" v-if="this.can_search_keywords == 'true'">
-          <label>Nie zawiera słów kluczowych</label>
+          <label
+            >Nie zawiera słów kluczowych
+            <i
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              :title="this.tooltip_non_keywords"
+              class="bi bi-info-circle"
+            ></i
+          ></label>
           <VueMultiselect
             v-model="keywords_selected_must_not"
             :options="keywords"
@@ -353,9 +393,21 @@ export default {
     return {
       columns: columns,
       tooltip_content_text:
-        "Wyszukuje treści podobnej do podanej. Przykładowo 'nienawidzę żydów' jest treścią podobną do 'nienawidzę ukrów i żydów'",
+        "wypowiedzi zawierające konkretne słowa, wyrażenia, itp",
+      tooltip_non_content_text:
+        "wypowiedzi NIE zawierające konkretne słowa, wyrażenia, itp",
       tooltip_min_score_text:
         "Jest to abstrakcyjna wartość, która Pokażuje jak zbliżony jest dany wpis do podanych parametrów wyszukiwania. Im wyższa wartość tym bardziej odpowiada parametrom.",
+      tooltip_authors:
+        "wypowiedzi publikowane przez użytkownika o konkretnej nazwie",
+      tooltip_categories:
+        "wypowiedzi zakwalifikowane jako obraźliwe w stosunku do jednej z wyróżnionych mniejszości",
+      tooltip_keywords:
+        "wypowiedzi zawierające wybrane słowo-klucz spośród wcześniej wyróżnionych",
+      tooltip_non_keywords:
+        "wypowiedzi NIE zawierające wybrane słowo-klucz spośród wcześniej wyróżnionych",
+      tooltip_time:
+        "wypowiedzi publikowane w skonkretyzowanym okresie (można doprecyzować datę, ale również godzinę)",
       url: process.env.MIX_ES,
       tweets_index: process.env.MIX_TWEETS_INDEX,
       fb_posts_index: process.env.MIX_FBPOSTS_INDEX,
@@ -482,7 +534,8 @@ export default {
       }
       if (this.params.hate_categories.length > 0) {
         this.params.hate_categories.forEach((hc) => {
-          this.params.content += (this.hate_categories_with_words[hc].toString() + ', ')
+          this.params.content +=
+            this.hate_categories_with_words[hc].toString() + ", ";
         });
       }
       this.getDataForQuery(

@@ -28,6 +28,14 @@ Route::get('/', function () {
     return view('home', ['user' => Auth::user()]);
 })->name('home');
 
+Route::get('/faq', function () {
+    return view('faq', ['user' => Auth::user()]);
+})->name('faq');
+
+Route::get('/about', function () {
+    return view('about', ['user' => Auth::user()]);
+})->name('about');
+
 
 Route::get('/anotate', function () {
     return view('anotate', ['user' => Auth::user()]);

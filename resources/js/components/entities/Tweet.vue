@@ -57,11 +57,11 @@
 
       <div class="row">
         <!-- show tweet button -->
-        <div class="col-auto padded">
+        <!-- <div class="col-auto padded">
           <button class="btn btn-primary" @click="getStats">
             Statystyki tweeta
           </button>
-        </div>
+        </div> -->
         <div class="col-auto padded">
           <a
             :href="
@@ -75,14 +75,14 @@
             >Zobacz tweet</a
           >
         </div>
-        <div class="col-auto padded">
+        <!-- <div class="col-auto padded">
           <a
             :href="'/stats/author=' + data.author_username"
             class="btn btn-primary"
             target="_blank"
             >Zobacz statystyki użytkownika</a
           >
-        </div>
+        </div> -->
         <!-- show tweets with similar content button -->
         <div
           class="col-auto padded"
