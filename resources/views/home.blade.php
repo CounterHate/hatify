@@ -2,9 +2,8 @@
 @section('content')
     <div class="card card-frame" style="margin-bottom: 16px">
         <div class="card-body">
-            <h3>Powitanie</h3>
-            Wzdrygasz się na widok nienawiści rozlewającej się na Twitterze? Chcesz włączyć się w przeciwdziałanie jej?
-            Działaj z nami!<br><br>
+            <h5>Wzdrygasz się na widok nienawiści rozlewającej się na Twitterze? Chcesz włączyć się w przeciwdziałanie jej?
+            Działaj z nami!</h5>
 
             CounterHate to system do monitorowania internetowej mowy nienawiści. Jeśli nie wystarcza Ci zgłaszanie
             nienawistnych komentarzy – chcesz wiedzieć o tym więcej i działać jeszcze więcej przeciwko nim, to może być
@@ -26,7 +25,7 @@
             które zostały już skasowane. Pozwala je monitorować i analizować, ogólnie i z podziałem na bardziej szczegółowe
             narracje i kategorie. <br><br>
 
-            Zacznij monitorować!
+            <a href="/search/twitter">Zacznij monitorować!</a>
         </div>
     </div>
 
@@ -102,11 +101,11 @@
             W ramach projektu powstały dwa raporty analizujące nienawistne dyskursy w mediach społecznościowych: <br><br>
 
             <ul>
-                <li> <a href="https://geremek.pl/publikacja/granice_nienawisci/">Granice Nienawiści</a> analiza mowy
+                <li> <a href="https://geremek.pl/publikacja/granice_nienawisci/" target="_blank">Granice Nienawiści</a> analiza mowy
                     nienawiści towarzyszącą dwóm kryzysom uchodźczym: związanym z inwazją
                     Rosji na Ukrainę oraz z sytuacją na granicy polsko-białoruskiej.
                 </li>
-                <li> <a href="https://geremek.pl/publikacja/przyjda_i_zabiora/">Przyjdą i zabiorą</a> analiza
+                <li> <a href="https://geremek.pl/publikacja/przyjda_i_zabiora/" target="_blank">Przyjdą i zabiorą</a> analiza
                     antyukraińskiej mowy nienawiści.
                 </li>
             </ul>

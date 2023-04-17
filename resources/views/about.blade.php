@@ -33,7 +33,7 @@
             </ul>
         </div>
     </div>
-        <div class="card card-frame" style="margin-bottom: 16px">
+    {{-- <div class="card card-frame" style="margin-bottom: 16px">
         <div class="card-body">
             Powstanie i popularyzacja mediów społecznościowych stworzyły nowy, równoległy do tradycyjnych mediów ekosystem
             obiegu informacji. Przez media społecznościowe dowolne, niezweryfikowane albo szkodliwe treści mogą trafiać do
@@ -65,5 +65,5 @@
 
             </ul>
         </div>
-    </div>
+    </div> --}}
 @endsection
