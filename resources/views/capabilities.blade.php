@@ -5,7 +5,7 @@
 
         <div class="card card-frame" style="margin-bottom: 16px">
             <div class="card-body">
-                <h3>Mozliwości i ograniczenia systemu </h3>
+                <h3>Możliwości i ograniczenia systemu </h3>
                 <h5>Wyszukiwanie treści</h5>
 
                 Pozwala na wyszukiwanie w bazie wpisów mowy nienawiści pod względem jej rodzaju (kategorii), zawartości
