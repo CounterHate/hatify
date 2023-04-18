@@ -1,17 +1,29 @@
 <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4"
     id="sidenav-main">
-    <div class="sidenav-header">
+    {{-- <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="/" target="_blank">
             <img src="{{ asset('images/logo hor.png') }}" width="60%">
-            {{-- <span class="ms-1 font-weight-bold">Counter Hate</span> --}}
 
         </a>
-    </div>
+    </div> --}}
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main" style="height: 700px">
         <ul class="navbar-nav">
+            <li class="nav-item">
+                @if (Route::currentRouteName() == 'home')
+                    <a class="nav-link active" href="/">
+                    @else
+                        <a class="nav-link" href="/">
+                @endif
+                <div
+                    class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
+                </div>
+                <span class="nav-link-text ms-1">Home</span>
+                </a>
+            </li>
             <li class="nav-item">
                 @if (Route::currentRouteName() == 'search')
                     <a class="nav-link active" href="/search/twitter">
@@ -86,10 +98,10 @@
                 </a>
             </li> --}}
             <li class="nav-item">
-                @if (Route::currentRouteName() == 'faq')
-                    <a class="nav-link active" href="/faq">
+                @if (Route::currentRouteName() == 'about')
+                    <a class="nav-link active" href="/about">
                     @else
-                        <a class="nav-link" href="/faq">
+                        <a class="nav-link" href="/about">
                 @endif
                 <div
                     class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -100,7 +112,25 @@
                             d="M5.933.87a2.89 2.89 0 0 1 4.134 0l.622.638.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636zM7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm1.602-2.027c.04-.534.198-.815.846-1.26.674-.475 1.05-1.09 1.05-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.71 1.71 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745.336 0 .504-.24.554-.627z" />
                     </svg>
                 </div>
-                <span class="nav-link-text ms-1">Funkcje systemu</span>
+                <span class="nav-link-text ms-1">O projekcie</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                @if (Route::currentRouteName() == 'capabilities')
+                    <a class="nav-link active" href="/capabilities">
+                    @else
+                        <a class="nav-link" href="/capabilities">
+                @endif
+                <div
+                    class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                    {{-- <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i> --}}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-patch-question-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M5.933.87a2.89 2.89 0 0 1 4.134 0l.622.638.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636zM7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm1.602-2.027c.04-.534.198-.815.846-1.26.674-.475 1.05-1.09 1.05-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.71 1.71 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745.336 0 .504-.24.554-.627z" />
+                    </svg>
+                </div>
+                <span class="nav-link-text ms-1">Mozliwości systemu</span>
                 </a>
             </li>
             @auth

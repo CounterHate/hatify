@@ -51,10 +51,10 @@
     </main>
     {{-- @include('partials.settingsBar') --}}
     <!--   Core JS Files   -->
-    <script src="./assets/js/core/popper.min.js"></script>
-    <script src="./assets/js/core/bootstrap.min.js"></script>
-    <script src="./assets/js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="{{ asset('js/core/popper.min.js')}}"></script>
+    <script src="{{ asset('js/core/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/perfect-scrollbar.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/smooth-scrollbar.min.js')}}"></script>
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
