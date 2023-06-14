@@ -23,6 +23,14 @@
                     ">
                                 Użytkownik
                             </th>
+                            <th scope="col"
+                                class="
+                  text-uppercase text-secondary text-xxs
+                  font-weight-bolder
+                  opacity-7
+                ">
+                                Email
+                            </th>
                             @foreach ($permissions as $p)
                                 <th scope="col"
                                     class="
@@ -44,6 +52,10 @@
                                 <td>
                                     <a href="/permissions/edit/{{ $user->id }}"><span
                                             class="mb-0 text-xs">{{ $user->name }}</span></a>
+                                </td>
+                                <td>
+                                    <a href="/permissions/edit/{{ $user->id }}"><span
+                                            class="mb-0 text-xs">{{ $user->email }}</span></a>
                                 </td>
                                 @foreach ($permissions as $p)
                                     @if ($user->can($p->name))
